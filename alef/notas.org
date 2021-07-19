@@ -1,0 +1,488 @@
+
+* Definições
+** Conceitos biologia
+
+  - Nucleotídeo: Molécula orgânica formada por um nucleosídeo e um fosfato
+    Existem quatro tipos de nucleotídeos no código genético (AGTU)
+  - Codon: Tripla de nucleotídeos Existem 4^3 = 64 codons possíveis
+  - Polímero: Substância composta por diversas moléculas em grupos repetidos
+    (chamados monômeros)
+  - Polinucleotídeo: Polímero de 13 ou mais nucleotídeos interligados
+    covalentemente em uma cadeia
+  - RNA: Composto orgânico de uma cadeia de polinucleotídeos encadeados entre
+    si É geradao a partir do DNA por uma enzima chamada RNA-polimerase num
+    processo chamado de *transcrição*
+  - DNA: Composto orgânico de duas cadeias de polinucleotídeos encadeados em
+    uma hélice dupla
+  - Ácido nucléico: Uma classe de polinucleotídeos incluindo DNA e RNA
+  - Aminoácido: Composto orgânico contendo grupos funcionais de amina e ácido
+    carboxílico, e um grupo substituto (R) específico de cada aminoácido Podem
+    ser classificados pela localização dos seus grupos funcionais como \alpha,
+    \beta, \gamma, ou \delta.  Apenas 20 aminoácidos diferentes compõem
+    proteínas em seres vivos
+  - Proteína: Composto orgânico de vários aminoácidos
+  - Ribossomo: Estrutura sub-celular que realiza a síntese proteica tendo o
+    mRNA como mnemônico (fase de *tradução*)
+  - mRNA: O RNA lido pelo ribossomo para determinar quais proteínas sintetizar
+  - tRNA: O RNA utilizado para entregar aminoácidos ao ribossomo
+  - rRNA: O RNA usado para ligar aminoácidos entre si para formar proteínas
+
+  (!) Cada codon presente no mRNA determina a síntese de um aminoácido
+  específico No código genético, 61 codons traduzem para aminoácidos
+  específicos, os outros são "stop codons" (sinalizadores) Dado que há 61
+  códons mas apenas 20 aminoácidos, a maioria dos aminoácidos é traduzida por
+  mais de um códon Isso permite que substituições no DNA não produzam uma
+  alteração nos aminoácidos correspondentes Essas *substituições* são chamadas
+  de *sinônimas* ou silenciosas, enquanto as que modificam são *não-sinônimas*
+  Acredita-se que as substituições sinônimas sejam mais comuns e não sofram
+  tanta pressão seletiva A *taxa de substituiçõs sinônimas e não sinônimas*
+  \omega = dN/dS é uma medida de seleção natual:[1]
+
+        - \omega = 1 indica evolução neutra
+        - \omega > 1 indica seleção purificadora ou negativa
+        - \omega < 1 indica seleção positiva
+
+  - Gene: Sequência de nucleotídeos no DNA ou RNA que codifica a síntese de um
+    produto genético: RNA ou uma proteína
+  - Expressão genética: Uso de um gene para gerar um produto (e.g. síntese
+    protéica)
+  - Alelos: Dois genes que expressam a mesma coisa
+  - Seleção purificadora ou negativa: Remoção de alelos nocivos
+  - Seleção positiva: Adição de alelos benéficos
+  - *Análise filogenética*: O estudo da evolução de um ou mais organismos ou de
+    suas características
+
+** PAML e codeml
+
+  (!) Alguns estudos medem seleção positiva comparando pares de DNA para
+  estimar as taxas de substituição sob todos sítios.  Todavia, devido a
+  limitações estruturais e funcionais a evolução afeta somente alguns síteos
+  proteicos.  O software PAML utiliza modelos de substituição de códon em que
+  \omega varia ao longo de síteos e linhagens.
+
+  No software, os _branch models_ permitem variar \omega entre diversas
+  ramificações da filogenia.  Os _site models_ permitem variar \omega entre
+  sites (entre codons ou aminoácidos na proteína). Diversos modelos são
+  implementados no codeml usando a variável Nssites e model=0.
+
+  (!) O codeml usa métodos de maximum-likelihood, um problema de otimização
+  multi-dimensional resolvido numericamente. O PAML implementa dois algoritmos
+  iterativos: O primeiro (method=0) é um algoritmo de minimização de propósito
+  geral que faz uso de derivadas de primeiro grau determinadas através de
+  diferenças finitas (paralilizável!) e de segundo grau (determinadas usando
+  BFGS).  O segundo (method=1) Usa BFGS de forma iterada até a convergência ser
+  atingida, e uma fase de otimização de ramificações é realizada
+  sequencialmente para cada ramificação (branch) até todas serem otimizadas.
+  Manual diz que estimativas são correlacionadas.
+
+  > codeml is a part of the PAML package, which is a suite of programs for
+  > phylogenetic analyses of DNA or protein sequences using maximum likelihood
+  > (ML).
+  > 
+  > In simple words, the aim of codeml is to detect positive selection events
+  > in the history of species.
+  > 
+  > With the seqtype set to 1, codeml carries out ML analysis of protein-coding
+  > DNA sequences using codon substitution models (e.g., Goldman and Yang
+  > 1994). With seqtype set to 2, codeml carries out ML analysis of amino acid
+  > sequences under a number of amino acid substitution models.
+  
+*** Formatos de entrada
+
+- Arquivo de sequência
+  - Formato: PHYLIP
+  - Spec: http://scikit-bio.org/docs/0.2.3/generated/skbio.io.phylip.html
+
+- Arquivo de árvore
+  - Formato: Newick format (https://en.wikipedia.org/wiki/Newick_format)
+  - Especificação: http://abacus.gene.ucl.ac.uk/software/pamlDOC.pdf
+  - Visualizador: http://etetoolkit.org/treeview/
+
+Os nomes no arquivo de árvore devem bater com os nomes no arquivo de sequência!
+
+*** Algoritmos usados
+
+  - Monte Carlo
+    - Paralelizável: Sim
+    - Local onde é usado: ?
+
+  - Maximum-Likelihood: Usa diferenças finitas etc, vide abaixo
+
+  - Diferenças finitas
+    - Paralelizável: Sim
+    - Local onde é usado: codml
+
+  - Broyden–Fletcher–Goldfarb–Shanno (BFGS)
+    - Paralelizável: Sim?
+    - Local onde é usado: codml
+
+  - Naive Empirical Bayesian?
+
+  - Bayes Empirical Bayesian?
+
+  - Markov models of codon substitution?
+
+  - Star decomposition
+    - Paralelizável: ?
+    - Local onde é usado: baseml e codonml
+
+  - Stepwise addition?
+
+  - Nearest Neighbor?
+
+* Notas
+
+** Julho
+
+*** Semana 1
+
+**** Resumo executivo
+
+Foi obtido o código, os dados, e o estudo inicial feito na cadeira de PDP. Foi
+estudado o pacote PAML e seu manual, o código, algoritmos utilizados e áreas de
+potencial paralelização, conceitos de biologia, e literatura relacionada ao
+codeml. Foi organizado este documento e um repositório git. Foi realizada
+reunião com Julio e Agnis para entender o caso de uso do hospital, reportar o
+trabalho feito até então e os próximos passos.
+
+***  Semana 2
+
+**** Resumo executivo
+
+Perfilei a implementação sequencial do codeml na infra do PCAD (beagle)
+utilizando gprof e callgrind, com resultados semelhantes (anexo).
+
+Verifiquei que algumas das rotinas responsáveis pela maior parte do tempo de
+execução implementam métodos numéricos paralelizáveis, como diferenças finitas
+em "gradientB" e BFGS em "ming2".
+
+Paralelizei a gradientB com OpenMP e implementei testes unitários para garantir
+a corretude da implementação paralela. 
+
+O codeml paralelo fica em laço pois o método não converge mais. O problema são
+as funções passadas ao gradientB (cujo gradiente está sendo calculado), que não
+são thread-safe. A paralelização em si está correta.
+
+Como próximos passos pretendo avaliar tornar tais funções thread-safe, bem como
+estudar mais a fundo a ming2 a fim de explorar novas estratégias de
+paralelização, focando nas sub-rotinas mais chamadas.
+
+**** Notas completas
+
+O objetivo inicial é perfilar a execução sequencial com os dados de entrada
+fornecidos pelo Julio.
+
+Os arquivos de entrada fornecidos não são aceitos pelo codeml, que retorna uma
+mensagem de erro informando que, no arquivo de sequência, o nome das sequências
+deve estar separado por pelo menos dois espaços do resto da sequência. O
+arquivo fornecido foi editado de acordo para superar esse entrave. O arquivo
+codeml.clt referenciava um arquivo inexistente e foi ajustado. Ainda assim, o
+codeml reclama que as espécies descritas no arquivo de árvore não estão
+presentes no arquivo de sequência.
+
+Dessa forma o objetivo passou a ser perfilar a execução sequencial com um dos
+exemplos fornecidos junto ao codeml, em paralelo a alinhar com Julio e Agnis os
+problemas com os dados originais.
+
+Inicialmente pretendo utilizar três técnicas para perfil da aplicação, em paralelo:
+
+- gprof
+- callgrind + kcachegrind (valgrind)
+- logs de execução (printf) 
+
+Para tal foi desenvolvido um script de perfilamento e executado o
+perfil com gprof em minha máquina pessoal e com callgrind na beagle do
+PCAD, pois o tempo de execução passa de 11min para 7h22m com o
+valgrind (para o dataset de exemplo "MHC"). Resultados:
+
+[[FILE:profiling/example_results.gif]]
+
+Como pode ser visto na imagem acima, os resultados apresentados pelo
+gprof e pelo callgrind são bem diferentes. Como podemos ver na
+documentação do código, a função =minB=, uma das responsáveis pela
+maior parte do tempo de execução no gprof, chama =ming2=, uma das
+vilãs no kcachegrind:
+
+#+BEGIN_EXAMPLE
+int minB(FILE*fout, double *lnL, double x[], double xb[][2], double e0, double space[])
+{
+   /* This calculates lnL for given values of common parameters by optimizing
+    branch lengths, cycling through them.
+    Z. Yang, November 1999
+    This calls minbranches to optimize branch lengths and ming2 to
+    estimate other paramters.
+    At the end of the routine, there is a call to lfun to restore nodes[].conP.
+    Returns variances of branch lengths in space[].
+    space[] is com.space[].  com.space may be reallocated here, which may be unsafe
+    as the pointers in the calling routine may not be pointing to the right places.
+#+END_EXAMPLE
+
+De qualquer forma achei estranho a diferença nos resultados e resolvi rodar o
+gprof na beagle também - como há bastante I/O e no PCAD é um NFS, talvez isso
+tenha impactado os resultados... Rodando na beagle os resultados são mais
+semelhantes ao do callgrind:
+
+#+BEGIN_EXAMPLE
+Each sample counts as 0.01 seconds.
+  %   cumulative   self              self     total           
+ time   seconds   seconds    calls   s/call   s/call  name    
+ 69.01    632.83   632.83     5499     0.12     0.17  ConditionalPNode
+ 30.04    908.28   275.44  2095119     0.00     0.00  PMatUVRoot
+  0.38    911.73     3.46    54990     0.00     0.00  NodeScale
+  0.26    914.11     2.38     5499     0.00     0.00  EigenTridagQLImplicit
+  0.15    915.45     1.34     5499     0.00     0.00  HouseholderRealSym
+  0.10    916.35     0.90        2     0.45     1.69  get_pclassM_iw_M2M8
+  0.02    916.53     0.18   215822     0.00     0.00  PDFt
+  0.01    916.64     0.11     5499     0.00     0.00  eigenQREV
+  0.01    916.75     0.11     6681     0.00     0.00  eigenQcodon
+  0.01    916.85     0.10      777     0.00     1.16  fx_r
+  0.00    916.89     0.04  2095119     0.00     0.00  GetPMatBranch
+  0.00    916.92     0.03     5499     0.00     0.00  eigenRealSym
+  0.00    916.94     0.02      768     0.00     0.00  AddCodonFreqSeqGene
+  0.00    916.95     0.01   656646     0.00     0.00  NucListall
+  0.00    916.96     0.01      381     0.00     0.00  GetSNphysical
+  0.00    916.97     0.01        4     0.00     2.01  lfunNSsites_rate
+  0.00    916.97     0.01                             InitializeNodeScale
+  0.00    916.98     0.01                             SelectionCoefficients
+  0.00    916.98     0.00  1469020     0.00     0.00  GetOmega
+  0.00    916.98     0.00  1188720     0.00     0.00  LnGamma
+  0.00    916.98     0.00   408148     0.00     0.00  sum
+  0.00    916.98     0.00   184128     0.00     0.00  GetAASiteSpecies
+  0.00    916.98     0.00   180000     0.00     0.00  CDFBeta
+  0.00    916.98     0.00    30000     0.00     0.00  GetIndexTernary
+  0.00    916.98     0.00     5427     0.00     0.00  SetPSiteClass
+  0.00    916.98     0.00     4180     0.00     0.00  CDFt
+#+END_EXAMPLE
+
+#+BEGIN_EXAMPLE
+                     Call graph (explanation follows)
+
+
+granularity: each sample hit covers 2 byte(s) for 0.00% of 916.98 seconds
+
+index % time    self  children    called     name
+                                                 <spontaneous>
+[1]    100.0    0.00  916.94                 Forestry [1]
+                0.00  899.02       5/5           ming2 [4]
+                0.00    9.30       8/771         lfundG [5]
+                0.01    8.03       4/4           lfunNSsites_rate [11]
+                0.00    0.33       2/72          lfun [10]
+                0.00    0.24       5/5           DetailOutput [22]
+                0.00    0.00      15/15          OutSubTreeN [52]
+                0.00    0.00       5/5           GetTreeFileType [63]
+                0.00    0.00       5/6           gfopen [59]
+                0.00    0.00       5/5           ReadTreeN [64]
+                0.00    0.00       5/5           GetInitials [60]
+                0.00    0.00       5/5           SetxBound [66]
+                0.00    0.00       5/5           SetxInitials [68]
+                0.00    0.00       5/1113        matout [41]
+                0.00    0.00       1/223         f_and_x [45]
+-----------------------------------------------
+#+END_EXAMPLE
+
+A julgar pela documentação do código, ming2 é paralelizável:
+
+#+BEGIN_EXAMPLE
+int ming2(FILE *fout, double *f, double(*fun)(double x[], int n),
+   int(*dfun)(double x[], double *f, double dx[], int n),
+   double x[], double xb[][2], double space[], double e, int n)
+{
+   /* n-variate minimization with bounds using the BFGS algorithm
+        g0[n] g[n] p[n] x0[n] y[n] s[n] z[n] H[n*n] C[n*n] tv[2*n]
+        xmark[n],ix[n]
+      Size of space should be (check carefully?)
+         #define spaceming2(n) ((n)*((n)*2+9+2)*sizeof(double))
+      nfree: # free variables
+      xmark[i]=0 for inside space; -1 for lower boundary; 1 for upper boundary.
+      x[] has initial values at input and returns the estimates in return.
+      ix[i] specifies the i-th free parameter
+
+   */
+#+END_EXAMPLE
+
+#+BEGIN_EXAMPLE
+double LineSearch2(double(*fun)(double x[], int n), double *f, double x0[],
+   double p[], double step, double limit, double e, double space[], int n)
+{
+   /* linear search using quadratic interpolation
+      from x0[] in the direction of p[],
+                   x = x0 + a*p        a ~(0,limit)
+      returns (a).    *f: f(x0) for input and f(x) for output
+
+      x0[n] x[n] p[n] space[n]
+
+      adapted from Wolfe M. A.  1978.  Numerical methods for unconstrained
+      optimization: An introduction.  Van Nostrand Reinhold Company, New York.
+      pp. 62-73.
+      step is used to find the bracket and is increased or reduced as necessary,
+      and is not terribly important.
+   */
+#+END_EXAMPLE
+
+#+BEGIN_EXAMPLE
+int gradientB(int n, double x[], double f0, double g[],
+   double(*fun)(double x[], int n), double space[], int xmark[])
+{
+   /* f0=fun(x) is always provided.
+   xmark=0: central; 1: upper; -1: down
+   */
+   int i, j;
+   double *x0 = space, *x1 = space + n, eh0 = Small_Diff, eh;  /* eh0=1e-6 || 1e-7 */
+
+   for (i = 0; i < n; i++) {
+      eh = eh0*(fabs(x[i]) + 1);
+      if (xmark[i] == 0 && (AlwaysCenter || SIZEp < 1)) {   /* central */
+         for (j = 0; j < n; j++)  x0[j] = x1[j] = x[j];
+         eh = pow(eh, .67);   x0[i] -= eh;  x1[i] += eh;
+         g[i] = ((*fun)(x1, n) - (*fun)(x0, n)) / (eh*2.0);
+      }
+      else {                                              /* forward or backward */
+         for (j = 0; j < n; j++)  x1[j] = x[j];
+         if (xmark[i]) eh *= -xmark[i];
+         x1[i] += eh;
+         g[i] = ((*fun)(x1, n) - f0) / eh;
+      }
+   }
+   return(0);
+}
+#+END_EXAMPLE
+
+BFSG é paralelizável:
+
+- https://www.sciencedirect.com/science/article/abs/pii/S0097849314000119
+- https://arxiv.org/abs/2011.00667
+- https://pypi.org/project/optimparallel/
+
+A função gradientB está executando diferenças finitas, o que é
+parelilizável (já fiz no programa utilizado na TF de PDP, de difusão
+de calor).
+
+Não encontrei muitos detalhes sobre o algoritmo utilizado em
+LineSearch2, o livro onde está descrito não há PDF online, sendo
+necessário adquirir, e não achei muito sobre essa implementação na
+internet.
+
+Paralelizei e escrevi testes unitários para a função gradientB, e
+refiz o perfil com a função paralelizada.
+
+Claramente minha aplicaçõa entrou em laço, apesar da minha paralelização estar
+correta cf. testes unitários:
+
+#+BEGIN_EXAMPLE
+Iterating by ming2
+Initial: fx=  8238.995628
+x=  1.60000  0.90000
+thread=0; type=fwbw; g[0]=-18.478365; x1=0
+thread=0; type=fwbw; g[1]=68.883013; x1=0
+
+  1 h-m-p  0.0000 0.0131  71.3184 ++++CYCCCC  8225.424791  5 0.0043    20thread=0; type=fwbw; g[0]=-6.786824; x1=0
+thread=0; type=fwbw; g[1]=-1.845802; x1=0
+ | 0/2
+  2 h-m-p  0.0431 8.0000   7.0650 CC     8225.163949  1 0.0107    27thread=0; type=fwbw; g[0]=-0.416620; x1=0
+thread=0; type=fwbw; g[1]=2.813778; x1=0
+ | 0/2
+  3 h-m-p  1.6000 8.0000   0.0131 CC     8225.154796  1 0.5424    34thread=0; type=central; g[0]=-0.031600; x0=0; x1=16
+thread=0; type=central; g[1]=-0.017255; x0=0; x1=16
+ | 0/2
+  4 h-m-p  1.6000 8.0000   0.0004 Y      8225.154790  0 1.0672    41thread=0; type=central; g[0]=0.000355; x0=0; x1=16
+thread=0; type=central; g[1]=-0.002415; x0=0; x1=16
+#+END_EXAMPLE
+
+#+BEGIN_EXAMPLE
+Iterating by ming2
+Initial: fx=  8238.995628
+x=  1.60000  0.90000
+thread=0; type=fwbw; g[0]=-nan; x1=0
+thread=1; type=fwbw; g[1]=-nan; x1=32
+                                                                                                                                               t
+  1 h-m-p  0.0040 8.0000     -nan ++++++         -nan  m 8.0000    11thread=0; type=fwbw; g[0]=nan; x1=0
+thread=1; type=fwbw; g[1]=nan; x1=32
+ | 0/2
+  2 h-m-p  0.0160 8.0000      nan +++++          nan  m 8.0000    19thread=0; type=fwbw; g[0]=nan; x1=0
+thread=1; type=fwbw; g[1]=nan; x1=32                                                                                                           t
+ | 0/2
+  3 h-m-p  0.0160 8.0000      nan +++++          nan  m 8.0000    27thread=0; type=fwbw; g[0]=nan; x1=0
+thread=1; type=fwbw; g[1]=nan; x1=32
+ | 0/2
+  4 h-m-p  0.0160 8.0000      nan +++++          nan  m 8.0000    35thread=0; type=fwbw; g[0]=nan; x1=0
+thread=1; type=fwbw; g[1]=nan; x1=32
+ | 0/2
+  5 h-m-p  0.0160 8.0000      nan +++++          nan  m 8.0000    43thread=0; type=fwbw; g[0]=nan; x1=0
+thread=1; type=fwbw; g[1]=nan; x1=32
+ | 0/2
+
+ # Interrompido, se repete pra sempre
+
+#+END_EXAMPLE
+
+O problema é que a função sendo derivada é implementada de forma não
+thread-safe. P.e. ConditionalPNode que é chamada dentro de lfun:
+
+#+BEGIN_EXAMPLE
+int ConditionalPNode(int inode, int igene, double x[])
+{
+   int n = com.ncode, i, j, k, h, ison, pos0 = com.posG[igene], pos1 = com.posG[igene + 1];
+   double t;
+
+   for (i = 0; i < nodes[inode].nson; i++)
+      if (nodes[nodes[inode].sons[i]].nson > 0 && !com.oldconP[nodes[inode].sons[i]])
+         ConditionalPNode(nodes[inode].sons[i], igene, x);
+   if (inode < com.ns) {  /* young ancestor */
+      for (h = pos0*n; h < pos1*n; h++)
+         nodes[inode].conP[h] = 0;
+   }
+   else
+      for (h = pos0*n; h < pos1*n; h++)
+         nodes[inode].conP[h] = 1;
+#+END_EXAMPLE
+
+A própria implementação de lfun não é thread-safe, em particular a linha `if
+(LASTROUND == 2) dfsites[h] = fh;`. Os mesmos problemas existem em =lfundG=
+(chamada quando alpha=1).
+
+De qualquer forma não sei até que ponto minha paralelização seria útil visto
+que o grão é cada derivada parcial do gradiente e as funções sendo derivadas só
+tem duas variáveis.
+
+* Referências
+
+[1] Yang 2000: Codon-Substitution Models for Detecting Molecular Adaptation at Individual Sites Along Specific Lineages
+https://academic.oup.com/mbe/article/19/6/908/1094851
+
+[2] Manual do PAML: http://abacus.gene.ucl.ac.uk/software/pamlDOC.pdf
+
+* Literatura interessante
+
+  (!) !!!!!!!!!!!!!!!!!!!!
+  gcodeml: A Grid-enabled Tool for Detecting Positive Selection in Biological Evolution
+http://arxiv.org/pdf/1203.3092.pdf
+
+Although the codeml algorithm is currently supporting an embarrassingly parallel
+approach, codeml does not yet make use of data-parallel features to allow for better
+performance of single runs. In a related project (http://www.hp2c.ch/projects/selectome/)
+we are currently improving both the algorithm and the implementation of the codon
+model used in Selectome. If the run-time of the codeml executable is improved, this also
+has a positive impact on the number of Grid and/or cluster calculations that are required
+to produce new versions of Selectome since many nodes are now multi-core.
+
+-> http://www.hp2c.ch/projects/selectome/
+
+[a] Yang 2000 Statistical methods for detecting molecular adaptation
+ https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7134603/
+
+* Outros links
+
+https://github.com/abacus-gene/paml
+https://github.com/ziheng-yang
+https://en.wikipedia.org/wiki/Ziheng_Yang
+http://abacus.gene.ucl.ac.uk/
+http://abacus.gene.ucl.ac.uk/people/
+
+Ziheng Yang
+Professor, FRS
+email: z.yang@ucl.ac.uk
+
+https://www.google.com/search?q=codeml+site:www.biostars.org&sa=X&ved=2ahUKEwiw-5yv4MrxAhXTq5UCHVF3AaIQrQIoBHoECB0QBQ&biw=1920&bih=937
+https://www.biostars.org/p/17045/
+https://gist.github.com/mgalardini/3743820
+
