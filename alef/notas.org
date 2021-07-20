@@ -145,7 +145,7 @@ codeml. Foi organizado este documento e um repositório git. Foi realizada
 reunião com Julio e Agnis para entender o caso de uso do hospital, reportar o
 trabalho feito até então e os próximos passos.
 
-***  Semana 2
+*** Semana 2
 
 **** Resumo executivo
 
@@ -195,7 +195,7 @@ perfil com gprof em minha máquina pessoal e com callgrind na beagle do
 PCAD, pois o tempo de execução passa de 11min para 7h22m com o
 valgrind (para o dataset de exemplo "MHC"). Resultados:
 
-[[FILE:profiling/example_results.gif]]
+[[FILE:img/example_results.gif]]
 
 Como pode ser visto na imagem acima, os resultados apresentados pelo
 gprof e pelo callgrind são bem diferentes. Como podemos ver na
@@ -443,6 +443,141 @@ A própria implementação de lfun não é thread-safe, em particular a linha `i
 De qualquer forma não sei até que ponto minha paralelização seria útil visto
 que o grão é cada derivada parcial do gradiente e as funções sendo derivadas só
 tem duas variáveis.
+
+*** Semana 3
+
+**** Resumo executivo
+
+**** Notas completas
+
+Tentar tornar as funções chamadas por gradientB thread-safe parece uma
+causa perdida. Além do mais, gradientB é chamado poucas vezes e apenas
+com funções de duas variáveis, então sua paralelização talvez nem seja
+tão benéfica. Reverti a paralelização em um novo commit no fork do PAML.
+
+Então, estou focando minha atenção no estudo das funções passadas a
+gradientB e em seus callees, que, a julgar pelo callgraph do
+kacachegrind, são também as funções passadas a LineSearch2,
+responsável pela outra metade do tempo de execução.
+
+Para tais funções, duas chamam atenção: PMatUVRoot, uma multiplicação
+matricial, e ConditionalPNode, o caller do seu caller. Isso porque
+PMatUVRoot é responsável por 35% do tempo de execução, e os outros 64%
+do tempo são passados dentro de ConditionalPNode.
+
+PMatUVRoot é chamado 2009013 vezes, enquanto que seus três laço, para
+o dataset de exemplo, resultam em 343000 iterações. Obtive esse valor
+da seguinte forma: o callgrind reporta 122549792 chamadas para expm1,
+que está na inicialização no laço do meio, ou seja, é chamado n vezes
+(do laço externo), n = 122549792 / 2009013 = 70, 70^3 = 343000. Cada
+uma dessas iterações realiza duas somas e duas multiplicações,
+enquanto que 70**2 = 4900 dessas iterações realizam uma exponenciação,
+uma multiplicação, e uma subtração (exmp1). Isto é:
+
+- Laço externo: Sem operações, 70x
+- Laço do meio: Exponenciação, 70^2 = 4900x
+- Laço interno: Duas somas e duas multiplicações, acessos divers, 70^3 = 343000x
+
+O laço mais exterior não é paralelizável, ao menos não trivialmente,
+pois utiliza o valor da matriz calculada na iteração anterior. Os dois
+laços interiores são paralelizáveis se realizarmos a exponenciação
+todas vezes (colapsando-os), ou se paralelizarmos somente o laço mais
+interno. Isto é:
+
+- Alternativa 1: 70x mais exponenciação, 4900 iterações paralelizáveis
+- Alternativa 2: Mesmas operações, 70 iterações paralelizáveis
+
+Discutível se vale a pena paralelizar aqui, seja com CUDA ou OpenMP.
+
+[[FILE:img/mat.gif]]
+
+Já ConditionalPNode passa a maior parte do seu tempo executando um
+laço de pos0 a pos1, aninhado dois laços sob n, no caso "internal
+node". É alguma operação matricial, potencialmente
+paralelizável. Explorando o tamanho desse laço para o dataset de
+exemplo com um printf (callgrind não deu pistas) temos um laço de
+tamanho máximo de 706990 (n = 61, pos1=190, pos0=0). 
+
+[[FILE:img/caller.gif]]
+
+#+BEGIN_EXAMPLE
+diff --git a/src/codeml.c b/src/codeml.c
+index f5c5961..dd7d052 100644
+--- a/src/codeml.c
++++ b/src/codeml.c
+@@ -3489,6 +3489,7 @@ int Qcodon2aa(double Qc[], double pic[], double Qaa[], double piaa[])
+ 
+ int ConditionalPNode(int inode, int igene, double x[])
+ {
++   static long int _loopmax = 0;
+    int n = com.ncode, i, j, k, h, ison, pos0 = com.posG[igene], pos1 = com.posG[igene + 1];
+    double t;
+ 
+@@ -3530,6 +3531,10 @@ int ConditionalPNode(int inode, int igene, double x[])
+             }
+       }
+       else {                                            /* internal node */
++         if ((pos1 - pos0) * n * n > _loopmax) {
++           _loopmax = (pos1 - pos0) * n * n;
++           printf("new _loopmax: %ld\n", _loopmax);
++         }
+          for (h = pos0; h < pos1; h++)
+             for (j = 0; j < n; j++) {
+                for (k = 0, t = 0; k < n; k++)
+#+END_EXAMPLE
+
+Podemos desenrolar esse laço da seguinte forma:
+
+#+BEGIN_EXAMPLE
+for (hj = pos0 * n; hj < pos1 * n; hj++) {
+  h = hj / n;
+  j = hj % n;
+  t = 0;
+  for (k = 0; k < n; k++) {
+    t += PMat[j * n + k] * nodes[ison].conP[h * n + k];
+  }
+  nodes[inode].conP[h * n + j] = t;
+}
+#+END_EXAMPLE
+
+Assim temos apens 61^2 = 3721 iterações paralelizáveis. Podemos
+desenrolar mais e paralelizar todas 706990 iterações:
+
+#+BEGIN_EXAMPLE
+for (hjk = pos0 * nn; hjk < pos1 * nn; hjk++) {
+  int h = hjk / (n * n),
+      j = (hjk % (n * n)) / n;
+      k = (hjk % (n * n)) % n;
+  t += PMat[j * n + k] * nodes[ison].conP[h * n + k];
+  if (k == n - 1)
+    nodes[inode].conP[h * n + j] *= t;
+}
+#+END_EXAMPLE
+
+Otimizando:
+
+#+BEGIN_EXAMPLE
+int nn = n * n;
+for (hjk = pos0 * nn; hjk < pos1 * nn; hjk++) {
+  int hn = hjk / n,
+      h = hn / n,
+      jn = (hj % nn),
+      j = j / n,
+      k = jn % n;
+  t += PMat[jn + k] * nodes[ison].conP[hn + k];
+  if (k == n - 1)
+    nodes[inode].conP[hn + j] *= t;
+}
+#+END_EXAMPLE
+
+Próximos passos:
+
+1. Escrever testes unitários para essa função
+2. Implementar e testar laço desenrolado sequencial
+3. Implementar e perfilar paralelização com OpenMP
+
+Talvez seja melhor CUDA pois cada kernel é rápido e há muitos kernels,
+mas a validar...
 
 * Referências
 
