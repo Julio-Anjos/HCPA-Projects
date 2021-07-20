@@ -579,6 +579,10 @@ Próximos passos:
 Talvez seja melhor CUDA pois cada kernel é rápido e há muitos kernels,
 mas a validar...
 
+Em paralelo a isso rodei o codeml com os dados da Agnis e callgrind na
+beagle, as a execução levou mais de 23h e foi abortada pelo limite de
+tempo. Botei para rodar hoje então com o gprof.
+
 * Referências
 
 [1] Yang 2000: Codon-Substitution Models for Detecting Molecular Adaptation at Individual Sites Along Specific Lineages
