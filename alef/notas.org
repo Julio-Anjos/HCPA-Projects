@@ -583,6 +583,105 @@ Em paralelo a isso rodei o codeml com os dados da Agnis e callgrind na
 beagle, as a execução levou mais de 23h e foi abortada pelo limite de
 tempo. Botei para rodar hoje então com o gprof.
 
+Foi paralelizado o ConditionalPNode usando a primeira estratégia de
+colapsar apenas os dois laços mais externos. A implementação paralela
+é bem simples e me parece correta, mas por algum motivo que ainda não
+entendi os resultados ficam levemente diferentes da implementação
+sequencial (sem USE_OMP) e os testes unitários falham. Adicionei um
+printf para evidenciar:
+
+#+BEGIN_EXAMPLE
+./afarah@gentoopc ~/tcc/paml/src/tests $ ./ConditionalPNode 
+actual=36.905000; expected=36.905000
+actual=56.597750; expected=56.597750
+actual=87.121512; expected=87.121512
+actual=134.433344; expected=134.433344
+actual=207.766684; expected=207.766684
+actual=321.433360; expected=321.433360
+actual=497.616708; expected=497.616708
+actual=770.700897; expected=770.700897
+actual=1193.981390; expected=1193.981390
+actual=1850.066155; expected=1850.066155
+actual=2866.997541; expected=2866.997541
+actual=4443.241188; expected=4443.241188
+actual=6886.418841; expected=6886.418841
+actual=10673.344204; expected=10673.344204
+actual=16543.078516; expected=16543.078516
+actual=25641.166700; expected=25641.166700
+actual=39743.203385; expected=39743.203385
+actual=61601.360246; expected=61601.360246
+actual=95481.503382; expected=95481.503382
+actual=147995.725241; expected=147995.725241
+actual=229392.769124; expected=229392.769124
+actual=355558.187143; expected=355558.187143
+actual=551114.585071; expected=551114.585071
+actual=854227.001860; expected=854227.001860
+actual=1324051.247883; expected=1324051.247883
+actual=2052278.829219; expected=2052278.829219
+actual=3181031.580290; expected=3181031.580290
+actual=4930598.344449; expected=4930598.344449
+actual=7642426.828896; expected=7642426.828896
+actual=11845760.979789; expected=11845760.979789
+actual=18360928.913673; expected=18360928.913673
+actual=28459439.211193; expected=28459439.211193
+actual=44112130.172349; expected=44112130.172349
+actual=68373801.162141; expected=68373801.162141
+actual=105979391.196318; expected=105979391.196318
+actual=164268055.749293; expected=164268055.749293
+actual=254615485.806405; expected=254615485.806405
+actual=394654002.394927; expected=394654002.394927
+actual=611713703.107136; expected=611713703.107135
+actual=948156239.211061; expected=948156239.211060
+ConditionalPNode: ConditionalPNode.c:65: test_ConditionalPNode_InternalNode: Assertion `double_equal(node_actual.conP[h*N + j], node_expected.conP[h*N + j], Small_Diff)' failed.
+Aborted
+#+END_EXAMPLE
+
+Não paralelo:
+
+#+BEGIN_EXAMPLE
+afarah@gentoopc ~/tcc/paml/src/tests $ head -n 50 err
+actual=36.905000; expected=36.905000
+actual=56.597750; expected=56.597750
+actual=87.121512; expected=87.121512
+actual=134.433344; expected=134.433344
+actual=207.766684; expected=207.766684
+actual=321.433360; expected=321.433360
+actual=497.616708; expected=497.616708
+actual=770.700897; expected=770.700897
+actual=1193.981390; expected=1193.981390
+actual=1850.066155; expected=1850.066155
+actual=2866.997541; expected=2866.997541
+actual=4443.241188; expected=4443.241188
+actual=6886.418841; expected=6886.418841
+actual=10673.344204; expected=10673.344204
+actual=16543.078516; expected=16543.078516
+actual=25641.166700; expected=25641.166700
+actual=39743.203385; expected=39743.203385
+actual=61601.360246; expected=61601.360246
+actual=95481.503382; expected=95481.503382
+actual=147995.725241; expected=147995.725241
+actual=229392.769124; expected=229392.769124
+actual=355558.187143; expected=355558.187143
+actual=551114.585071; expected=551114.585071
+actual=854227.001860; expected=854227.001860
+actual=1324051.247883; expected=1324051.247883
+actual=2052278.829219; expected=2052278.829219
+actual=3181031.580290; expected=3181031.580290
+actual=4930598.344449; expected=4930598.344449
+actual=7642426.828896; expected=7642426.828896
+actual=11845760.979789; expected=11845760.979789
+actual=18360928.913673; expected=18360928.913673
+actual=28459439.211193; expected=28459439.211193
+actual=44112130.172349; expected=44112130.172349
+actual=68373801.162141; expected=68373801.162141
+actual=105979391.196318; expected=105979391.196318
+actual=164268055.749293; expected=164268055.749293
+actual=254615485.806405; expected=254615485.806405
+actual=394654002.394927; expected=394654002.394927
+actual=611713703.107135; expected=611713703.107135
+actual=948156239.211060; expected=948156239.211060
+#+END_EXAMPLE
+
 * Referências
 
 [1] Yang 2000: Codon-Substitution Models for Detecting Molecular Adaptation at Individual Sites Along Specific Lineages
