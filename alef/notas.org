@@ -682,6 +682,62 @@ actual=611713703.107135; expected=611713703.107135
 actual=948156239.211060; expected=948156239.211060
 #+END_EXAMPLE
 
+Após muito debug, descobri que a origem das diferenças é a propagação
+de erro de ponto flutuante. Esse problema não é em minha
+paralelização, ele está presente na implementação original. O que
+ocorre é que a cláusula de redução do OpenMP cria uma cópia privada a
+cada threa do acumulador original, alterando as operações que são
+realizadas, apesar do resultado final ser logicamente o mesmo. Dessa
+forma os erros de arredondamento são diferentes entre a implementação
+sequencial e paralela, e a propagação de um erro diferente leva a um
+resultado final diferente. Exemplo:
+
+#+BEGIN_EXAMPLE
+Init: t = 0
+
+Thread 0: k = 0,1
+Thread 1: k = 2,3
+
+Thread 0:
+t = 0 + 0.5 * 1.1
+t = 0.55 + 0.5 * 1.1
+t = 1.1
+
+Thread 1:
+t = 0 + 0.5 * 1.1
+t = 0.55 + 0.5 * 1.1
+t = 1.1
+
+Reduction:
+t = 1.1 + 1.1 = 2.2
+
+----
+
+Seq:
+
+t = 0 + 0.5 * 1.1
+t = 0.55 + 0.5 * 1.1
+t = 1.1 + 0.5 * 1.1
+t = 1.6500000000000001 + 0.5 * 1.1
+t = 2.2000000000000001
+#+END_EXAMPLE
+
+A pista que me levou a essa conclusão é que as diferenças eram apenas
+várias casas após a vírgula e só se manifestavam quando eu testava com
+um número muito alto de iterações e com ison == inode, o que fazia com
+que t fosse grande e o valor das matrizes pequeno, clássico caso que
+gera erro de arredondamento em operações com ponto flutuante.
+
+Acredito que não seja motivo de preocupação no que tange a
+paralelização do software visto que o problema já está presenta na
+implementação sequencial, mas talvez seja relevante estudar o impacto
+disso no resultado final da aplicação na própria implementação
+sequencial, em um outro trabalho.
+
+Por fim, ressalto que observei o erro apenas com dados arbitrários em
+meus testes, não analisei se há problemas relacionados a ponto
+flutuante com os dados reais como entrada.
+
 * Referências
 
 [1] Yang 2000: Codon-Substitution Models for Detecting Molecular Adaptation at Individual Sites Along Specific Lineages
