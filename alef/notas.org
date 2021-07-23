@@ -738,6 +738,26 @@ Por fim, ressalto que observei o erro apenas com dados arbitrários em
 meus testes, não analisei se há problemas relacionados a ponto
 flutuante com os dados reais como entrada.
 
+O perfil do codeml com gprof com os dados de entrada da Agnis mostram
+que as funções com maior tempo de execução são justamente aquelas que
+estou paralelizando:
+
+#+BEGIN_EXAMPLE
+afarah@gentoopc ~/tcc/alef/profiling/agnis_GJB3_gprof_20_07_21_181815 $ gprof codeml gmon.out 
+Flat profile:
+
+Each sample counts as 0.01 seconds.
+  %   cumulative   self              self     total           
+ time   seconds   seconds    calls  Ks/call  Ks/call  name    
+ 56.33   3673.63  3673.63   465133     0.00     0.00  ConditionalPNode
+ 37.05   6089.65  2416.03 41861970     0.00     0.00  PMatUVRoot
+#+END_EXAMPLE
+
+Um aspecto que não explorei ainda é se há um componente grande de IO,
+dado que no PCAD estou rodando no NFS e não no SCRATCH da máquina. Vou
+fazer um setup no SCRATCH no futuro próximo para eliminar essa
+hipótese.
+
 * Referências
 
 [1] Yang 2000: Codon-Substitution Models for Detecting Molecular Adaptation at Individual Sites Along Specific Lineages
