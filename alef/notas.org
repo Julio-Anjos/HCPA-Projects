@@ -758,6 +758,13 @@ dado que no PCAD estou rodando no NFS e não no SCRATCH da máquina. Vou
 fazer um setup no SCRATCH no futuro próximo para eliminar essa
 hipótese.
 
+Vou perfilar agora o tempo total da aplicação com as seguintes estratégias:
+
+1. Sequencial
+2. ConditionalPNode paralelizado no laço interno
+3. ConditionalPNode paralelizado no laço externo (a desenvolver)
+4. PMatUVRoot paralelizado (a desenvolver)
+
 * Referências
 
 [1] Yang 2000: Codon-Substitution Models for Detecting Molecular Adaptation at Individual Sites Along Specific Lineages
