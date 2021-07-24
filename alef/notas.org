@@ -915,6 +915,16 @@ Pretendo no futuro alterar o script de profiling parametrizando as
 regiões paralelas para não precisar ficar alterando manualmente o
 Makefile e a fim de tornar os experimentos mais reprodutíveis.
 
+Já pensando no caso das paralelizações "microscópicas" não
+funcionarem, uma abordagem alternativa é buscar uma paralelização mais
+"macroscópica", estudando o que o código faz hoje em sequência que
+poderia ser feito em paralelo, semelhante ao que foi feito no trabalho
+relacionado em que é rodada a instância inteira do codeml em paralelo,
+mas buscando um grão um pouco mais fino - p.e. se há vários modelos
+sendo comparados em uma execução do codeml, ver se não seria possível
+rodar esses modelos em paralelo. Preciso ver em mais detalhes o
+trabalho mencionado para ver se não fizeram isso (também).
+
 * Referências
 
 [1] Yang 2000: Codon-Substitution Models for Detecting Molecular Adaptation at Individual Sites Along Specific Lineages
