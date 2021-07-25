@@ -925,6 +925,106 @@ sendo comparados em uma execução do codeml, ver se não seria possível
 rodar esses modelos em paralelo. Preciso ver em mais detalhes o
 trabalho mencionado para ver se não fizeram isso (também).
 
+Resultados da paralelização da PMatUVRoot apresentaram exatamente o
+mesmo problema da CPNode, estourando o tempo limite (levando pelo
+menos 2x o tempo da execução sequencial) e com resultados diferentes:
+
+#+BEGIN_EXAMPLE
+Bounds (np=93):
+   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004
+   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000100   0.000010   0.000001
+  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000 999.000000   0.999990   1.000000
+Qfactor_NS = 12.285089
+
+np =    93
+lnL0 = -6290.590227
+#+END_EXAMPLE
+
+#+BEGIN_EXAMPLE
+Bounds (np=93):
+   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004
+   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004
+   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004   0.000004
+   0.000004   0.000004   0.000004   0.000100   0.000010   0.000001
+  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000
+  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000
+  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000  50.000000
+  50.000000  50.000000  50.000000 999.000000   0.999990   1.000000
+Qfactor_NS = 14.846743
+
+np =    93
+lnL0 = -5935.288424
+#+END_EXAMPLE
+
+Eu estava usando somente o PMatUVRoot paralelo:
+
+#+BEGIN_EXAMPLE
+afarah@gppd-hpc:~/tcc/alef/profiling$ head tcc_geyer_tt_par_uvroot_agnis_440141.out 
+/home/users/afarah/tcc/alef/profiling/../paml/src
+/home/users/afarah/tcc/alef/profiling/../data/agnis_GJB3
+
+Starting in 5s from /home/users/afarah/tcc/alef/profiling/agnis_GJB3_total_time_24_07_21_194957
+
+rm -f *.o baseml codeml basemlg mcmctree pamp evolver yn00 chi2 infinitesites
+cc  -O3 -Wall -Wno-unused-result  -DUSE_OMP -fopenmp -DUSE_OMP_PMATUV -c codeml.c
+cc  -O3 -Wall -Wno-unused-result  -DUSE_OMP -fopenmp -DUSE_OMP_PMATUV -c tools.c
+cc  -O3 -Wall -Wno-unused-result  -DUSE_OMP -fopenmp -DUSE_OMP_PMATUV -o codeml codeml.o tools.o -lm -lgomp
+Running total_time from /home/users/afarah/tcc/alef/profiling/agnis_GJB3_total_time_24_07_21_194957...
+#+END_EXAMPLE
+
+#+BEGIN_EXAMPLE
+afarah@gppd-hpc:~/tcc/alef/paml/src$ grep -re USE_OMP -A2
+tests/Makefile:# USE_OMP - Use OpenMP (at all)
+tests/Makefile:# USE_OMP_CPNODE - Use OpenMP on ConditionalPNode
+tests/Makefile:# USE_OMP_PMATUV - Use OpenMP on PMatUVRoot
+tests/Makefile-#
+tests/Makefile-override CFLAGS += $(DBG) -Wall -Wno-unused-result 
+tests/Makefile:override CFLAGS += -DUSE_OMP -fopenmp
+tests/Makefile:#override CFLAGS += -DUSE_OMP_CPNODE
+tests/Makefile:#override CFLAGS += -DUSE_OMP_PMATUV
+tests/Makefile-LIBS = -lm -lgomp
+tests/Makefile-
+--
+Makefile:# USE_OMP - Use OpenMP (at all)
+Makefile:# USE_OMP_CPNODE - Use OpenMP on ConditionalPNode
+Makefile:# USE_OMP_PMATUV - Use OpenMP on PMatUVRoot
+Makefile-#
+Makefile-override CFLAGS += -O3 -Wall -Wno-unused-result 
+Makefile:override CFLAGS += -DUSE_OMP -fopenmp
+Makefile:#override CFLAGS += -DUSE_OMP_CPNODE
+Makefile:override CFLAGS += -DUSE_OMP_PMATUV
+Makefile-LIBS = -lm -lgomp
+Makefile-
+--
+codeml.c:#ifdef USE_OMP
+codeml.c-#include "omp.h"
+codeml.c-#endif
+--
+codeml.c:#ifdef USE_OMP_CPNODE
+codeml.c-  int actual_threads = MAX(1, MIN(omp_get_num_procs(), n));
+codeml.c-  int chunk = MAX(1, n / actual_threads);
+--
+codeml.c:#ifdef USE_OMP_CPNODE
+codeml.c-    #pragma omp parallel for schedule(static, chunk) num_threads(actual_threads) default(shared) private(k) reduction(+:t)
+codeml.c-#endif
+--
+tools.c:#ifdef USE_OMP
+tools.c-#include <omp.h>
+tools.c-#endif
+--
+tools.c:#ifdef USE_OMP_PMATUV
+tools.c-   int actual_threads = MAX(1, MIN(omp_get_num_procs(), (n * n)));
+tools.c-   int chunk = MAX(1, (n * n) / actual_threads);
+--
+tools.c:#ifdef USE_OMP_PMATUV
+tools.c-      #pragma omp parallel for default(shared) private(i, j, ij) firstprivate(uexpt) schedule(static, chunk) num_threads(actual_threads)
+tools.c-#endif
+#+END_EXAMPLE
+
+Uma coisa que percebi é que a beagle tem somente duas threads
+disponíveis quando rodo como shared, talvez isso esteja impactando,
+mas não deveria impactar tanto...
+
 * Referências
 
 [1] Yang 2000: Codon-Substitution Models for Detecting Molecular Adaptation at Individual Sites Along Specific Lineages
