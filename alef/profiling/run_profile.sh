@@ -38,6 +38,32 @@ case $PROFILE_TYPE in
 esac
 
 #
+# Parallel / sequential Makefile params
+#
+PARALLEL_TYPE="$3"
+case $PARALLEL_TYPE in
+  "CPNODE")
+    CFLAGS="$CFLAGS -fopenmp -DUSE_OMP -DUSE_OMP_CPNODE"
+  ;;
+
+ "PMATUV")
+    CFLAGS="$CFLAGS -fopenmp -DUSE_OMP -DUSE_OMP_PMATUV"
+  ;;
+
+  "ALL")
+    CFLAGS="$CFLAGS -fopenmp -DUSE_OMP -DUSE_OMP_CPNODE -DUSE_OMP_PMATUV"
+  ;;
+
+  "SEQ")
+  ;;
+
+  *)
+    echo "Please choose parallel implementation to use"
+    exit 1
+  ;;
+esac
+
+#
 # Path to PAML
 #
 PATH_PAML="$(pwd)/../paml"
@@ -72,16 +98,21 @@ FILE_CTL="codeml.ctl"
 ls -d "$PATH_SRC"
 ls -d "$PATH_DATA"
 echo
-echo "Starting in 5s from $PATH_RUN"
+echo "Starting in 5s from $(hostname) at $PATH_RUN"
 echo
 sleep 5
 
 ################################################################################
 #
-# Env. setup: compilation, directory creation, etc
+# Env. setup: cleanup, git SHA1, compilation, directory creation, etc
 #
 ################################################################################
 cd "$PATH_SRC"
+git stash
+git clean -ffx
+git status -s
+git diff -p
+git --no-pager log --pretty=oneline --max-count=1
 make clean
 make codeml "CFLAGS=$CFLAGS"
 
