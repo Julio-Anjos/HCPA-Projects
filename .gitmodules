@@ -1,3 +1,6 @@
 [submodule "alef/paml"]
 	path = alef/paml
 	url = https://github.com/afarah1/paml.git
+[submodule "alef/fastcodeml"]
+	path = alef/fastcodeml
+	url = https://gitlab.sib.swiss/phylo/fastcodeml.git
