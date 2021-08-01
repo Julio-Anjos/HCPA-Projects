@@ -18,7 +18,7 @@ if(WIN32) #Untested
 else() #You need libblas.a and liblapack.a in your source directory; otherweise change paths below
 	set(BLAS_LINK_DIR ${CMAKE_SOURCE_DIR}  CACHE PATH "BLAS lib dir")
 	set(LAPACK_LINK_DIR ${CMAKE_SOURCE_DIR} CACHE PATH "LAPACK lib dir")
-	set(MATH_LIB_NAMES blas lapack blas lapack gfortranbegin gfortran CACHE STRING "Math libraries" )
+	set(MATH_LIB_NAMES blas lapack blas lapack gfortran CACHE STRING "Math libraries" )
 endif()
 
 link_directories( ${BLAS_LINK_DIR} )
