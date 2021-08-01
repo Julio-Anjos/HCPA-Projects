@@ -1436,12 +1436,110 @@ x=  0.06435  0.02248  0.08105  0.05575  0.04387  0.01870  0.02451  0.03230  0.01
 ^Cafarah@beagle:~/tcc/alef/profiling$ 
 #+END_EXAMPLE
 
+*** Semana 4
+
+**** Resumo executivo
+
+Estudei o algoritmo e os métodos numéricos por trás do codeml em mais detalhes,
+tanto via análise do código como leitura da literatura.
+
+Em meio a esse estudo identifiquei dois trabalhos em cima do codeml, dos mesmos
+autores, em que acredito que os próximos passos desse trabalho devam ser baseados.
+
+O primeiro desses trabalhos é o SlimCodeML, que mantém o mesmo formato de
+entrada e saída do codeml, mas substitui a implementação ingênua de métodos
+numéricos por aquela do BLAS e LAPACK, além de trazer otimizações e melhorias
+organizacionais diversas.
+
+O segundo é o FastCodeML, que mantém o modelo evolutivo original, mas altera
+fundamentalmente as estratégias empregadas a fim de remover dependências de
+dados, e paraleliza o cálculo com OpenMP e MPI. O código é completamente
+reescrito para isso, sendo muito mais organizado. Os arquivos de entrada são os
+mesmos, mas os parâmetros não, e o formato de saída é diferente.
+
+Criei uma imagem docker na máquina Thor1 (ubuntu-afarah-fastcodeml) contendo o
+codeml original, o SlimCodeML, o FastCodeML, todas libs necessárias para
+compilação de todos, bem como um script para perfilar cada um deles.
+
+Em paralelo, identifiquei na literatura uma implementação para GPU do BFGS, o
+otimizador usado pelo codeml e seus derivados.
+
+Acredito que os próximos passos desse trabalho devam ser em cima do SlimCodeML
+ou do FastCodeML - seria contraprodutivo re-inventarmos a roda trabalhando em
+cima do codeml original, cuja base de código é mal organizada e ineficiente.
+Minha sugestão para os próximos passos é:
+
+1. Estudar a viabilidade de realizar a análise da Agnis no Slim e Fast codeml
+2. Perfilar as aplicações e identificar os gargalos
+3. Estudar a viabilidade de uma implementação para GPU das partes menos
+   eficientes, seja em cima do FastCodeML ou do SlimCodeML
+
+*** Notas completas
+
+O codeml implementa BFGS em ming3. Encontrei em [3] uma implementação para GPU.
+
+Buscando entender em mais detalhes a implementação do BFGS e demais métodos
+envolvidos no CodeML como Markov, encontrei em [4] um trabalho em cima
+do CodeML que produz um novo projeto chamado SlimCodeML, que mantém o mesmo
+formato de entrada e saída do codeml, mas substitui a implementação ingênua de
+métodos numéricos por aquela do BLAS e LAPACK, além de trazer otimizações e
+melhorias organizacionais diversas.
+
+Esse trabalho faz tudo que eu havia começado a fazer - substituir laços em
+tools.c por memcpy quando possível, substituir implementações ingênus por libs
+bem estabelecidas, etc - e muito mais.
+
+Encontrei então um segundo trabalho dos mesmos autores em [5], que produz o
+proejto FastCodeML, que mantém o modelo evolutivo original, mas altera
+fundamentalmente as estratégias empregadas a fim de remover dependências de
+dados, e paraleliza o cálculo com OpenMP e MPI. O código é completamente
+reescrito para isso, sendo muito mais organizado. Os arquivos de entrada são os
+mesmos, mas os parâmetros não, e o formato de saída é diferente.
+
+Criei uma imagem docker na máquina Thor1 (ubuntu-afarah-fastcodeml) contendo o
+codeml original, o SlimCodeML, o FastCodeML, todas libs necessárias para
+compilação de todos, bem como um script para perfilar cada um deles. Foi
+necessário adaptar o CMakeLists do SlimCodeML e instalar algumas libs somente,
+além de aprender o básico de docker.
+
+Acredito que os próximos passos desse trabalho devam ser em cima do SlimCodeML
+ou do FastCodeML - seria contraprodutivo re-inventarmos a roda trabalhando em
+cima do codeml original, cuja base de código é mal organizada e ineficiente.
+Eu jamais conseguiria fazer sozinho em um (ou dois) semestres as otimizações
+que múltiplos autores (doutores) fizeram ao longo de vários anos.  Minha
+sugestão para os próximos passos desse trabalho então é:
+
+1. Estudar a viabilidade de realizar a análise da Agnis no Slim e Fast codeml
+2. Perfilar as aplicações e identificar os gargalos
+3. Estudar a viabilidade de uma implementação para GPU das partes menos
+   eficientes, seja em cima do FastCodeML ou do SlimCodeML
+
+Para isso, já iniciei na Thor1 uma execução do SlimCodeML com os dados da
+Agnis, visto que ele aceita exatamente o mesmo input. Estou estudando como
+utilizar o FastCodeML para fazer a mesma análise da Agnis, mas talvez seja
+necessário conversarmos para entender melhor cada parâmetro e porventura
+conversar com os autores do FastCodeML para entender melhor a parametrização do
+software deles.
+
 * Referências
 
 [1] Yang 2000: Codon-Substitution Models for Detecting Molecular Adaptation at Individual Sites Along Specific Lineages
 https://academic.oup.com/mbe/article/19/6/908/1094851
 
 [2] Manual do PAML: http://abacus.gene.ucl.ac.uk/software/pamlDOC.pdf
+
+[3] Yun Fei 2014: Parallel L-BFGS-B Algorithm on GPU
+https://www.sciencedirect.com/science/article/abs/pii/S0097849314000119
+https://github.com/nepluno/lbfgsb-gpu
+
+[4] Mario Valle 2012: SlimCodeML: An Optimized Version of CodeML for the Branch-Site Model
+https://ieeexplore.ieee.org/document/6270710
+ftp://ftp.selectome.org/Tools/SlimCodeML/Slimcodeml_2014_02_11.zip
+
+[5] Mario Valle 2014: Optimization strategies for fast detection of positive selection on phylogenetic trees
+https://pubmed.ncbi.nlm.nih.gov/24389654/
+https://gitlab.sib.swiss/phylo/fastcodeml
+
 
 * Literatura interessante
 
