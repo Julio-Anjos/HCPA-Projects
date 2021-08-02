@@ -38,27 +38,34 @@ case $PROFILE_TYPE in
 esac
 
 #
-# Parallel / sequential Makefile params
+# Project to use
 #
-PARALLEL_TYPE="$3"
-case $PARALLEL_TYPE in
-  "CPNODE")
-    CFLAGS="$CFLAGS -fopenmp -DUSE_OMP -DUSE_OMP_CPNODE"
+# codeml - original from PAML
+# slim - SlimCodeML from selectome's FTP
+# fast - FastCodeML from gitlab
+#
+PROJECT="$3"
+case $PROJECT in
+  "codeml")
+    PATH_SRC="$(pwd)/../paml/src"
+    CMD_BUILD="make clean && make"
+    PATH_EXE="$PATH_SRC/codeml"
   ;;
 
- "PMATUV")
-    CFLAGS="$CFLAGS -fopenmp -DUSE_OMP -DUSE_OMP_PMATUV"
+ "slim")
+    PATH_SRC="$(pwd)/../slimcodeml"
+    CMD_BUILD="rm -rf b && mkdir b && cd b && cmake .. && make"
+    PATH_EXE="$PATH_SRC/b/slimcodeml"
   ;;
 
-  "ALL")
-    CFLAGS="$CFLAGS -fopenmp -DUSE_OMP -DUSE_OMP_CPNODE -DUSE_OMP_PMATUV"
-  ;;
-
-  "SEQ")
+  "fast")
+    PATH_SRC="$(pwd)/../fastcodeml"
+    CMD_BUILD="rm -rf b && mkdir b && cd b && cmake .. && make"
+    PATH_EXE="$PATH_SRC/b/fast"
   ;;
 
   *)
-    echo "Please choose parallel implementation to use"
+    echo "Please choose project to use"
     exit 1
   ;;
 esac
@@ -66,12 +73,6 @@ esac
 #
 # Path to PAML
 #
-PATH_PAML="$(pwd)/../paml"
-
-#
-# Path to source code
-#
-PATH_SRC="$PATH_PAML/src"
 
 #
 # Path to experiment data (sequence and tree files)
@@ -83,7 +84,7 @@ PATH_DATA="$(pwd)/../data/$NAME_DATA"
 # Run dirname 
 # This directory will be created within the data dir to store the run results 
 #
-PATH_RUN="$(pwd)/${NAME_DATA}_${PROFILE_TYPE}_$(date +'%d_%m_%y_%H%M%S')"
+PATH_RUN="$(pwd)/${NAME_DATA}_${PROJECT}_${PROFILE_TYPE}_$(date +'%d_%m_%y_%H%M%S')"
 
 #
 # codeml config file to use
@@ -113,13 +114,12 @@ git clean -ffx
 git status -s
 git diff -p
 git --no-pager log --pretty=oneline --max-count=1
-make clean
-make codeml "CFLAGS=$CFLAGS"
+eval "$CMD_BUILD"
 
 mkdir "$PATH_RUN"
 ln -s "$PATH_DATA"/* "$PATH_RUN/" 
 cd "$PATH_RUN"
-ln -s "$PATH_SRC/codeml"
+ln -s "$PATH_EXE" codeml
 
 ################################################################################
 #
