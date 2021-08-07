@@ -1546,6 +1546,406 @@ A ferramenta depende de outra de código aberto, HTSlib:
 
 Paper: https://doi.org/10.1093/gigascience/giab007
 Código: https://github.com/samtools/htslib
+
+O objetivo do estudo é realizar um teste chamado Population Branch
+Statistic (PBS) para determinar se a genética de uma população
+influencia em alguma característica específica, como o uso de uma
+língua tonal (em que a entonação das palavras muda seu significado).
+
+Para isso, utiliza-se uma comparação dos genomas chamada pairwise fst.
+
+Arquivo .BAM é uma versão binária do arquivo SAM - sequence alignment
+map.
+
+A entrada do programa consiste de vários arquivos. No caso de uso aqui
+são três pop1.filelist ao pop3.filelist listando nossas entradas BAM,
+e um arquivo chamado =GRCh38_full_analysis_set_plus_decoy_hla.fa= que
+é público e necessário à análise:
+
+#+BEGIN_EXAMPLE
+./angsd -bam pop1.filelist -doSaf 1 -out pop1 -anc
+GRCh38_full_analysis_set_plus_decoy.fa -GL 2 -P 4 -minMapQ 1 -minQ 20
+$ ./angsd -bam pop2.filelist -doSaf 1 -out pop2 -anc
+GRCh38_full_analysis_set_plus_decoy.fa -GL 2 -P 4 -minMapQ 1 -minQ 20
+$ ./angsd -bam pop3.filelist -doSaf 1 -out pop3 -anc
+GRCh38_full_analysis_set_plus_decoy.fa -GL 2 -P 4 -minMapQ 1 -minQ 20
+#+END_EXAMPLE
+
+Essa etapa leva cerca de um dia para cada arquivo e porventura gera
+problemas com uso de memória.
+
+Na próxima etapa do pipeline é utilizada uma outra ferramenta contida
+no angsd, chamada realSFS (dentro da pasta misc/, gerado pelo make
+normal), o input sendo os arquivos da etapa anterior.
+
+Wiki: http://www.popgen.dk/angsd/index.php/SFS_Estimation
+Método numérico: http://www.popgen.dk/angsd/index.php/RealSFSmethod
+Paper: https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0037558
+
+Essa etapa nunca é finalizada por uso de memória excessivo, mas
+estima-se que leva mais de um dia para execução.
+
+#+BEGIN_EXAMPLE
+$ ./misc/realSFS pop1.saf.idx pop2.saf.idx -P 12 > pop1.pop2.ml
+$ ./misc/realSFS pop1.saf.idx pop3.saf.idx -P 12 > pop1.pop3.ml
+$ ./misc/realSFS pop2.saf.idx pop3.saf.idx -P 12 > pop2.pop3.ml
+#+END_EXAMPLE
+
+Nessa etapa o realSFS.cpp roda =main_opt<float>(arg)=.
+
+As demais etapas usam o realSFS mas não foram testadas devido ao
+problema de memória.
+
+#+BEGIN_EXAMPLE
+$ ./misc/realSFS fst index pop1.saf.idx pop2.saf.idx pop3.saf.idx
+-fstout pop1.pop2.pop3 -sfs pop1.pop2.ml -sfs pop1.pop3.ml -sfs
+pop2.pop3.ml
+#+END_EXAMPLE
+
+#+BEGIN_EXAMPLE
+$ ./misc/realSFS fst stats2 pop1.pop2.pop3.fst.idx -win 50000 -step
+10000 >SlidingWindowBackground
+#+END_EXAMPLE
+
+Agnis comentou que seria necessário cerca de 1TB de espaço para
+armazenar os dados de entrada. No meu computador pessoal não tenho nem
+perto disso disponível. Na Thor1 tem 390GB:
+
+#+BEGIN_EXAMPLE
+gppd1@THOR-01:~$ df -h
+Filesystem      Size  Used Avail Use% Mounted on
+udev             32G     0   32G   0% /dev
+tmpfs           6,3G  1,9M  6,3G   1% /run
+/dev/sda2       457G   44G  391G  11% /
+tmpfs            32G     0   32G   0% /dev/shm
+tmpfs           5,0M  4,0K  5,0M   1% /run/lock
+tmpfs            32G     0   32G   0% /sys/fs/cgroup
+/dev/loop0      100M  100M     0 100% /snap/core/11316
+/dev/loop2       56M   56M     0 100% /snap/core18/2066
+/dev/loop3       56M   56M     0 100% /snap/core18/2074
+/dev/loop4       62M   62M     0 100% /snap/core20/1026
+/dev/loop5       62M   62M     0 100% /snap/core20/1081
+/dev/loop6      163M  163M     0 100% /snap/gnome-3-28-1804/145
+/dev/loop7      165M  165M     0 100% /snap/gnome-3-28-1804/161
+/dev/loop8      219M  219M     0 100% /snap/gnome-3-34-1804/66
+/dev/loop9      219M  219M     0 100% /snap/gnome-3-34-1804/72
+/dev/loop10     244M  244M     0 100% /snap/gnome-3-38-2004/39
+/dev/loop11     2,5M  2,5M     0 100% /snap/gnome-system-monitor/160
+/dev/loop12     2,5M  2,5M     0 100% /snap/gnome-system-monitor/163
+/dev/loop13      65M   65M     0 100% /snap/gtk-common-themes/1514
+/dev/loop14      66M   66M     0 100% /snap/gtk-common-themes/1515
+/dev/loop15      51M   51M     0 100% /snap/snap-store/542
+/dev/loop16      51M   51M     0 100% /snap/snap-store/547
+/dev/sda1       511M  7,9M  504M   2% /boot/efi
+tmpfs           6,3G   20K  6,3G   1% /run/user/121
+/dev/loop17     100M  100M     0 100% /snap/core/11420
+tmpfs           6,3G  4,0K  6,3G   1% /run/user/1001
+#+END_EXAMPLE
+
+No scratch da beagle tem 705GB e no NFS tem 6.2TB:
+
+#+BEGIN_EXAMPLE
+afarah@beagle:~$ df -h
+Filesystem          Size  Used Avail Use% Mounted on
+udev                 16G     0   16G   0% /dev
+tmpfs               3.2G  322M  2.9G  11% /run
+/dev/sda1            92G  9.0G   78G  11% /
+tmpfs                16G     0   16G   0% /dev/shm
+tmpfs               5.0M     0  5.0M   0% /run/lock
+tmpfs                16G     0   16G   0% /sys/fs/cgroup
+/dev/sda6           822G   76G  705G  10% /scratch
+192.168.30.2:/home   22T   16T  6.2T  72% /home
+tmpfs               3.2G     0  3.2G   0% /run/user/1127
+#+END_EXAMPLE
+
+Julio irá criar uma conta na CEI para mim onde há 300TB, na segunda.
+
+O realSFS implementa BFGS também! Parece ser uma adaptação deste:
+http://users.iems.northwestern.edu/~nocedal/lbfgsb.html. Supostamente é thread-safe:
+
+#+BEGIN_EXAMPLE
+/*
+  mod by thorfinn@binf.ku.dk 7 nov 2011.
+
+  The code looks like fortran 2 c translated program of v 2.1
+  http://users.eecs.northwestern.edu/~nocedal/lbfgsb.html
+
+  1) Fixed a bug concerning non-consistency in the optimized parameters (accecing noninitialized values)
+  2) Is now thread safe. (removed local static variables)
+  3) Added a "data" paramater to the findmax_bfgs, such that global variables can be avoided
+  4) modified code such that it is c and c++ compilable.
+ */
+#+END_EXAMPLE
+
+Mas na verdade somente em uma versão antiga... O otimizador atualmente
+utilizado parece ser "Electromagnetism-like Mechanism".
+
+#+BEGIN_EXAMPLE
+We can find the MLE of the SFS by using either an BFGS approach that
+uses derivatives or by using en EM algorithm. Both is implemented in
+the realSFS program.
+#+END_EXAMPLE
+
+#+BEGIN_EXAMPLE
+afarah@gentoopc ~/tcc/alef/angsd $ fgrep -re findmax_bfgs
+misc/fpsmc.cpp:  double max_llh = findmax_bfgs(tk_l,pars,(void *)&data,qFunction,NULL,lbd,ubd,nbd,1);
+misc/realSFS.old.cpp:    fnmax= findmax_bfgs( dim-1, p,NULL, lik1_bfgs, lik1_grad_bfgs_master, min, max, nbd, noisy );  
+misc/realSFS.old.cpp:    fnmax= findmax_bfgs( dim-1, p,NULL, lik1_bfgs,NULL, min, max, nbd, noisy );  
+bfgs.h:  3) Added a "data" paramater to the findmax_bfgs, such that global variables can be avoided
+bfgs.h:double findmax_bfgs(int numpars, double *invec,const void*dats, double (*fun)(const double x[],const void*),
+bfgs.cpp:double findmax_bfgs(int numpars, double *invec,const void*dats, double (*fun)(const double x[],const void*),
+grep: .bfgs.cpp.swp: binary file matches
+abcError.cpp:  double res=findmax_bfgs(12,start,(void *)es,likeFixedMinorError_wrapper_tsk,NULL,lbound,ubound,lims,-1);
+afarah@gentoopc ~/tcc/alef/angsd/misc $ grep -rPe '\bem\('
+ngsPSMC.cpp:double em(double &x,double *gls,int nSites,double tol){
+ngsPSMC.cpp:  double llh = em(opt,gls,at,1e-8);
+realSFS_optim.cpp:double em(double *sfs,double tole,int maxIter,int nThreads,int dim,std::vector<Matrix<T> *> &gls,int verbose){
+ngsadmix32.cpp:void em(double** Q, double** F, int nSites, int nInd, int K,double **genos,double **F_1,double **Q_1) {
+ngsadmix32.cpp:  em(Q, F, d.nSites, d.nInd, nPop,d.genos,F_em1,Q_em1);
+ngsadmix32.cpp:  em(Q_em1, F_em1, d.nSites, d.nInd, nPop,d.genos,F_em2,Q_em2);
+ngsadmix32.cpp:    em(*Q_new, *F_new, d.nSites, d.nInd, nPop,d.genos,F_tmp,Q_tmp);
+ngsadmix32.cpp: em(Q, F, d.nSites, d.nInd, nPop,d.genos,F_new,Q_new);
+ngsadmix32.cpp:    em(NULL, NULL, 0, 0, 0,NULL,NULL,NULL);
+#+END_EXAMPLE
+
+=main_opt=, que vimos acima é o que roda quando chamado com os params da Agnis, chama o em:
+
+#+BEGIN_EXAMPLE
+      if(arg->emAccl==0)
+	lik = em<float>(sfs,arg->tole,arg->maxIter,arg->nThreads,ndim,gls,arg->verbose);
+      else
+	lik = emAccl<float>(sfs,arg->tole,arg->maxIter,arg->nThreads,ndim,gls,arg->emAccl,arg->verbose);
+#+END_EXAMPLE
+
+Que por sua vez usa pthreads:
+
+#+BEGIN_EXAMPLE
+template<typename T>
+void emStep_master(double *post,int nThreads){
+  for(size_t i=0;i<nThreads;i++){
+    int rc = pthread_create(&thd[i],NULL,emStep_slave<T>,(void*) i);
+    if(rc)
+      fprintf(stderr,"Error creating thread\n");
+    
+  }
+  for(int i=0;i<nThreads;i++)
+    pthread_join(thd[i], NULL);
+    
+  memcpy(post,emp[0].post,emp[0].dim*sizeof(double));
+  for(int i=1;i<nThreads;i++){
+    for(int j=0;j<emp[0].dim;j++)
+      post[j] += emp[i].post[j];
+  }
+  
+  for(int j=0;j<emp[0].dim;j++)
+    if(bootnSites)
+      post[j] /= double(bootnSites);
+    else
+      post[j] /= double(emp[0].gls[0]->x);//nspope; rescale *after* threads have merged
+
+#if 0
+  for(int i=0;i<nThreads;i++){
+    for(int j=0;j<dim;j++)
+      fprintf(stdout,"%f ",emp[i].post[j]);
+    fprintf(stdout,"\n");
+  }
+#endif
+  
+}
+#+END_EXAMPLE
+
+#+BEGIN_EXAMPLE
+template <typename T>
+void *emStep_slave(void *p){
+  emPars<T> &pars = emp[(size_t) p];
+  if(pars.gls.size()==1)
+    emStep1<T>(pars.sfs,pars.gls,pars.post,pars.from,pars.to,pars.dim,pars.inner);
+  else if(pars.gls.size()==2)
+    emStep2<T>(pars.sfs,pars.gls,pars.post,pars.from,pars.to,pars.dim,pars.inner);
+  else if(pars.gls.size()==3)
+    emStep3<T>(pars.sfs,pars.gls,pars.post,pars.from,pars.to,pars.dim,pars.inner);
+  else if(pars.gls.size()==4)
+    emStep4<T>(pars.sfs,pars.gls,pars.post,pars.from,pars.to,pars.dim,pars.inner);
+  pthread_exit(NULL);
+}
+#+END_EXAMPLE
+
+#+BEGIN_EXAMPLE
+template <typename T>
+void emStep1(double *pre,std::vector< Matrix<T> * > &gls,double *post,size_t start,size_t stop,int dim,double *inner){
+  for(int x=0;x<dim;x++)
+    post[x] =0.0;
+    
+  for(size_t s=start;SIG_COND&&s<stop;s++){
+    if(bootstrap==NULL){
+      for(int i=0;i<dim;i++)
+	inner[i] =0;
+      for(int x=0;x<dim;x++)
+	inner[foldremapper[x]] += pre[foldremapper[x]]*gls[0]->mat[s][x]*foldfactors[x];
+    }else{
+      for(int i=0;i<dim;i++)
+	inner[i] =0;
+      for(int x=0;x<dim;x++)
+	inner[foldremapper[x]] += pre[foldremapper[x]]*gls[0]->mat[bootstrap[s]][x]*foldfactors[x];
+    }
+   normalize(inner,dim);
+   for(int x=0;x<dim;x++)
+     post[x] += inner[x];
+  }
+ 
+}
+
+
+template <typename T>
+void emStep2(double *pre,std::vector<Matrix<T> *> &gls,double *post,size_t start,size_t stop,int dim,double *inner){
+  for(int x=0;x<dim;x++)
+    post[x] =0.0;
+   
+  if(bootstrap==NULL)
+    for(size_t s=start;SIG_COND&&s<stop;s++){
+      int inc=0;
+      for(int i=0;i<dim;i++)
+	inner[i] =0;
+      for(size_t x=0;x<gls[0]->y;x++)
+	for(size_t y=0;y<gls[1]->y;y++){
+	  inner[foldremapper[inc]] += pre[foldremapper[inc]]*gls[0]->mat[s][x]*gls[1]->mat[s][y]*foldfactors[inc];
+	  assert(!std::isnan(inner[foldremapper[inc]]));
+	  inc++;
+	}
+      normalize(inner,dim);
+      for(int x=0;x<dim;x++)
+	post[x] += inner[x];
+    }
+  else
+    for(size_t s=start;SIG_COND&&s<stop;s++){
+      int inc=0;
+      for(int i=0;i<dim;i++)
+	inner[i] =0;
+      for(size_t x=0;x<gls[0]->y;x++)
+	for(size_t y=0;y<gls[1]->y;y++){
+	  inner[foldremapper[inc]] += pre[foldremapper[inc]]*gls[0]->mat[bootstrap[s]][x]*gls[1]->mat[bootstrap[s]][y]*foldfactors[inc];
+	  inc++;
+	}
+      normalize(inner,dim);
+      for(int x=0;x<dim;x++)
+	post[x] += inner[x];
+    }
+
+ 
+}
+
+template <typename T>
+void emStep3(double *pre,std::vector<Matrix<T> *> &gls,double *post,size_t start,size_t stop,int dim,double *inner){
+  for(int x=0;x<dim;x++)
+    post[x] =0.0;
+  if(bootstrap==NULL)
+  for(size_t s=start;SIG_COND&&s<stop;s++){
+    int inc=0;
+    for(size_t x=0;x<gls[0]->y;x++)
+      for(size_t y=0;y<gls[1]->y;y++)
+	for(size_t i=0;i<gls[2]->y;i++){
+	  inner[inc] = pre[inc]*gls[0]->mat[s][x] * gls[1]->mat[s][y] * gls[2]->mat[s][i];
+	  inc++;
+	}
+   normalize(inner,dim);
+   for(int x=0;x<dim;x++)
+     post[x] += inner[x];
+  }
+  else
+  for(size_t s=start;SIG_COND&&s<stop;s++){
+    int inc=0;
+    for(size_t x=0;x<gls[0]->y;x++)
+      for(size_t y=0;y<gls[1]->y;y++)
+	for(size_t i=0;i<gls[2]->y;i++){
+	  inner[inc] = pre[inc]*gls[0]->mat[bootstrap[s]][x] * gls[1]->mat[bootstrap[s]][y] * gls[2]->mat[bootstrap[s]][i];
+	  inc++;
+	}
+   normalize(inner,dim);
+   for(int x=0;x<dim;x++)
+     post[x] += inner[x];
+  }
+   
+}
+
+template <typename T>
+void emStep4(double *pre,std::vector<Matrix<T> *> &gls,double *post,size_t start,size_t stop,int dim,double *inner){
+
+  for(int x=0;x<dim;x++)
+    post[x] =0.0;
+  if(bootstrap==NULL){
+    for(size_t s=start;SIG_COND&&s<stop;s++){
+      int inc=0;
+      for(size_t x=0;x<gls[0]->y;x++)
+	for(size_t y=0;y<gls[1]->y;y++)
+	  for(size_t i=0;i<gls[2]->y;i++)
+	    for(size_t j=0;j<gls[3]->y;j++){
+	      inner[inc] = pre[inc]*gls[0]->mat[s][x] * gls[1]->mat[s][y] * gls[2]->mat[s][i]* gls[3]->mat[s][j];
+	      inc++;
+	    }
+      normalize(inner,dim);//nspope; normalization/addition should happen for each site
+      for(int x=0;x<dim;x++)
+        post[x] += inner[x];
+    }
+  }
+  else{
+    for(size_t s=start;SIG_COND&&s<stop;s++){
+      int inc=0;
+      for(size_t x=0;x<gls[0]->y;x++)
+	for(size_t y=0;y<gls[1]->y;y++)
+	  for(size_t i=0;i<gls[2]->y;i++)
+	    for(size_t j=0;j<gls[3]->y;j++){
+	      inner[inc] = pre[inc]*gls[0]->mat[bootstrap[s]][x] * gls[1]->mat[bootstrap[s]][y] * gls[2]->mat[bootstrap[s]][i]* gls[3]->mat[bootstrap[s]][j];
+	      inc++;
+	    }
+    normalize(inner,dim);//nspope; normalization/addition should happen for each site
+    for(int x=0;x<dim;x++)
+      post[x] += inner[x];
+    }
+  }
+   
+}
+#+END_EXAMPLE
+
+Uma função para ficar de olho (talvez possa ser re-aproveitado o
+resultado de chamada anterior), de header.cpp:
+
+#+BEGIN_EXAMPLE
+void normalize(double *tmp,size_t len){
+  double s=0;
+  for(size_t i=0;i<len;i++)
+    s += tmp[i];
+  for(size_t i=0;i<len;i++)
+    tmp[i] /=s;
+}
+#+END_EXAMPLE
+
+Um trecho relevante relativo a alocação de memória é no main_opt de
+realSFS_optim.cpp:
+
+#+BEGIN_EXAMPLE
+  std::vector<persaf *> &saf =arg->saf;
+  for(int i=0;i<saf.size();i++)
+    assert(saf[i]->pos!=NULL&&saf[i]->saf!=NULL);
+  size_t nSites = arg->nSites;
+  if(nSites == 0){//if no -nSites is specified
+    nSites=calc_nsites(saf,arg);
+  }
+  if(fsizes<T>(saf,nSites)>getTotalSystemMemory())
+    fprintf(stderr,"\t-> Looks like you will allocate too much memory, consider starting the program with a lower -nSites argument\n"); 
+    
+  fprintf(stderr,"\t-> nSites: %lu\n",nSites);
+  float bytes_req_megs =(float) fsizes<T>(saf,nSites)/1024/1024;
+  float mem_avail_megs =(float) getTotalSystemMemory()/1024/1024;//in percentile
+  //fprintf(stderr,"en:%zu to:%f\n",bytes_req_megs,mem_avail_megs);
+  fprintf(stderr,"\t-> The choice of -nSites will require atleast: %f megabyte memory, that is at least: %.2f%% of total memory\n",bytes_req_megs,bytes_req_megs*100/mem_avail_megs);
+#+END_EXAMPLE
+
+Papers a respeito do EM:
+
+https://ieeexplore.ieee.org/document/5636954/
+https://link.springer.com/article/10.1023/A:1022452626305
+https://www.sciencedirect.com/science/article/pii/S1532046415000192o
+www.academia.edu/download/30818603/pub2.pdf / https://github.com/mkozturk/em-optimizer
      
 * Referências
 
