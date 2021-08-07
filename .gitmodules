@@ -10,3 +10,6 @@
 [submodule "alef/angsd"]
 	path = alef/angsd
 	url = https://github.com/ANGSD/angsd
+[submodule "alef/htslib"]
+	path = alef/htslib
+	url = https://github.com/samtools/htslib

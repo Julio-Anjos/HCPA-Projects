@@ -1541,6 +1541,11 @@ Mais links do software:
 Paper: https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-014-0356-4
 Código: https://github.com/ANGSD/angsd
 Wiki: http://www.popgen.dk/angsd/index.php/ANGSD
+
+A ferramenta depende de outra de código aberto, HTSlib:
+
+Paper: https://doi.org/10.1093/gigascience/giab007
+Código: https://github.com/samtools/htslib
      
 * Referências
 
