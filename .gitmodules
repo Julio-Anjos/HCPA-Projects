@@ -7,3 +7,6 @@
 [submodule "alef/slimcodeml"]
 	path = alef/slimcodeml
 	url = https://github.com/afarah1/slimcodeml.git
+[submodule "alef/angsd"]
+	path = alef/angsd
+	url = https://github.com/ANGSD/angsd

@@ -1474,7 +1474,7 @@ Minha sugestão para os próximos passos é:
 3. Estudar a viabilidade de uma implementação para GPU das partes menos
    eficientes, seja em cima do FastCodeML ou do SlimCodeML
 
-*** Notas completas
+**** Notas completas
 
 O codeml implementa BFGS em ming3. Encontrei em [3] uma implementação para GPU.
 
@@ -1521,6 +1521,27 @@ necessário conversarmos para entender melhor cada parâmetro e porventura
 conversar com os autores do FastCodeML para entender melhor a parametrização do
 software deles.
 
+
+** Agosto
+*** Semana 1
+**** Resumo executivo
+**** Notas completas
+
+Em reunião com Geyer e Julio optamos por focar o trabalho na redução
+do uso de memória de outro software utilizado no pipeline de análise
+genética empregado no mestrado da Agnis, o esforço para paralelizar em
+GPU a implementação do BFGS do slimcodeml sendo grande demais e os
+resultados incertos demais para o tamanho dos dados.
+
+O software em questão é o ANGSD. Link do drive fornecido pelo Julio:
+https://drive.google.com/drive/folders/138CKIh88pqT7TihLaUPn8bJlua5WlSsi
+
+Mais links do software:
+
+Paper: https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-014-0356-4
+Código: https://github.com/ANGSD/angsd
+Wiki: http://www.popgen.dk/angsd/index.php/ANGSD
+     
 * Referências
 
 [1] Yang 2000: Codon-Substitution Models for Detecting Molecular Adaptation at Individual Sites Along Specific Lineages
