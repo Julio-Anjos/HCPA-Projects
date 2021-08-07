@@ -2013,7 +2013,83 @@ A Agnis ficou de disponibilizar possivelmente até segunda um
 fluxograma do pipeline de análise completo. Acredito que a
 contribuição maior desse trabalho seja a melhoria desse pipeline, e
 por isso acho importante termos essa visão.
+
+Agnis compartilhou comigo um arquivo .py (agnis/pipeline.py) não
+completamente testado que usa o samtools para produzir o vcf.
      
+***** Estudo do samtools
+
+https://en.wikipedia.org/wiki/SAMtools      
+
+A HTSlib usada pelo ANGSD é basicamente uma API do SAMTools.
+
+BCFTools é parte do SAMTools.
+
+http://www.htslib.org/
+
+Atualmente SAM e BCF usam o HTS internamente.
+
+https://pubmed.ncbi.nlm.nih.gov/33590861/
+
+https://en.wikipedia.org/wiki/Variant_Call_Format
+
+Interessante do artigo acima:
+
+#+BEGIN_EXAMPLE
+In particular, there is rarely any need to convert SAM to BAM using
+“samtools view -b” be- fore running commands like “samtools sort,”
+although regret- tably this idiom still appears in a large number of
+online tutori- als. We encourage readers to follow best practices and
+workflows published at [12].
+#+END_EXAMPLE
+
+https://www.htslib.org/workflow/
+
+Estou vendo com a Agnis como isso se encaixa no workflow dela. Outros pontos de interesse:
+
+#+BEGIN_EXAMPLE
+Thread support first arrived in version 0.1.19 (March 2013), which
+enabled them for sorting and BAM file writing in the view command.
+
+...
+
+However, extremely big files are produced by large projects and their
+processing requires a high degree of par- allelization on computing
+clusters. Future versions of SAMtools and BCFtools are expected to
+make more use of threaded code to allow faster processing of such
+files.
+#+END_EXAMPLE
+
+Esse artigo é de 2021.
+
+Em suma, o script da Agnis chama:
+
+#+BEGIN_EXAMPLE
+BAM=arquivo.bam
+FA=arquivo.fa
+samtools view -b -T $FA $BAM 
+if $(samtools view -h $BAM | grep coordinate)
+then
+  samtools sort -o $BAM.sorted $BAM 
+  BAM=$BAM.sorted
+fi
+samtools index $BAM
+for i in {1..23}
+do
+  OUT=chr$i
+  samtools view -b $BAM chr $i >$OUT.bam
+  samtools index $OUT.bam
+  # ???  samtools merge 
+  bcftools mpileup -O -b -o $OUT.bcf -f $FA $OUT.bam
+  bcftools call -m -u -o call $OUT.bcf $OUT.BCF # ????
+  bcftools view call $OUT.bcf | vcfutils.pl varFilter - > final$OUT.vcf # ????
+done
+#+END_EXAMPLE
+
+Uma ideia então é trabalhar com um único .bam e testar ambos fluxos,
+pelo samtools e pelo angsd, avaliando tanto melhorias de workflow como
+melhorias de código via perfilamento.
+
 * Referências
 
 [1] Yang 2000: Codon-Substitution Models for Detecting Molecular Adaptation at Individual Sites Along Specific Lineages
