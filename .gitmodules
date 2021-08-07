@@ -13,3 +13,9 @@
 [submodule "alef/htslib"]
 	path = alef/htslib
 	url = https://github.com/samtools/htslib
+[submodule "alef/samtools"]
+	path = alef/samtools
+	url = https://github.com/samtools/samtools.git
+[submodule "alef/bcftools"]
+	path = alef/bcftools
+	url = https://github.com/samtools/bcftools.git
