@@ -1946,6 +1946,65 @@ https://ieeexplore.ieee.org/document/5636954/
 https://link.springer.com/article/10.1023/A:1022452626305
 https://www.sciencedirect.com/science/article/pii/S1532046415000192o
 www.academia.edu/download/30818603/pub2.pdf / https://github.com/mkozturk/em-optimizer
+
+Assim que conseguir os dados de entrada com a Agnis pretendo neste fim
+de semana rodar o angsd e o realSFS em uma das entradas para
+determinar o tempo total de execução de cada um na Thor. Após isso,
+pretendo perfilar o realSFS com massif gerando uma xtree para
+visualização no kcachegrind:
+
+https://valgrind.org/docs/manual/ms-manual.html
+
+Caso a Agnis já tenha os dados de entrada do realSFS seria melhor para
+mim pois acelera o processo.
+
+Pelo que li limitar o número de sites e outros parâmetros que poderiam
+reduzir a alocação de memória reduzem também a acurácia do resultado:
+
+http://www.popgen.dk/angsd/index.php/RealSFS
+
+Talvez rodar com menos threads ajude, mas tem que considerar o impacto
+de performance daí.
+
+Há várias issues relatando segfaults e outros problemas, mas a maioria
+no angsd em si e não no realSFS:
+
+https://github.com/ANGSD/angsd/issues
+
+Em reunião com a Agnis, ela explicou que antes do pipeline de análise
+descrito no drive é preciso obter e tratar alguns arquivos para
+entrada. Nomeadamente, ela está obtendo arquivos com o genoma da
+população do Vietnam, Camboja, e França, p.e. de 6 indivíduos de cada
+país, do internationalgenome.org. São os arquivos .cram. Então,
+converte para .bam usando um software chamado samtools e um genoma de
+referência GRCh38, obtido do ftp do 1000genomes.ebi.ac.uk, o arquivo
+.fa:
+
+1. Baixar os .cram (p.e. 6 para cada uma das 3 pops)
+2. Converter para .bam usando o samtools e o genoma de ref. GRCh38 .fa
+3. Começa a usar o angsd cf. pipeline descrito no drive.
+
+Ela explicou também que há uma via de análise alternativa ao uso do
+angsd, mas que é bem demorada, que é transformar o .bam em um .vcf
+usando o samtools e bcftools para análise posterior usando R.
+
+O comando do samtools para converter os .cram para .bam é:
+
+#+BEGIN_EXAMPLE
+samtools view -b -T <refgenome.fa> -o <file.bam> <file.cram>
+#+END_EXAMPLE
+
+Depois disso é preciso outro comando para filtrar:
+
+#+BEGIN_EXAMPLE
+samtools view -b cal1.bam chr{1..22} >cal-sub-1.bam
+samtools view -b input.bam chr{1..22} >file.bam
+#+END_EXAMPLE
+
+A Agnis ficou de disponibilizar possivelmente até segunda um
+fluxograma do pipeline de análise completo. Acredito que a
+contribuição maior desse trabalho seja a melhoria desse pipeline, e
+por isso acho importante termos essa visão.
      
 * Referências
 
