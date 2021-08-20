@@ -1,0 +1,107 @@
+Expected input: ./run_profile.sh view_region (bam|cram) index region
+Get input...
+Validate input...
+/home/afarah/HPCA-Projects/alef/profiling/samtools/../../samtools
+-rw-rw-r-- 1 afarah afarah 56264599698 Aug 17 02:07 /home/afarah/HPCA-Projects/alef/profiling/samtools/16_08_21_232806/out.bam
+-rw-rw-r-- 1 afarah afarah 9564488 Aug 17 21:19 /home/afarah/HPCA-Projects/alef/profiling/samtools/index_17_08_21_210702/out.bam.bai
+Build samtools...
+b188dd833fef02a8f5479d62e605e009cd5eb5a5 Add error checking on samtools depth output file close.
+No local changes to save
+rm -f test/*.new test/*.tmp test/*/*.new test/*/*.tmp test/*/*.tmp.*
+cd test/dat && rm -f test_input_*.bam.bai
+cd test/mpileup && rm -f FAIL-*.out* PASS-*.out* anomalous.[bc]*am indels.[bc]*am mpileup.*.[cs]*am mpileup.*.crai overlap50.[bc]*am expected/1.out xx#depth*.bam*
+rm -f *.o misc/*.o test/*.o test/*/*.o version.h ./lz4/lz4.o
+rm -f samtools libbam.a libst.a misc/ace2sam misc/maq2sam-long misc/maq2sam-short misc/md5fa misc/md5sum-lite misc/wgsim test/merge/test_bam_translate test/merge/test_rtrans_build test/merge/test_trans_tbl_init test/split/test_count_rg test/split/test_expand_format_string test/split/test_filter_header_rg test/split/test_parse_args test/vcf-miniview
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bam_index.o bam_index.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bam_plcmd.o bam_plcmd.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o sam_view.o sam_view.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bam_fastq.o bam_fastq.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bam_cat.o bam_cat.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bam_md.o bam_md.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bam_reheader.o bam_reheader.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bam_sort.o bam_sort.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bam_rmdup.o bam_rmdup.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bam_rmdupse.o bam_rmdupse.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bam_mate.o bam_mate.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bam_stat.o bam_stat.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bam_color.o bam_color.c
+echo '#define SAMTOOLS_VERSION "1.13-5-gb188dd8"' > version.h
+echo '#define SAMTOOLS_CC "gcc"' >> version.h
+echo '#define SAMTOOLS_CPPFLAGS ""' >> version.h
+echo '#define SAMTOOLS_CFLAGS "-g -Wall -O2"' >> version.h
+echo '#define SAMTOOLS_LDFLAGS ""' >> version.h
+echo '#define SAMTOOLS_HTSDIR "../htslib"' >> version.h
+echo '#define SAMTOOLS_LIBS ""' >> version.h
+echo '#define SAMTOOLS_CURSES_LIB "-lcurses"' >> version.h
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bam2bcf.o bam2bcf.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bam2bcf_indel.o bam2bcf_indel.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o sample.o sample.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o cut_target.o cut_target.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o phase.o phase.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bam2depth.o bam2depth.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o coverage.o coverage.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o padding.o padding.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bedcov.o bedcov.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bamshuf.o bamshuf.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o faidx.o faidx.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o dict.o dict.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o stats.o stats.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o stats_isize.o stats_isize.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bam_flags.o bam_flags.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bam_split.o bam_split.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bam_tview.o bam_tview.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bam_tview_curses.o bam_tview_curses.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bam_tview_html.o bam_tview_html.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bam_lpileup.o bam_lpileup.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bam_quickcheck.o bam_quickcheck.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bam_addrprg.o bam_addrprg.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bam_markdup.o bam_markdup.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o tmp_file.o tmp_file.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bam_ampliconclip.o bam_ampliconclip.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o amplicon_stats.o amplicon_stats.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bam_import.o bam_import.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o lz4/lz4.o lz4/lz4.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bam_aux.o bam_aux.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bam.o bam.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o sam.o sam.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bam_plbuf.o bam_plbuf.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o sam_opts.o sam_opts.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o sam_utils.o sam_utils.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bedidx.o bedidx.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o misc/ace2sam.o misc/ace2sam.c
+gcc -g -Wall -O2 -DMAQ_LONGREADS -I. -I../htslib -I./lz4  -c -o misc/maq2sam-long.o misc/maq2sam.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o misc/maq2sam-short.o misc/maq2sam.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o misc/md5fa.o misc/md5fa.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o misc/md5sum-lite.o misc/md5sum-lite.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o misc/wgsim.o misc/wgsim.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o test/merge/test_bam_translate.o test/merge/test_bam_translate.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o test/test.o test/test.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o test/merge/test_rtrans_build.o test/merge/test_rtrans_build.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o test/merge/test_trans_tbl_init.o test/merge/test_trans_tbl_init.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o test/split/test_count_rg.o test/split/test_count_rg.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o test/split/test_expand_format_string.o test/split/test_expand_format_string.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o test/split/test_filter_header_rg.o test/split/test_filter_header_rg.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o test/split/test_parse_args.o test/split/test_parse_args.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o test/vcf-miniview.o test/vcf-miniview.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bamtk.o bamtk.c
+ar -csru libbam.a bam_aux.o bam.o sam.o bam_plbuf.o
+ar -rcs libst.a sam_opts.o sam_utils.o bedidx.o
+gcc  -L./lz4  -o misc/ace2sam misc/ace2sam.o ../htslib/libhts.a -lz -lm -lbz2 -llzma -lcurl -lz 
+gcc  -o misc/maq2sam-long misc/maq2sam-long.o -lz 
+gcc  -o misc/maq2sam-short misc/maq2sam-short.o -lz 
+gcc  -L./lz4  -o misc/md5fa misc/md5fa.o ../htslib/libhts.a -lz -lm -lbz2 -llzma -lcurl -lz 
+gcc  -L./lz4  -o misc/md5sum-lite misc/md5sum-lite.o ../htslib/libhts.a -lz -lm -lbz2 -llzma -lcurl -lz 
+gcc  -L./lz4  -o misc/wgsim misc/wgsim.o -lm ../htslib/libhts.a -lz -lm -lbz2 -llzma -lcurl -lz 
+gcc  -L./lz4  -o test/split/test_count_rg test/split/test_count_rg.o test/test.o libst.a ../htslib/libhts.a -lz -lm -lbz2 -llzma -lcurl -lz  -lpthread
+gcc  -L./lz4  -o test/split/test_expand_format_string test/split/test_expand_format_string.o test/test.o libst.a ../htslib/libhts.a -lz -lm -lbz2 -llzma -lcurl -lz  -lpthread
+gcc  -L./lz4  -o test/split/test_filter_header_rg test/split/test_filter_header_rg.o test/test.o libst.a ../htslib/libhts.a -lz -lm -lbz2 -llzma -lcurl -lz  -lpthread
+gcc  -L./lz4  -o test/split/test_parse_args test/split/test_parse_args.o test/test.o libst.a ../htslib/libhts.a -lz -lm -lbz2 -llzma -lcurl -lz  -lpthread
+gcc  -L./lz4  -o test/vcf-miniview test/vcf-miniview.o ../htslib/libhts.a -lz -lm -lbz2 -llzma -lcurl -lz  -lpthread
+gcc  -L./lz4  -o samtools bam_index.o bam_plcmd.o sam_view.o bam_fastq.o bam_cat.o bam_md.o bam_reheader.o bam_sort.o bam_rmdup.o bam_rmdupse.o bam_mate.o bam_stat.o bam_color.o bamtk.o bam2bcf.o bam2bcf_indel.o sample.o cut_target.o phase.o bam2depth.o coverage.o padding.o bedcov.o bamshuf.o faidx.o dict.o stats.o stats_isize.o bam_flags.o bam_split.o bam_tview.o bam_tview_curses.o bam_tview_html.o bam_lpileup.o bam_quickcheck.o bam_addrprg.o bam_markdup.o tmp_file.o bam_ampliconclip.o amplicon_stats.o bam_import.o ./lz4/lz4.o libbam.a libst.a ../htslib/libhts.a -lz -lm -lbz2 -llzma -lcurl -lcurses -lm -lz  -lpthread
+gcc  -L./lz4  -o test/merge/test_bam_translate test/merge/test_bam_translate.o test/test.o libst.a ../htslib/libhts.a -lz -lm -lbz2 -llzma -lcurl -lz  -lpthread
+gcc  -L./lz4  -o test/merge/test_trans_tbl_init test/merge/test_trans_tbl_init.o test/test.o libst.a ../htslib/libhts.a -lz -lm -lbz2 -llzma -lcurl -lz  -lpthread
+gcc  -L./lz4  -o test/merge/test_rtrans_build test/merge/test_rtrans_build.o test/test.o libst.a ../htslib/libhts.a -lz -lm -lbz2 -llzma -lcurl -lz  -lpthread
+Setup run env...
+Profiling... It is Thu Aug 19 12:22:15 -03 2021
+total_time_ms=781523
+Done... It is Thu Aug 19 12:35:17 -03 2021

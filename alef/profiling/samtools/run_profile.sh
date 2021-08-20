@@ -27,12 +27,21 @@ case $run in
   ;;
 
   "index" )
-    echo "Expected input: ./run_profile.sh index bam"
+    echo "Expected input: ./run_profile.sh index (bam|cram)"
     f_input="index_input"
     f_validate="index_validate"
     f_build="samtools_build"
     f_setup="common_setup"
     f_profile="index_profile"
+  ;;
+
+  "view_region" )
+    echo "Expected input: ./run_profile.sh view_region (bam|cram) index region"
+    f_input="view_region_input"
+    f_validate="view_region_validate"
+    f_build="samtools_build"
+    f_setup="common_setup"
+    f_profile="view_region_profile"
   ;;
 
   *)
@@ -82,6 +91,31 @@ function view_profile {
   # total time profiling
   time_start=$(date +%s%3N)
   "$samtools" view -b -T "$ref" "$cram" >out.bam
+  time_end=$(date +%s%3N)
+  echo "total_time_ms=$((time_end - time_start))"
+}
+
+# Region
+
+function view_region_input {
+  cram="$2"
+  index="$3"
+  region="$4"
+}
+
+function view_region_validate {
+  ls -d "$samtools_folder_path"
+  test -n "$cram"
+  test -n "$index"
+  test $region -ge 0
+  ls -l "$cram"
+  ls -l "$index"
+}
+
+function view_region_profile {
+  # total time profiling
+  time_start=$(date +%s%3N)
+  "$samtools" view -b -X "$cram" "$index" "chr$region" >"out_region$region.bam"
   time_end=$(date +%s%3N)
   echo "total_time_ms=$((time_end - time_start))"
 }
