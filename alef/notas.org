@@ -2025,22 +2025,7 @@ A HTSlib usada pelo ANGSD é basicamente uma API do SAMTools.
 
 BCFTools é parte do SAMTools.
 
-http://www.htslib.org/
-
-Atualmente SAM e BCF usam o HTS internamente.
-
-https://pubmed.ncbi.nlm.nih.gov/33590861/
-
-https://en.wikipedia.org/wiki/Variant_Call_Format
-
-Interessante do artigo acima:
-
-#+BEGIN_EXAMPLE
-In particular, there is rarely any need to convert SAM to BAM using
-“samtools view -b” be- fore running commands like “samtools sort,”
-although regret- tably this idiom still appears in a large number of
-online tutori- als. We encourage readers to follow best practices and
-workflows published at [12].
+http://www.htslib.org/ Atualmente SAM e BCF usam o HTS internamente.  https://pubmed.ncbi.nlm.nih.gov/33590861/ https://en.wikipedia.org/wiki/Variant_Call_Format Interessante do artigo acima: #+BEGIN_EXAMPLE In particular, there is rarely any need to convert SAM to BAM using “samtools view -b” be- fore running commands like “samtools sort,” although regret- tably this idiom still appears in a large number of online tutori- als. We encourage readers to follow best practices and workflows published at [12].
 #+END_EXAMPLE
 
 https://www.htslib.org/workflow/
@@ -2089,6 +2074,153 @@ done
 Uma ideia então é trabalhar com um único .bam e testar ambos fluxos,
 pelo samtools e pelo angsd, avaliando tanto melhorias de workflow como
 melhorias de código via perfilamento.
+
+*** Semana 4
+
+**** Resumo executivo
+
+Explorei as primeiras etapas do pipeline de análise informado pela Agnis,
+reduzindo de dias para minutos o tempo de processamento explorando o fato de
+diversas etapas dele serem embaraçosamente paralelas - paralelizei-as com GNU
+Parallel, sem paralelizar as aplicações - além de remover etapas custosas mas
+desnecessárias, identificadas através do estudo da literatura e experimentação.
+
+Em reuniões com a Agnis compreendi que existem dois pipelines que podem ser
+utilizados, usando o software angsd ou o software samtools, ambos usando a
+mesma biblioteca para manipulação dos arquivos (HTSlib). O pipeline usando o
+angsd sofre de problemas de uso de memória enquanto o pipeline usando o
+samtools sofre de problemas de tempo de execução.
+
+O pipeline de análise pelo samtools é de interesse particular por diversos
+fatores - o software é mais difundido e com maior suporte da comunidade, mais
+bem documentado e mais organizado, as etapas da análise são embaraçosamente
+paralelas, e a literatura sugere que várias etapas custosas sendo realizadas
+pela Agnis são desnecessárias, havendo amplas oportunidades de melhoria.
+
+Desenvolvi scripts de execução das etapas para comparar o desempenho do
+piepline original e do paralelizado e reduzido, bem como os resultados de ambos
+a fim de garantir a corretude do pipeline otimizado. Ambos apresentaram os
+mesmos resultados, mas com tempos de execução significativamente melhores no
+pipeline otimizado.
+
+Como próximos passos pretendo discutir com a Agnis os resultados e seguir
+explorando as etapas restantes da análise. Acredito que possa ser desenvolvida
+uma ferramenta que execute o pipeline de ponta a ponta explorando do
+paralelismo das etapas sempre que possível, facilitando e acelerante a análise
+filogenética.
+
+**** Notas completas
+
+Inicialmente foquei meu trabalho em verificar quais etapas do pipeline de
+análise podiam ser completamente removidas por serem desncessárias. Para isso
+parti da nota no estudo publicado sobre o samtools de que a etapa =view -b= em
+geral não é necessária, apesar de estar presente em muitos tutoriais online. 
+
+A partir daí realizei uma leitura extensiva da documentação do software e dos
+formatos de arquivo associados, entendendo que ele pode trabalhar com arquivos
+no formato BAM, SAM, e CRAM, todos representando a mesma informação, BAM sendo
+binário, SAM textual, e CRAM binário comprimido.
+
+Obtive então um CRAM e rodei a primeira etapa do pipeline que consiste em
+converter esse CRAM para BAM - o pipeline de análise pelo angsd e pelo samtools
+inicial dessa forma. Disso vi que essa conversão é relativamente demorada,
+levando 2h40m na Thor1 (lembrando que a Agnis trabalha com 18 arquivos,
+totalizando vários dias de execução). 16_08_21_232806:
+
+#+BEGIN_EXAMPLE
+Starting at Mon Aug 16 23:28:06 -03 2021...
+total_time_ms=9541043
+Ended at Tue Aug 17 02:07:07 -03 2021...
+4.0K    err
+12K     out
+53G     out.bam
+#+END_EXAMPLE
+
+Daí surge um forte interesse em remover essa etapa do pipeline, pois seriam
+economizados diversos dias de processamento. A fim de confirmar que podemos
+trabalhar diretamente com o CRAM no samtools (evitando a conversão) para
+realizar todas etapas necessárias ao pipeline da Agnis e obter os mesmos
+resultados, segui executando as etapas com o BAM gerado por essa conversão e
+com o CRAM original.
+
+Relembrando que essa primeira etapa do pipeline do samtools consiste de:
+
+1. samtools view -b
+2. samtools index
+3. samtools view chr
+4. samtools index
+
+Rodei então o samtools index no BAM, levando cerca de 12min para executar
+(index_17_08_21_210702), e no CRAM, levando cerca de 4m
+(index_17_08_21_210702).
+
+#+BEGIN_EXAMPLE
+Profiling... It is Tue Aug 17 21:07:02 -03 2021
+total_time_ms=772356
+Done... It is Tue Aug 17 21:19:55 -03 2021
+#+END_EXAMPLE
+
+#+BEGIN_EXAMPLE
+Profiling... It is Tue Aug 17 21:07:02 -03 2021
+total_time_ms=772356
+Done... It is Tue Aug 17 21:19:55 -03 2021
+#+END_EXAMPLE
+
+Essa etapa gera arquivos de índice para acesso rápido em etapas posteriores do
+samtools, nomeadamente BAI para o BAM e CRAI para o CRAM. Então, escolhi uma
+região arbitrária para o passo 4. view chr e rodei no BAM/BAI e no CRAM/CRAI (view_region_18_08_21_145423 e view_region_19_08_21_122215):
+
+#+BEGIN_EXAMPLE
+Profiling... It is Wed Aug 18 14:54:23 -03 2021
+total_time_ms=5839324
+Done... It is Wed Aug 18 16:31:42 -03 2021
+#+END_EXAMPLE
+
+#+BEGIN_EXAMPLE
+Profiling... It is Thu Aug 19 12:22:15 -03 2021
+total_time_ms=781523
+Done... It is Thu Aug 19 12:35:17 -03 2021
+#+END_EXAMPLE
+
+A etapa utilizando o CRAM leva significativamente mais tempo - a flag =-b=
+presente no script da Agnis força o output para BAM, o que deve estar
+convertendo o CRAM levando as 2h que havíamos economizado removendo essa
+conversão originalmente. Dessa forma, precisamos rodar essa etapa sem o =-b=
+para gerar outro CRAM e não um BAM e seguir trabalhando com o CRAM.
+
+Realizando o view da regiâo do CRAM em poucos minutos ao evitar a conversão
+para BAM (view_region_21_08_21_030414):
+
+#+BEGIN_EXAMPLE
+Profiling... It is Sat Aug 21 03:04:14 -03 2021
+total_time_ms=240304
+Done... It is Sat Aug 21 03:08:15 -03 2021
+#+END_EXAMPLE
+
+Feito isso obtemos um arquivo BAM e CRAM novos para a região em questão. Não
+podemos comparar eles diretamente pois são arquivos diferentes, mas podemos
+converter ambos para SAM e comparar o resultado, cf. busca em sites
+especializados (Biostars, etc) sobre como comparar um BAM e um CRAM por
+igualdade (converter o CRAM para BAM e comparar não funciona pois o binário
+gerado é diferente, uma vez que o BAM tem cabeçalho com timestamps e outros
+dados não determinísticos).
+
+Convertendo ambos para SAM e comparando por igualdade (cmp_21_08_21_032652):
+
+#+BEGIN_EXAMPLE
+Running diff... It is
+Ended with result 0. It is
+#+END_EXAMPLE
+
+Disso concluou que podem ser economizados dias de processamento evitando a
+conversão de CRAM para BAM cf. a literatura sugere, sem prejuízo ao restante do
+pipeline de anãlise particular da Agnis, pelo menos até as etapas estudadas.
+
+Para ir além, reparo que todas essas etapas são independentes para cada CRAM, e
+podem ser realizadas em paralelo. Aĺém disso, a etapa de view da região pode
+ser realizada em paralelo para cada região.
+
+Com isso em mente, obtive um segundo CRAM e implementei um script para realizar as etapas em paralelo com o GNU Parallel:
 
 * Referências
 
