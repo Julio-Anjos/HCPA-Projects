@@ -2080,13 +2080,22 @@ melhorias de código via perfilamento.
 **** Resumo executivo
 
 Explorei as primeiras etapas do pipeline de análise informado pela Agnis,
-reduzindo de dias para minutos o tempo de processamento explorando o fato de
-diversas etapas dele serem embaraçosamente paralelas - paralelizei-as com GNU
-Parallel, sem paralelizar as aplicações - além de remover etapas custosas mas
-desnecessárias, identificadas através do estudo da literatura e experimentação.
+reduzindo de dias para horas o tempo de processamento, explorando o fato de
+diversas etapas custosas serem desnecessárias (identificado através de estudo
+da literatura e comprovado através de experimentação) além de outras serem
+embaraçosamente paralelas - paralelizei-as com GNU Parallel, sem paralelizar as
+aplicações em si.
+
+Como próximos passos pretendo discutir com a Agnis os resultados e seguir
+explorando as etapas restantes do pipeline de análise. Acredito que possa ser
+desenvolvida uma ferramenta que execute o pipeline de ponta a ponta explorando
+do paralelismo das etapas sempre que possível, facilitando e acelerante a
+análise filogenética.
+
+Em mais detalhes:
 
 Em reuniões com a Agnis compreendi que existem dois pipelines que podem ser
-utilizados, usando o software angsd ou o software samtools, ambos usando a
+utilizados, usando o software angsd ou o software samtools, ambos usam a
 mesma biblioteca para manipulação dos arquivos (HTSlib). O pipeline usando o
 angsd sofre de problemas de uso de memória enquanto o pipeline usando o
 samtools sofre de problemas de tempo de execução.
@@ -2097,17 +2106,11 @@ bem documentado e mais organizado, as etapas da análise são embaraçosamente
 paralelas, e a literatura sugere que várias etapas custosas sendo realizadas
 pela Agnis são desnecessárias, havendo amplas oportunidades de melhoria.
 
-Desenvolvi scripts de execução das etapas para comparar o desempenho do
-piepline original e do paralelizado e reduzido, bem como os resultados de ambos
-a fim de garantir a corretude do pipeline otimizado. Ambos apresentaram os
-mesmos resultados, mas com tempos de execução significativamente melhores no
-pipeline otimizado.
-
-Como próximos passos pretendo discutir com a Agnis os resultados e seguir
-explorando as etapas restantes da análise. Acredito que possa ser desenvolvida
-uma ferramenta que execute o pipeline de ponta a ponta explorando do
-paralelismo das etapas sempre que possível, facilitando e acelerante a análise
-filogenética.
+Feitas as melhorias desenvolvi scripts de execução das etapas para comparar o
+desempenho do piepline original e do paralelizado e reduzido, bem como os
+resultados de ambos a fim de garantir a corretude do pipeline otimizado. Ambos
+apresentaram os mesmos resultados, mas com tempos de execução
+significativamente melhores no pipeline otimizado.
 
 **** Notas completas
 
@@ -2217,10 +2220,42 @@ conversão de CRAM para BAM cf. a literatura sugere, sem prejuízo ao restante d
 pipeline de anãlise particular da Agnis, pelo menos até as etapas estudadas.
 
 Para ir além, reparo que todas essas etapas são independentes para cada CRAM, e
-podem ser realizadas em paralelo. Aĺém disso, a etapa de view da região pode
+podem ser realizadas em paralelo. Além disso, a etapa de view da região pode
 ser realizada em paralelo para cada região.
 
-Com isso em mente, obtive um segundo CRAM e implementei um script para realizar as etapas em paralelo com o GNU Parallel:
+Com isso em mente, obtive um segundo CRAM e implementei um script para realizar
+as etapas em paralelo com o GNU Parallel, reduzindo o tempo aprox. pela metade
+para o caso de dois CRAMs:
+
+#+BEGIN_EXAMPLE
+Starting at Sun Aug 22 08:06:16 -03 2021...
+Indexing /home/afarah/HPCA-Projects/alef/data/sample_bam/HGDP00519.alt_bwamem_GRCh38DH.20181023.French.cram at Sun Aug 22 08:06:16 -03 2021...
+Finished indexing /home/afarah/HPCA-Projects/alef/data/sample_bam/HGDP00519.alt_bwamem_GRCh38DH.20181023.French.cram at Sun Aug 22 08:06:33 -03 2021...
+Viewing regions for /home/afarah/HPCA-Projects/alef/data/sample_bam/HGDP00519.alt_bwamem_GRCh38DH.20181023.French.cram at Sun Aug 22 08:06:33 -03 2021
+Finished viewing regions for /home/afarah/HPCA-Projects/alef/data/sample_bam/HGDP00519.alt_bwamem_GRCh38DH.20181023.French.cram at Sun Aug 22 08:51:50 -03 2021
+Indexing /home/afarah/HPCA-Projects/alef/data/sample_bam/HGDP00537.alt_bwamem_GRCh38DH.20181023.French.cram at Sun Aug 22 08:51:50 -03 2021...
+Finished indexing /home/afarah/HPCA-Projects/alef/data/sample_bam/HGDP00537.alt_bwamem_GRCh38DH.20181023.French.cram at Sun Aug 22 08:56:39 -03 2021...
+Viewing regions for /home/afarah/HPCA-Projects/alef/data/sample_bam/HGDP00537.alt_bwamem_GRCh38DH.20181023.French.cram at Sun Aug 22 08:56:39 -03 2021
+Finished viewing regions for /home/afarah/HPCA-Projects/alef/data/sample_bam/HGDP00537.alt_bwamem_GRCh38DH.20181023.French.cram at Sun Aug 22 10:00:20 -03 2021
+Ending at Sun Aug 22 10:00:20 -03 2021...
+#+END_EXAMPLE
+
+#+BEGIN_EXAMPLE
+Starting at Sun Aug 22 11:06:18 -03 2021...
+Indexing /home/afarah/HPCA-Projects/alef/data/sample_bam/HGDP00519.alt_bwamem_GRCh38DH.20181023.French.cram at Sun Aug 22 11:06:19 -03 2021...
+Finished indexing /home/afarah/HPCA-Projects/alef/data/sample_bam/HGDP00519.alt_bwamem_GRCh38DH.20181023.French.cram at Sun Aug 22 11:06:38 -03 2021...
+Viewing regions for /home/afarah/HPCA-Projects/alef/data/sample_bam/HGDP00519.alt_bwamem_GRCh38DH.20181023.French.cram at Sun Aug 22 11:06:38 -03 2021
+Finished viewing regions for /home/afarah/HPCA-Projects/alef/data/sample_bam/HGDP00519.alt_bwamem_GRCh38DH.20181023.French.cram at Sun Aug 22 11:54:54 -03 2021
+Indexing /home/afarah/HPCA-Projects/alef/data/sample_bam/HGDP00537.alt_bwamem_GRCh38DH.20181023.French.cram at Sun Aug 22 11:06:19 -03 2021...
+Finished indexing /home/afarah/HPCA-Projects/alef/data/sample_bam/HGDP00537.alt_bwamem_GRCh38DH.20181023.French.cram at Sun Aug 22 11:06:39 -03 2021...
+Viewing regions for /home/afarah/HPCA-Projects/alef/data/sample_bam/HGDP00537.alt_bwamem_GRCh38DH.20181023.French.cram at Sun Aug 22 11:06:39 -03 2021
+Finished viewing regions for /home/afarah/HPCA-Projects/alef/data/sample_bam/HGDP00537.alt_bwamem_GRCh38DH.20181023.French.cram at Sun Aug 22 12:13:06 -03 2021
+Ending at Sun Aug 22 12:13:06 -03 2021...
+#+END_EXAMPLE
+
+Inicialmente paralelizei apenas entre os CRAM, mas poderia ser paralelizado
+também o view das regiões de cada CRAM. Na prática não deve ser útil à Agnis
+pois a paralelização dos CRAMs já deve ocupar todos núcleos do CPU disponível.
 
 * Referências
 
