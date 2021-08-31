@@ -2257,6 +2257,25 @@ Inicialmente paralelizei apenas entre os CRAM, mas poderia ser paralelizado
 também o view das regiões de cada CRAM. Na prática não deve ser útil à Agnis
 pois a paralelização dos CRAMs já deve ocupar todos núcleos do CPU disponível.
 
+** Setembro
+
+*** Semana 1
+
+**** Resumo executivo
+
+**** Notas completas
+
+Mais uma oportunidade de melhoria, do manual do bcftools:
+
+#+BEGIN_EXAMPLE
+-O, --output-type b|u|z|v
+Output compressed BCF (b), uncompressed BCF (u), compressed VCF (z), uncompressed VCF (v). Use the -Ou option when piping between bcftools subcommands to speed up performance by removing unnecessary compression/decompression and VCF←→BCF conversion.
+#+END_EXAMPLE
+
+Atualmente no pipeline da Agnis estásendo usado -Ob e depois chamado bcf call+vie. 
+
+TODO: Testar ganho de desempenho
+
 * Referências
 
 [1] Yang 2000: Codon-Substitution Models for Detecting Molecular Adaptation at Individual Sites Along Specific Lineages
