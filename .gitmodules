@@ -19,3 +19,6 @@
 [submodule "alef/bcftools"]
 	path = alef/bcftools
 	url = https://github.com/samtools/bcftools.git
+[submodule "alef/infufrgs"]
+	path = alef/infufrgs
+	url = git@github.com:schnorr/infufrgs.git
