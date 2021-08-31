@@ -42,6 +42,15 @@ case $run in
     f_profile="view_region_profile"
   ;;
 
+  "bcftools" )
+    echo "Expected input: ./run_profile.sh bcftools merged_indexed_region.bam ref (u|b)"
+    f_input="bcftools_input"
+    f_validate="bcftools_validate"
+    f_build="bcftools_build"
+    f_setup="common_setup"
+    f_profile="bcftools_profile"
+  ;;
+
   *)
   echo "Unimplemented."
   exit 1
@@ -115,6 +124,36 @@ function index_validate {
 function index_profile {
   time_start=$(date +%s%3N)
   "$samtools" index "$bam" 
+  time_end=$(date +%s%3N)
+  echo "total_time_ms=$((time_end - time_start))"
+}
+
+#
+# bcftools
+#
+
+function bcftools_input {
+  bam="$2"
+  ref="$3"
+  outtype="$4"
+}
+
+function bcftools_validate {
+  ls -d "$bcftools_folder_path"
+  test -n "$bam"
+  ls -l "$bam"
+  test -n "$ref"
+  ls -l "$ref"
+}
+
+function bcftools_profile {
+  echo "outtype=$outtype"
+  time_start=$(date +%s%3N)
+
+  "$bcftools" mpileup -O "$outtype" -o out.bcf -f "$ref" "$bam"
+  "$bcftools" call -m -u -o call_out.bcf out.bcf
+  "$bcftools" view call_out.bcf >/dev/null
+
   time_end=$(date +%s%3N)
   echo "total_time_ms=$((time_end - time_start))"
 }
