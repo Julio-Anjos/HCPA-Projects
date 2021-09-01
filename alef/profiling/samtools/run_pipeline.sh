@@ -127,6 +127,7 @@ then
   export -f do_foreach_cram
   export -f do_foreach_region
   export samtools=$samtools
+  export bcftools=$bcftools
 
   # Stage 1
   cat "$cram_list" | parallel do_foreach_cram {}
