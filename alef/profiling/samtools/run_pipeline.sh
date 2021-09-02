@@ -77,7 +77,7 @@ function do_foreach_region { # $1=Region
   "$samtools" index merged_region$1.bam
   "$bcftools" mpileup -Ou -o merged_region$1.bcf -f $ref merged_region$1.bam
   "$bcftools" call -m -u -o call_merged_region$1.bcf merged_region$1.bcf
-  "$bcftools" view call_merged_region$1.bcf | "$vcfutils" "varFilter - > final_region$1.vcf"
+  "$bcftools" view call_merged_region$1.bcf | "$vcfutils" varFilter - >final_region$1.vcf
 }
 
 # More setup
@@ -126,8 +126,10 @@ then
   export SHELL=$(type -p bash)
   export -f do_foreach_cram
   export -f do_foreach_region
-  export samtools=$samtools
-  export bcftools=$bcftools
+  export samtools="$samtools"
+  export bcftools="$bcftools"
+  export vcfutils="$vcfutils"
+  export ref="$ref"
 
   # Stage 1
   cat "$cram_list" | parallel do_foreach_cram {}
