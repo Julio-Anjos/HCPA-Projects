@@ -79,7 +79,7 @@ function do_foreach_region { # $1=Region
   "$samtools" merge -o merged_region$1.bam $argv # Do not quote argv
 
   # Index
-  echo "Indexing region $1 at $(date)"
+  echo "Indexing region $1 at $(date). Used $(du -hs)"
   "$samtools" index merged_region$1.bam
 
   # Clenup umerged BAMs
@@ -87,29 +87,29 @@ function do_foreach_region { # $1=Region
   rm $argv # Do not quote argv
 
   # Mpileup
-  echo "Mpileup region $1 at $(date)"
+  echo "Mpileup region $1 at $(date). Used $(du -hs)"
   "$bcftools" mpileup -Ou -o merged_region$1.bcf -f $ref merged_region$1.bam
 
   # Cleanup merged BAMs and their indeces - we already have the BCFs
-  echo "Removing BAMs for region $1"
+  echo "Removing BAMs for region $1. Used $(du -hs)"
   rm merged_region$1.bam
   rm merged_region$1.bai
 
   # Call
-  echo "Call region $1 at $(date)"
+  echo "Call region $1 at $(date). Used $(du -hs)"
   "$bcftools" call -m -u -o call_merged_region$1.bcf merged_region$1.bcf
 
   # Cleanup uncalled BCFs
-  echo "Removing uncalled BCFs"
+  echo "Removing uncalled BCFs. Used $(du -hs)"
   rm merged_region$1.bcf
 
-  echo "View region $1 at $(date)"
+  echo "View region $1 at $(date). Used $(du -hs)"
   "$bcftools" view call_merged_region$1.bcf | "$vcfutils" varFilter - >final_region$1.vcf
 
   # Cleanup BCFs - already have the VCFs
   rm call_merged_region$1.bcf
 
-  echo "Done region $1 at $(date)"
+  echo "Done region $1 at $(date). Used $(du -hs)"
 }
 
 # More setup
@@ -120,7 +120,7 @@ common_setup "pipeline_$runtype"
 #
 # Actually running stuff
 #
-echo "Starting at $(date)..."
+echo "Starting at $(date)... Space used by our pipeline: $(du -hs)"
 if test "$runtype" = "seq"
 then
   #
@@ -132,16 +132,20 @@ then
   rm -f region_list.txt
 
   # Stage 1
+  echo "Starting stage 1 at $(date)."
   for cram in $(cat "$cram_list")
   do
     do_foreach_cram "$cram"
   done
+  echo "Ended stage 1 at $(date). Used $(du -hs)"
 
   # Stage 2
+  echo "Starting stage 2 at $(date)."
   for i in $(seq 1 22)
   do
     do_foreach_region $i
   done
+  echo "Ended stage 2 at $(date). Used $(du -hs)"
 
   # Report results
   time_end=$(date +%s%3N)
@@ -164,10 +168,14 @@ then
   export ref="$ref"
 
   # Stage 1
+  echo "Starting stage 1 at $(date)."
   cat "$cram_list" | parallel do_foreach_cram {}
+  echo "Ended stage 1 at $(date). Used $(du -hs)"
 
   # Stage 2
+  echo "Starting stage 2 at $(date)."
   seq 1 22 | parallel do_foreach_region {}
+  echo "Ended stage 2 at $(date). Used $(du -hs)"
 
   # Report results
   time_end=$(date +%s%3N)
@@ -175,4 +183,4 @@ then
 else
   echo "Unimplemented... Expecting par or seq"
 fi
-echo "Ending at $(date)..."
+echo "Ending at $(date)... Space used by our pipeline: $(du -hs)"
