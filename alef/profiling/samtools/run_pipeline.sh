@@ -73,7 +73,7 @@ function do_foreach_cram { # $1=Cram
 #
 function do_foreach_region { # $1=Region 
   argv="$(grep region_list.txt -e region$1_ | perl -pe 's/\n/ /g')"
-  "$samtools" merge "$argv">merged_region$1.bam
+  "$samtools" merge -o merged_region$1.bam $argv 
   "$samtools" index merged_region$1.bam
   "$bcftools" mpileup -Ou -o merged_region$1.bcf -f $ref merged_region$1.bam
   "$bcftools" call -m -u -o call_merged_region$1.bcf merged_region$1.bcf
