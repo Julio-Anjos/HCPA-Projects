@@ -73,16 +73,42 @@ function do_foreach_cram { # $1=Cram
 #
 function do_foreach_region { # $1=Region 
   argv="$(grep region_list.txt -e region$1_ | perl -pe 's/\n/ /g')"
+
+  # Merge
   echo "Merging region $1 at $(date)"
   "$samtools" merge -o merged_region$1.bam $argv # Do not quote argv
+
+  # Index
   echo "Indexing region $1 at $(date)"
   "$samtools" index merged_region$1.bam
+
+  # Clenup umerged BAMs
+  echo "Removing unmerged BAMs for region $1"
+  rm $argv # Do not quote argv
+
+  # Mpileup
   echo "Mpileup region $1 at $(date)"
   "$bcftools" mpileup -Ou -o merged_region$1.bcf -f $ref merged_region$1.bam
+
+  # Cleanup merged BAMs and their indeces - we already have the BCFs
+  echo "Removing BAMs for region $1"
+  rm merged_region$1.bam
+  rm merged_region$1.bai
+
+  # Call
   echo "Call region $1 at $(date)"
   "$bcftools" call -m -u -o call_merged_region$1.bcf merged_region$1.bcf
+
+  # Cleanup uncalled BCFs
+  echo "Removing uncalled BCFs"
+  rm merged_region$1.bcf
+
   echo "View region $1 at $(date)"
   "$bcftools" view call_merged_region$1.bcf | "$vcfutils" varFilter - >final_region$1.vcf
+
+  # Cleanup BCFs - already have the VCFs
+  rm call_merged_region$1.bcf
+
   echo "Done region $1 at $(date)"
 }
 
