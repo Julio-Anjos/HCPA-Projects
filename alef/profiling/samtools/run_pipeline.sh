@@ -97,7 +97,7 @@ function do_foreach_region { # $1=Region
 
   # Call
   echo "Call region $1 at $(date). Used $(du -hs)"
-  "$bcftools" call -m -u -o call_merged_region$1.bcf merged_region$1.bcf
+  "$bcftools" call -m -o call_merged_region$1.bcf merged_region$1.bcf
 
   # Cleanup uncalled BCFs
   echo "Removing uncalled BCFs. Used $(du -hs)"
