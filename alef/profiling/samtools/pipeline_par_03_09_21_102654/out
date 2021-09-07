@@ -1,0 +1,417 @@
+Expected input: runtype cram_list ref
+/home/afarah/HPCA-Projects/alef/profiling/samtools/../../samtools
+-rw-rw-r-- 1 afarah afarah 198 Sep  1 18:37 /home/afarah/HPCA-Projects/alef/profiling/samtools/cram_list.txt
+-rw-rw-r-- 1 afarah afarah 27326618698 Aug  8 07:32 /home/afarah/HPCA-Projects/alef/data/sample_bam/HGDP00519.alt_bwamem_GRCh38DH.20181023.French.cram
+-rw-rw-r-- 1 afarah afarah 33903025102 Sep  1 17:12 /home/afarah/HPCA-Projects/alef/data/sample_bam/HGDP00525.alt_bwamem_GRCh38DH.20181023.French.cram
+-rw-rw-r-- 1 afarah afarah 3263683042 Aug 16 23:09 /home/afarah/HPCA-Projects/alef/data/sample_bam/GRCh38_full_analysis_set_plus_decoy_hla.fa
+b188dd833fef02a8f5479d62e605e009cd5eb5a5 Add error checking on samtools depth output file close.
+No local changes to save
+rm -f test/*.new test/*.tmp test/*/*.new test/*/*.tmp test/*/*.tmp.*
+cd test/dat && rm -f test_input_*.bam.bai
+cd test/mpileup && rm -f FAIL-*.out* PASS-*.out* anomalous.[bc]*am indels.[bc]*am mpileup.*.[cs]*am mpileup.*.crai overlap50.[bc]*am expected/1.out xx#depth*.bam*
+rm -f *.o misc/*.o test/*.o test/*/*.o version.h ./lz4/lz4.o
+rm -f samtools libbam.a libst.a misc/ace2sam misc/maq2sam-long misc/maq2sam-short misc/md5fa misc/md5sum-lite misc/wgsim test/merge/test_bam_translate test/merge/test_rtrans_build test/merge/test_trans_tbl_init test/split/test_count_rg test/split/test_expand_format_string test/split/test_filter_header_rg test/split/test_parse_args test/vcf-miniview
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bam_index.o bam_index.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bam_plcmd.o bam_plcmd.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o sam_view.o sam_view.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bam_fastq.o bam_fastq.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bam_cat.o bam_cat.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bam_md.o bam_md.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bam_reheader.o bam_reheader.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bam_sort.o bam_sort.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bam_rmdup.o bam_rmdup.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bam_rmdupse.o bam_rmdupse.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bam_mate.o bam_mate.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bam_stat.o bam_stat.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bam_color.o bam_color.c
+echo '#define SAMTOOLS_VERSION "1.13-5-gb188dd8"' > version.h
+echo '#define SAMTOOLS_CC "gcc"' >> version.h
+echo '#define SAMTOOLS_CPPFLAGS ""' >> version.h
+echo '#define SAMTOOLS_CFLAGS "-g -Wall -O2"' >> version.h
+echo '#define SAMTOOLS_LDFLAGS ""' >> version.h
+echo '#define SAMTOOLS_HTSDIR "../htslib"' >> version.h
+echo '#define SAMTOOLS_LIBS ""' >> version.h
+echo '#define SAMTOOLS_CURSES_LIB "-lcurses"' >> version.h
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bam2bcf.o bam2bcf.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bam2bcf_indel.o bam2bcf_indel.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o sample.o sample.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o cut_target.o cut_target.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o phase.o phase.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bam2depth.o bam2depth.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o coverage.o coverage.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o padding.o padding.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bedcov.o bedcov.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bamshuf.o bamshuf.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o faidx.o faidx.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o dict.o dict.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o stats.o stats.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o stats_isize.o stats_isize.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bam_flags.o bam_flags.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bam_split.o bam_split.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bam_tview.o bam_tview.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bam_tview_curses.o bam_tview_curses.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bam_tview_html.o bam_tview_html.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bam_lpileup.o bam_lpileup.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bam_quickcheck.o bam_quickcheck.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bam_addrprg.o bam_addrprg.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bam_markdup.o bam_markdup.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o tmp_file.o tmp_file.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bam_ampliconclip.o bam_ampliconclip.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o amplicon_stats.o amplicon_stats.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bam_import.o bam_import.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o lz4/lz4.o lz4/lz4.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bam_aux.o bam_aux.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bam.o bam.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o sam.o sam.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bam_plbuf.o bam_plbuf.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o sam_opts.o sam_opts.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o sam_utils.o sam_utils.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bedidx.o bedidx.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o misc/ace2sam.o misc/ace2sam.c
+gcc -g -Wall -O2 -DMAQ_LONGREADS -I. -I../htslib -I./lz4  -c -o misc/maq2sam-long.o misc/maq2sam.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o misc/maq2sam-short.o misc/maq2sam.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o misc/md5fa.o misc/md5fa.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o misc/md5sum-lite.o misc/md5sum-lite.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o misc/wgsim.o misc/wgsim.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o test/merge/test_bam_translate.o test/merge/test_bam_translate.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o test/test.o test/test.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o test/merge/test_rtrans_build.o test/merge/test_rtrans_build.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o test/merge/test_trans_tbl_init.o test/merge/test_trans_tbl_init.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o test/split/test_count_rg.o test/split/test_count_rg.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o test/split/test_expand_format_string.o test/split/test_expand_format_string.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o test/split/test_filter_header_rg.o test/split/test_filter_header_rg.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o test/split/test_parse_args.o test/split/test_parse_args.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o test/vcf-miniview.o test/vcf-miniview.c
+gcc -g -Wall -O2 -I. -I../htslib -I./lz4  -c -o bamtk.o bamtk.c
+ar -csru libbam.a bam_aux.o bam.o sam.o bam_plbuf.o
+ar -rcs libst.a sam_opts.o sam_utils.o bedidx.o
+gcc  -L./lz4  -o misc/ace2sam misc/ace2sam.o ../htslib/libhts.a -lz -lm -lbz2 -llzma -lcurl -lz 
+gcc  -o misc/maq2sam-long misc/maq2sam-long.o -lz 
+gcc  -o misc/maq2sam-short misc/maq2sam-short.o -lz 
+gcc  -L./lz4  -o misc/md5fa misc/md5fa.o ../htslib/libhts.a -lz -lm -lbz2 -llzma -lcurl -lz 
+gcc  -L./lz4  -o misc/md5sum-lite misc/md5sum-lite.o ../htslib/libhts.a -lz -lm -lbz2 -llzma -lcurl -lz 
+gcc  -L./lz4  -o misc/wgsim misc/wgsim.o -lm ../htslib/libhts.a -lz -lm -lbz2 -llzma -lcurl -lz 
+gcc  -L./lz4  -o test/split/test_count_rg test/split/test_count_rg.o test/test.o libst.a ../htslib/libhts.a -lz -lm -lbz2 -llzma -lcurl -lz  -lpthread
+gcc  -L./lz4  -o test/split/test_expand_format_string test/split/test_expand_format_string.o test/test.o libst.a ../htslib/libhts.a -lz -lm -lbz2 -llzma -lcurl -lz  -lpthread
+gcc  -L./lz4  -o test/split/test_filter_header_rg test/split/test_filter_header_rg.o test/test.o libst.a ../htslib/libhts.a -lz -lm -lbz2 -llzma -lcurl -lz  -lpthread
+gcc  -L./lz4  -o test/split/test_parse_args test/split/test_parse_args.o test/test.o libst.a ../htslib/libhts.a -lz -lm -lbz2 -llzma -lcurl -lz  -lpthread
+gcc  -L./lz4  -o test/vcf-miniview test/vcf-miniview.o ../htslib/libhts.a -lz -lm -lbz2 -llzma -lcurl -lz  -lpthread
+gcc  -L./lz4  -o samtools bam_index.o bam_plcmd.o sam_view.o bam_fastq.o bam_cat.o bam_md.o bam_reheader.o bam_sort.o bam_rmdup.o bam_rmdupse.o bam_mate.o bam_stat.o bam_color.o bamtk.o bam2bcf.o bam2bcf_indel.o sample.o cut_target.o phase.o bam2depth.o coverage.o padding.o bedcov.o bamshuf.o faidx.o dict.o stats.o stats_isize.o bam_flags.o bam_split.o bam_tview.o bam_tview_curses.o bam_tview_html.o bam_lpileup.o bam_quickcheck.o bam_addrprg.o bam_markdup.o tmp_file.o bam_ampliconclip.o amplicon_stats.o bam_import.o ./lz4/lz4.o libbam.a libst.a ../htslib/libhts.a -lz -lm -lbz2 -llzma -lcurl -lcurses -lm -lz  -lpthread
+gcc  -L./lz4  -o test/merge/test_bam_translate test/merge/test_bam_translate.o test/test.o libst.a ../htslib/libhts.a -lz -lm -lbz2 -llzma -lcurl -lz  -lpthread
+gcc  -L./lz4  -o test/merge/test_trans_tbl_init test/merge/test_trans_tbl_init.o test/test.o libst.a ../htslib/libhts.a -lz -lm -lbz2 -llzma -lcurl -lz  -lpthread
+gcc  -L./lz4  -o test/merge/test_rtrans_build test/merge/test_rtrans_build.o test/test.o libst.a ../htslib/libhts.a -lz -lm -lbz2 -llzma -lcurl -lz  -lpthread
+c75a420b06d3bc4e962250c99a84be6ba6fb61b8 Switch to FMT/AD when --with-pPL is used, FMT/QS is not available, and more than 4 alleles are present
+No local changes to save
+rm -f test/*.o test/*.fa.fai test/*~ test/test-rbuf test/test-regidx
+rm -f test/*.unsorted.hex test/*.unsorted.tsv
+rm -f plugins/*.so plugins/*.P
+rm -rf plugins/*.dSYM
+rm -f gmon.out *.o *.a *~ bcftools version.h
+rm -rf *.dSYM test/*.dSYM
+echo '#define BCFTOOLS_VERSION "1.13-10-gc75a420"' > version.h
+gcc -g -Wall -O2 -I. -I../htslib   -c -o vcfindex.o vcfindex.c
+gcc -g -Wall -O2 -I. -I../htslib   -c -o tabix.o tabix.c
+gcc -g -Wall -O2 -I. -I../htslib   -c -o vcfstats.o vcfstats.c
+gcc -g -Wall -O2 -I. -I../htslib   -c -o vcfisec.o vcfisec.c
+gcc -g -Wall -O2 -I. -I../htslib   -c -o vcfmerge.o vcfmerge.c
+gcc -g -Wall -O2 -I. -I../htslib   -c -o vcfquery.o vcfquery.c
+gcc -g -Wall -O2 -I. -I../htslib   -c -o vcffilter.o vcffilter.c
+gcc -g -Wall -O2 -I. -I../htslib    -c -o filter.o filter.c
+gcc -g -Wall -O2 -I. -I../htslib   -c -o vcfsom.o vcfsom.c
+gcc -g -Wall -O2 -I. -I../htslib   -c -o vcfnorm.o vcfnorm.c
+gcc -g -Wall -O2 -I. -I../htslib   -c -o vcfgtcheck.o vcfgtcheck.c
+gcc -g -Wall -O2 -I. -I../htslib   -c -o vcfview.o vcfview.c
+gcc -g -Wall -O2 -I. -I../htslib   -c -o vcfannotate.o vcfannotate.c
+gcc -g -Wall -O2 -I. -I../htslib   -c -o vcfroh.o vcfroh.c
+gcc -g -Wall -O2 -I. -I../htslib   -c -o vcfconcat.o vcfconcat.c
+gcc -g -Wall -O2 -I. -I../htslib   -c -o vcfcall.o vcfcall.c
+gcc -g -Wall -O2 -I. -I../htslib   -c -o mcall.o mcall.c
+gcc -g -Wall -O2 -I. -I../htslib   -c -o vcmp.o vcmp.c
+gcc -g -Wall -O2 -I. -I../htslib   -c -o gvcf.o gvcf.c
+gcc -g -Wall -O2 -I. -I../htslib   -c -o reheader.o reheader.c
+gcc -g -Wall -O2 -I. -I../htslib   -c -o convert.o convert.c
+gcc -g -Wall -O2 -I. -I../htslib   -c -o vcfconvert.o vcfconvert.c
+gcc -g -Wall -O2 -I. -I../htslib   -c -o tsv2vcf.o tsv2vcf.c
+gcc -g -Wall -O2 -I. -I../htslib   -c -o vcfcnv.o vcfcnv.c
+gcc -g -Wall -O2 -I. -I../htslib   -c -o HMM.o HMM.c
+gcc -g -Wall -O2 -I. -I../htslib   -c -o consensus.o consensus.c
+gcc -g -Wall -O2 -I. -I../htslib   -c -o ploidy.o ploidy.c
+gcc -g -Wall -O2 -I. -I../htslib   -c -o bin.o bin.c
+gcc -g -Wall -O2 -I. -I../htslib   -c -o hclust.o hclust.c
+gcc -g -Wall -O2 -I. -I../htslib   -c -o version.o version.c
+gcc -g -Wall -O2 -I. -I../htslib   -c -o regidx.o regidx.c
+gcc -g -Wall -O2 -I. -I../htslib   -c -o smpl_ilist.o smpl_ilist.c
+gcc -g -Wall -O2 -I. -I../htslib   -c -o csq.o csq.c
+gcc -g -Wall -O2 -I. -I../htslib   -c -o vcfbuf.o vcfbuf.c
+gcc -g -Wall -O2 -I. -I../htslib   -c -o mpileup.o mpileup.c
+gcc -g -Wall -O2 -I. -I../htslib   -c -o bam2bcf.o bam2bcf.c
+gcc -g -Wall -O2 -I. -I../htslib   -c -o bam2bcf_indel.o bam2bcf_indel.c
+gcc -g -Wall -O2 -I. -I../htslib   -c -o bam_sample.o bam_sample.c
+gcc -g -Wall -O2 -I. -I../htslib   -c -o vcfsort.o vcfsort.c
+gcc -g -Wall -O2 -I. -I../htslib   -c -o cols.o cols.c
+gcc -g -Wall -O2 -I. -I../htslib   -c -o extsort.o extsort.c
+gcc -g -Wall -O2 -I. -I../htslib   -c -o dist.o dist.c
+gcc -g -Wall -O2 -I. -I../htslib   -c -o abuf.o abuf.c
+gcc -g -Wall -O2 -I. -I../htslib   -c -o ccall.o ccall.c
+gcc -g -Wall -O2 -I. -I../htslib   -c -o em.o em.c
+gcc -g -Wall -O2 -I. -I../htslib   -c -o prob1.o prob1.c
+gcc -g -Wall -O2 -I. -I../htslib   -c -o kmin.o kmin.c
+gcc -g -Wall -O2 -I. -I../htslib   -c -o str_finder.o str_finder.c
+gcc -g -Wall -O2 -I. -I../htslib  -DPLUGINPATH='"/usr/local/libexec/bcftools"' -c -o vcfplugin.o vcfplugin.c
+gcc -g -Wall -O2 -I. -I../htslib   -c -o test/test-rbuf.o test/test-rbuf.c
+gcc -g -Wall -O2 -I. -I../htslib   -c -o test/test-regidx.o test/test-regidx.c
+gcc -fPIC -shared -g -Wall -O2 -I. -I../htslib    -o plugins/parental-origin.so version.c plugins/parental-origin.c 
+gcc -fPIC -shared -g -Wall -O2 -I. -I../htslib    -o plugins/ad-bias.so convert.c version.c plugins/ad-bias.c  
+gcc -fPIC -shared -g -Wall -O2 -I. -I../htslib    -o plugins/smpl-stats.so version.c plugins/smpl-stats.c 
+gcc -fPIC -shared -g -Wall -O2 -I. -I../htslib    -o plugins/variantkey-hex.so version.c plugins/variantkey-hex.c 
+gcc -fPIC -shared -g -Wall -O2 -I. -I../htslib    -o plugins/setGT.so version.c plugins/setGT.c 
+gcc -fPIC -shared -g -Wall -O2 -I. -I../htslib    -o plugins/add-variantkey.so version.c plugins/add-variantkey.c 
+gcc -fPIC -shared -g -Wall -O2 -I. -I../htslib    -o plugins/indel-stats.so version.c plugins/indel-stats.c 
+gcc -fPIC -shared -g -Wall -O2 -I. -I../htslib    -o plugins/remove-overlaps.so version.c plugins/remove-overlaps.c 
+gcc -fPIC -shared -g -Wall -O2 -I. -I../htslib    -o plugins/tag2tag.so version.c plugins/tag2tag.c 
+gcc -fPIC -shared -g -Wall -O2 -I. -I../htslib    -o plugins/af-dist.so bin.c version.c plugins/af-dist.c  
+gcc -fPIC -shared -g -Wall -O2 -I. -I../htslib    -o plugins/check-sparsity.so version.c plugins/check-sparsity.c 
+gcc -fPIC -shared -g -Wall -O2 -I. -I../htslib     -o plugins/fill-from-fasta.so filter.c version.c plugins/fill-from-fasta.c  
+gcc -fPIC -shared -g -Wall -O2 -I. -I../htslib    -o plugins/split.so version.c plugins/split.c 
+gcc -fPIC -shared -g -Wall -O2 -I. -I../htslib    -o plugins/trio-switch-rate.so version.c plugins/trio-switch-rate.c 
+gcc -fPIC -shared -g -Wall -O2 -I. -I../htslib    -o plugins/trio-stats.so version.c plugins/trio-stats.c 
+gcc -fPIC -shared -g -Wall -O2 -I. -I../htslib    -o plugins/frameshifts.so version.c plugins/frameshifts.c 
+gcc -fPIC -shared -g -Wall -O2 -I. -I../htslib    -o plugins/guess-ploidy.so version.c plugins/guess-ploidy.c 
+gcc -fPIC -shared -g -Wall -O2 -I. -I../htslib    -o plugins/fixploidy.so ploidy.c regidx.c version.c plugins/fixploidy.c  
+gcc -fPIC -shared -g -Wall -O2 -I. -I../htslib    -o plugins/allele-length.so version.c plugins/allele-length.c 
+gcc -fPIC -shared -g -Wall -O2 -I. -I../htslib    -o plugins/split-vep.so version.c plugins/split-vep.c 
+gcc -fPIC -shared -g -Wall -O2 -I. -I../htslib    -o plugins/prune.so version.c plugins/prune.c 
+gcc -fPIC -shared -g -Wall -O2 -I. -I../htslib    -o plugins/check-ploidy.so version.c plugins/check-ploidy.c 
+gcc -fPIC -shared -g -Wall -O2 -I. -I../htslib    -o plugins/counts.so version.c plugins/counts.c 
+gcc -fPIC -shared -g -Wall -O2 -I. -I../htslib    -o plugins/trio-dnm2.so version.c plugins/trio-dnm2.c 
+gcc -fPIC -shared -g -Wall -O2 -I. -I../htslib    -o plugins/isecGT.so smpl_ilist.c version.c plugins/isecGT.c  
+gcc -fPIC -shared -g -Wall -O2 -I. -I../htslib    -o plugins/mendelian.so version.c plugins/mendelian.c 
+gcc -fPIC -shared -g -Wall -O2 -I. -I../htslib    -o plugins/color-chrs.so HMM.c version.c plugins/color-chrs.c  
+gcc -fPIC -shared -g -Wall -O2 -I. -I../htslib    -o plugins/contrast.so version.c plugins/contrast.c 
+gcc -fPIC -shared -g -Wall -O2 -I. -I../htslib    -o plugins/fixref.so version.c plugins/fixref.c 
+gcc -fPIC -shared -g -Wall -O2 -I. -I../htslib    -o plugins/missing2ref.so version.c plugins/missing2ref.c 
+gcc -fPIC -shared -g -Wall -O2 -I. -I../htslib    -o plugins/scatter.so version.c plugins/scatter.c 
+gcc -fPIC -shared -g -Wall -O2 -I. -I../htslib    -o plugins/GTisec.so version.c plugins/GTisec.c  
+gcc -fPIC -shared -g -Wall -O2 -I. -I../htslib    -o plugins/dosage.so version.c plugins/dosage.c 
+gcc -fPIC -shared -g -Wall -O2 -I. -I../htslib    -o plugins/impute-info.so version.c plugins/impute-info.c 
+gcc -fPIC -shared -g -Wall -O2 -I. -I../htslib    -o plugins/fill-AN-AC.so version.c plugins/fill-AN-AC.c 
+gcc -fPIC -shared -g -Wall -O2 -I. -I../htslib    -o plugins/GTsubset.so version.c plugins/GTsubset.c  
+gcc -fPIC -shared -g -Wall -O2 -I. -I../htslib    -o plugins/gvcfz.so version.c plugins/gvcfz.c 
+gcc -fPIC -shared -g -Wall -O2 -I. -I../htslib    -o plugins/fill-tags.so version.c plugins/fill-tags.c 
+gcc -g -Wall -O2 -I. -I../htslib   -c -o main.o main.c
+gcc  -o test/test-rbuf test/test-rbuf.o -lz -ldl 
+gcc   -o test/test-regidx test/test-regidx.o regidx.o ../htslib/libhts.a -lz -lm -lbz2 -llzma -lcurl -lpthread -lz -ldl 
+gcc -rdynamic   -o bcftools main.o vcfindex.o tabix.o vcfstats.o vcfisec.o vcfmerge.o vcfquery.o vcffilter.o filter.o vcfsom.o vcfnorm.o vcfgtcheck.o vcfview.o vcfannotate.o vcfroh.o vcfconcat.o vcfcall.o mcall.o vcmp.o gvcf.o reheader.o convert.o vcfconvert.o tsv2vcf.o vcfcnv.o HMM.o consensus.o ploidy.o bin.o hclust.o version.o regidx.o smpl_ilist.o csq.o vcfbuf.o mpileup.o bam2bcf.o bam2bcf_indel.o bam_sample.o vcfsort.o cols.o extsort.o dist.o abuf.o ccall.o em.o prob1.o kmin.o str_finder.o vcfplugin.o ../htslib/libhts.a -lz -lm -lbz2 -llzma -lcurl -lm -lz -ldl    -lpthread
+Starting at Fri Sep  3 10:26:54 -03 2021... Space used by our pipeline: 4.0K	.
+Starting stage 1 at Fri Sep  3 10:26:54 -03 2021.
+Indexing /home/afarah/HPCA-Projects/alef/data/sample_bam/HGDP00519.alt_bwamem_GRCh38DH.20181023.French.cram at Fri Sep  3 10:26:54 -03 2021...
+Finished indexing /home/afarah/HPCA-Projects/alef/data/sample_bam/HGDP00519.alt_bwamem_GRCh38DH.20181023.French.cram at Fri Sep  3 11:03:45 -03 2021...
+Viewing regions for /home/afarah/HPCA-Projects/alef/data/sample_bam/HGDP00519.alt_bwamem_GRCh38DH.20181023.French.cram at Fri Sep  3 11:03:45 -03 2021
+Finished viewing regions for /home/afarah/HPCA-Projects/alef/data/sample_bam/HGDP00519.alt_bwamem_GRCh38DH.20181023.French.cram at Fri Sep  3 12:02:57 -03 2021
+Indexing /home/afarah/HPCA-Projects/alef/data/sample_bam/HGDP00525.alt_bwamem_GRCh38DH.20181023.French.cram at Fri Sep  3 10:26:54 -03 2021...
+Finished indexing /home/afarah/HPCA-Projects/alef/data/sample_bam/HGDP00525.alt_bwamem_GRCh38DH.20181023.French.cram at Fri Sep  3 11:05:37 -03 2021...
+Viewing regions for /home/afarah/HPCA-Projects/alef/data/sample_bam/HGDP00525.alt_bwamem_GRCh38DH.20181023.French.cram at Fri Sep  3 11:05:37 -03 2021
+Finished viewing regions for /home/afarah/HPCA-Projects/alef/data/sample_bam/HGDP00525.alt_bwamem_GRCh38DH.20181023.French.cram at Fri Sep  3 12:18:22 -03 2021
+Ended stage 1 at Fri Sep  3 12:18:22 -03 2021. Used 50G	.
+Starting stage 2 at Fri Sep  3 12:18:22 -03 2021.
+Merging region 6 at Fri Sep  3 12:18:23 -03 2021
+Indexing region 6 at Fri Sep  3 12:45:39 -03 2021. Used 87G	.
+Removing unmerged BAMs for region 6
+Mpileup region 6 at Fri Sep  3 12:51:20 -03 2021. Used 89G	.
+Removing BAMs for region 6. Used 114G	.
+Call region 6 at Fri Sep  3 13:42:05 -03 2021. Used 108G	.
+Removing uncalled BCFs. Used 104G	.
+View region 6 at Fri Sep  3 14:00:14 -03 2021. Used 96G	.
+Done region 6 at Fri Sep  3 14:05:35 -03 2021. Used 98G	.
+Merging region 5 at Fri Sep  3 12:18:23 -03 2021
+Indexing region 5 at Fri Sep  3 12:47:31 -03 2021. Used 89G	.
+Removing unmerged BAMs for region 5
+Mpileup region 5 at Fri Sep  3 12:54:29 -03 2021. Used 88G	.
+Removing BAMs for region 5. Used 113G	.
+Call region 5 at Fri Sep  3 13:46:49 -03 2021. Used 106G	.
+Removing uncalled BCFs. Used 99G	.
+View region 5 at Fri Sep  3 14:06:01 -03 2021. Used 90G	.
+Done region 5 at Fri Sep  3 14:12:40 -03 2021. Used 94G	.
+Merging region 4 at Fri Sep  3 12:18:23 -03 2021
+Indexing region 4 at Fri Sep  3 12:50:31 -03 2021. Used 92G	.
+Removing unmerged BAMs for region 4
+Mpileup region 4 at Fri Sep  3 12:57:55 -03 2021. Used 83G	.
+Removing BAMs for region 4. Used 113G	.
+Call region 4 at Fri Sep  3 13:54:23 -03 2021. Used 105G	.
+Removing uncalled BCFs. Used 86G	.
+View region 4 at Fri Sep  3 14:13:05 -03 2021. Used 77G	.
+Done region 4 at Fri Sep  3 14:17:37 -03 2021. Used 59G	.
+Merging region 3 at Fri Sep  3 12:18:23 -03 2021
+Indexing region 3 at Fri Sep  3 12:50:14 -03 2021. Used 92G	.
+Removing unmerged BAMs for region 3
+Mpileup region 3 at Fri Sep  3 12:57:38 -03 2021. Used 86G	.
+Removing BAMs for region 3. Used 107G	.
+Call region 3 at Fri Sep  3 13:56:16 -03 2021. Used 100G	.
+Removing uncalled BCFs. Used 70G	.
+View region 3 at Fri Sep  3 14:15:43 -03 2021. Used 62G	.
+Done region 3 at Fri Sep  3 14:20:08 -03 2021. Used 58G	.
+Merging region 1 at Fri Sep  3 12:18:23 -03 2021
+Indexing region 1 at Fri Sep  3 13:01:09 -03 2021. Used 86G	.
+Removing unmerged BAMs for region 1
+Mpileup region 1 at Fri Sep  3 13:05:12 -03 2021. Used 81G	.
+Removing BAMs for region 1. Used 78G	.
+Call region 1 at Fri Sep  3 14:13:43 -03 2021. Used 68G	.
+Removing uncalled BCFs. Used 74G	.
+View region 1 at Fri Sep  3 14:40:45 -03 2021. Used 64G	.
+Done region 1 at Fri Sep  3 14:51:10 -03 2021. Used 53G	.
+Merging region 2 at Fri Sep  3 12:18:23 -03 2021
+Indexing region 2 at Fri Sep  3 12:58:26 -03 2021. Used 84G	.
+Removing unmerged BAMs for region 2
+Mpileup region 2 at Fri Sep  3 13:01:53 -03 2021. Used 83G	.
+Removing BAMs for region 2. Used 94G	.
+Call region 2 at Fri Sep  3 14:12:58 -03 2021. Used 86G	.
+Removing uncalled BCFs. Used 65G	.
+View region 2 at Fri Sep  3 14:41:41 -03 2021. Used 54G	.
+Done region 2 at Fri Sep  3 14:52:30 -03 2021. Used 50G	.
+Merging region 9 at Fri Sep  3 14:17:37 -03 2021
+Indexing region 9 at Fri Sep  3 14:37:26 -03 2021. Used 73G	.
+Removing unmerged BAMs for region 9
+Mpileup region 9 at Fri Sep  3 14:38:36 -03 2021. Used 72G	.
+Removing BAMs for region 9. Used 69G	.
+Call region 9 at Fri Sep  3 15:13:29 -03 2021. Used 64G	.
+Removing uncalled BCFs. Used 60G	.
+View region 9 at Fri Sep  3 15:23:36 -03 2021. Used 54G	.
+Done region 9 at Fri Sep  3 15:29:11 -03 2021. Used 51G	.
+Merging region 8 at Fri Sep  3 14:12:40 -03 2021
+Indexing region 8 at Fri Sep  3 14:35:31 -03 2021. Used 73G	.
+Removing unmerged BAMs for region 8
+Mpileup region 8 at Fri Sep  3 14:36:51 -03 2021. Used 72G	.
+Removing BAMs for region 8. Used 68G	.
+Call region 8 at Fri Sep  3 15:16:50 -03 2021. Used 63G	.
+Removing uncalled BCFs. Used 60G	.
+View region 8 at Fri Sep  3 15:28:48 -03 2021. Used 53G	.
+Done region 8 at Fri Sep  3 15:35:04 -03 2021. Used 40G	.
+Merging region 7 at Fri Sep  3 14:05:38 -03 2021
+Indexing region 7 at Fri Sep  3 14:30:36 -03 2021. Used 69G	.
+Removing unmerged BAMs for region 7
+Mpileup region 7 at Fri Sep  3 14:32:07 -03 2021. Used 68G	.
+Removing BAMs for region 7. Used 63G	.
+Call region 7 at Fri Sep  3 15:17:13 -03 2021. Used 57G	.
+Removing uncalled BCFs. Used 53G	.
+View region 7 at Fri Sep  3 15:30:39 -03 2021. Used 45G	.
+Done region 7 at Fri Sep  3 15:37:20 -03 2021. Used 39G	.
+Merging region 10 at Fri Sep  3 14:20:08 -03 2021
+Indexing region 10 at Fri Sep  3 14:41:53 -03 2021. Used 54G	.
+Removing unmerged BAMs for region 10
+Mpileup region 10 at Fri Sep  3 14:43:16 -03 2021. Used 52G	.
+Removing BAMs for region 10. Used 63G	.
+Call region 10 at Fri Sep  3 15:21:32 -03 2021. Used 57G	.
+Removing uncalled BCFs. Used 47G	.
+View region 10 at Fri Sep  3 15:32:33 -03 2021. Used 41G	.
+Done region 10 at Fri Sep  3 15:37:59 -03 2021. Used 37G	.
+Merging region 11 at Fri Sep  3 14:51:10 -03 2021
+Indexing region 11 at Fri Sep  3 15:08:20 -03 2021. Used 69G	.
+Removing unmerged BAMs for region 11
+Mpileup region 11 at Fri Sep  3 15:09:37 -03 2021. Used 68G	.
+Removing BAMs for region 11. Used 47G	.
+Call region 11 at Fri Sep  3 15:47:23 -03 2021. Used 42G	.
+Removing uncalled BCFs. Used 45G	.
+View region 11 at Fri Sep  3 15:58:28 -03 2021. Used 39G	.
+Done region 11 at Fri Sep  3 16:04:41 -03 2021. Used 35G	.
+Merging region 12 at Fri Sep  3 14:52:30 -03 2021
+Indexing region 12 at Fri Sep  3 15:09:35 -03 2021. Used 70G	.
+Removing unmerged BAMs for region 12
+Mpileup region 12 at Fri Sep  3 15:10:53 -03 2021. Used 67G	.
+Removing BAMs for region 12. Used 42G	.
+Call region 12 at Fri Sep  3 15:48:42 -03 2021. Used 38G	.
+Removing uncalled BCFs. Used 40G	.
+View region 12 at Fri Sep  3 15:59:42 -03 2021. Used 34G	.
+Done region 12 at Fri Sep  3 16:05:45 -03 2021. Used 33G	.
+Merging region 13 at Fri Sep  3 15:29:11 -03 2021
+Indexing region 13 at Fri Sep  3 15:42:36 -03 2021. Used 43G	.
+Removing unmerged BAMs for region 13
+Mpileup region 13 at Fri Sep  3 15:43:33 -03 2021. Used 43G	.
+Removing BAMs for region 13. Used 40G	.
+Call region 13 at Fri Sep  3 16:11:34 -03 2021. Used 37G	.
+Removing uncalled BCFs. Used 34G	.
+View region 13 at Fri Sep  3 16:19:34 -03 2021. Used 29G	.
+Done region 13 at Fri Sep  3 16:24:06 -03 2021. Used 19G	.
+Merging region 14 at Fri Sep  3 15:35:04 -03 2021
+Indexing region 14 at Fri Sep  3 15:47:19 -03 2021. Used 47G	.
+Removing unmerged BAMs for region 14
+Mpileup region 14 at Fri Sep  3 15:48:09 -03 2021. Used 42G	.
+Removing BAMs for region 14. Used 39G	.
+Call region 14 at Fri Sep  3 16:13:16 -03 2021. Used 36G	.
+Removing uncalled BCFs. Used 31G	.
+View region 14 at Fri Sep  3 16:20:41 -03 2021. Used 26G	.
+Done region 14 at Fri Sep  3 16:24:43 -03 2021. Used 17G	.
+Merging region 15 at Fri Sep  3 15:37:20 -03 2021
+Indexing region 15 at Fri Sep  3 15:49:13 -03 2021. Used 38G	.
+Removing unmerged BAMs for region 15
+Mpileup region 15 at Fri Sep  3 15:50:03 -03 2021. Used 38G	.
+Removing BAMs for region 15. Used 37G	.
+Call region 15 at Fri Sep  3 16:14:02 -03 2021. Used 33G	.
+Removing uncalled BCFs. Used 27G	.
+View region 15 at Fri Sep  3 16:21:06 -03 2021. Used 23G	.
+Done region 15 at Fri Sep  3 16:24:55 -03 2021. Used 16G	.
+Merging region 16 at Fri Sep  3 15:37:59 -03 2021
+Indexing region 16 at Fri Sep  3 15:51:19 -03 2021. Used 39G	.
+Removing unmerged BAMs for region 16
+Mpileup region 16 at Fri Sep  3 15:52:15 -03 2021. Used 38G	.
+Removing BAMs for region 16. Used 37G	.
+Call region 16 at Fri Sep  3 16:16:26 -03 2021. Used 33G	.
+Removing uncalled BCFs. Used 24G	.
+View region 16 at Fri Sep  3 16:23:30 -03 2021. Used 20G	.
+Done region 16 at Fri Sep  3 16:26:24 -03 2021. Used 16G	.
+Merging region 21 at Fri Sep  3 16:24:55 -03 2021
+Indexing region 21 at Fri Sep  3 16:31:29 -03 2021. Used 23G	.
+Removing unmerged BAMs for region 21
+Mpileup region 21 at Fri Sep  3 16:31:56 -03 2021. Used 23G	.
+Removing BAMs for region 21. Used 25G	.
+Call region 21 at Fri Sep  3 16:43:35 -03 2021. Used 23G	.
+Removing uncalled BCFs. Used 21G	.
+View region 21 at Fri Sep  3 16:46:46 -03 2021. Used 20G	.
+Done region 21 at Fri Sep  3 16:48:32 -03 2021. Used 18G	.
+Merging region 18 at Fri Sep  3 16:05:45 -03 2021
+Indexing region 18 at Fri Sep  3 16:16:23 -03 2021. Used 37G	.
+Removing unmerged BAMs for region 18
+Mpileup region 18 at Fri Sep  3 16:17:09 -03 2021. Used 33G	.
+Removing BAMs for region 18. Used 26G	.
+Call region 18 at Fri Sep  3 16:39:15 -03 2021. Used 23G	.
+Removing uncalled BCFs. Used 24G	.
+View region 18 at Fri Sep  3 16:45:44 -03 2021. Used 20G	.
+Done region 18 at Fri Sep  3 16:49:04 -03 2021. Used 17G	.
+Merging region 22 at Fri Sep  3 16:26:24 -03 2021
+Indexing region 22 at Fri Sep  3 16:32:19 -03 2021. Used 23G	.
+Removing unmerged BAMs for region 22
+Mpileup region 22 at Fri Sep  3 16:32:43 -03 2021. Used 23G	.
+Removing BAMs for region 22. Used 24G	.
+Call region 22 at Fri Sep  3 16:44:32 -03 2021. Used 22G	.
+Removing uncalled BCFs. Used 20G	.
+View region 22 at Fri Sep  3 16:47:47 -03 2021. Used 19G	.
+Done region 22 at Fri Sep  3 16:49:06 -03 2021. Used 16G	.
+Merging region 17 at Fri Sep  3 16:04:41 -03 2021
+Indexing region 17 at Fri Sep  3 16:16:38 -03 2021. Used 33G	.
+Removing unmerged BAMs for region 17
+Mpileup region 17 at Fri Sep  3 16:17:31 -03 2021. Used 31G	.
+Removing BAMs for region 17. Used 26G	.
+Call region 17 at Fri Sep  3 16:41:58 -03 2021. Used 23G	.
+Removing uncalled BCFs. Used 16G	.
+View region 17 at Fri Sep  3 16:49:09 -03 2021. Used 13G	.
+Done region 17 at Fri Sep  3 16:50:39 -03 2021. Used 12G	.
+Merging region 19 at Fri Sep  3 16:24:06 -03 2021
+Indexing region 19 at Fri Sep  3 16:32:46 -03 2021. Used 23G	.
+Removing unmerged BAMs for region 19
+Mpileup region 19 at Fri Sep  3 16:33:21 -03 2021. Used 22G	.
+Removing BAMs for region 19. Used 12G	.
+Call region 19 at Fri Sep  3 16:51:07 -03 2021. Used 8.9G	.
+Removing uncalled BCFs. Used 8.3G	.
+View region 19 at Fri Sep  3 16:55:43 -03 2021. Used 5.6G	.
+Done region 19 at Fri Sep  3 16:56:45 -03 2021. Used 4.7G	.
+Merging region 20 at Fri Sep  3 16:24:43 -03 2021
+Indexing region 20 at Fri Sep  3 16:34:44 -03 2021. Used 24G	.
+Removing unmerged BAMs for region 20
+Mpileup region 20 at Fri Sep  3 16:35:27 -03 2021. Used 23G	.
+Removing BAMs for region 20. Used 11G	.
+Call region 20 at Fri Sep  3 16:54:28 -03 2021. Used 7.7G	.
+Removing uncalled BCFs. Used 5.4G	.
+View region 20 at Fri Sep  3 16:59:40 -03 2021. Used 2.4G	.
+Done region 20 at Fri Sep  3 17:00:50 -03 2021. Used 1.2G	.
+Ended stage 2 at Fri Sep  3 17:00:50 -03 2021. Used 1.2G	.
+total_time=23636358
+Ending at Fri Sep  3 17:00:50 -03 2021... Space used by our pipeline: 1.2G	.
