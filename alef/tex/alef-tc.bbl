@@ -1,0 +1,89 @@
+\providecommand{\abntreprintinfo}[1]{%
+ \citeonline{#1}}
+\setlength{\labelsep}{0pt}\begin{thebibliography}{}
+\providecommand{\abntrefinfo}[3]{}
+\providecommand{\abntbstabout}[1]{}
+\abntbstabout{v-1.9.1 }
+
+\bibitem[Chandra et al. 2001]{chandra2001parallel}
+\abntrefinfo{Chandra et al.}{CHANDRA et al.}{2001}
+{CHANDRA, R. et al. \textbf{Parallel programming in OpenMP}. [S.l.]: Morgan
+  kaufmann, 2001.}
+
+\bibitem[Danecek et al. 2021]{danecek2021twelve}
+\abntrefinfo{Danecek et al.}{DANECEK et al.}{2021}
+{DANECEK, P. et al. Twelve years of samtools and bcftools.
+\textbf{Gigascience}, Oxford University Press, v.~10, n.~2, p. giab008, 2021.}
+
+\bibitem[Fei et al. 2014]{fei2014parallel}
+\abntrefinfo{Fei et al.}{FEI et al.}{2014}
+{FEI, Y. et al. Parallel l-bfgs-b algorithm on gpu.
+\textbf{Computers \& graphics}, Elsevier, v.~40, p.~1--9, 2014.}
+
+\bibitem[Li et al. 2009]{li2009sequence}
+\abntrefinfo{Li et al.}{LI et al.}{2009}
+{LI, H. et al. The sequence alignment/map format and samtools.
+\textbf{Bioinformatics}, Oxford University Press, v.~25, n.~16, p. 2078--2079,
+  2009.}
+
+\bibitem[Maldonado et al. 2016]{maldonado2016lmap}
+\abntrefinfo{Maldonado et al.}{MALDONADO et al.}{2016}
+{MALDONADO, E. et al. Lmap: lightweight multigene analyses in paml.
+\textbf{BMC bioinformatics}, BioMed Central, v.~17, n.~1, p. 1--11, 2016.}
+
+\bibitem[Moretti et al. 2012]{moretti2012gcodeml}
+\abntrefinfo{Moretti et al.}{MORETTI et al.}{2012}
+{MORETTI, S. et al. gcodeml: a grid-enabled tool for detecting positive
+  selection in biological evolution. In:  \textbf{HealthGrid}. [S.l.: s.n.],
+  2012. p. 59--68.}
+
+\bibitem[Schabauer et al. 2012]{schabauer2012slimcodeml}
+\abntrefinfo{Schabauer et al.}{SCHABAUER et al.}{2012}
+{SCHABAUER, H. et al. Slimcodeml: an optimized version of codeml for the
+  branch-site model. In:  IEEE. \textbf{2012 IEEE 26th International Parallel
+  and Distributed Processing Symposium Workshops \& PhD Forum}. [S.l.], 2012.
+  p. 706--714.}
+
+\bibitem[Valle et al. 2014]{valle2014optimization}
+\abntrefinfo{Valle et al.}{VALLE et al.}{2014}
+{VALLE, M. et al. Optimization strategies for fast detection of positive
+  selection on phylogenetic trees.
+\textbf{Bioinformatics}, Oxford University Press, v.~30, n.~8, p. 1129--1137,
+  2014.}
+
+\bibitem[Via, Gignoux and Burchard 2010]{via20101000}
+\abntrefinfo{Via, Gignoux and Burchard}{VIA; GIGNOUX; BURCHARD}{2010}
+{VIA, M.; GIGNOUX, C.; BURCHARD, E.~G. The 1000 genomes project: new
+  opportunities for research and social challenges.
+\textbf{Genome medicine}, BioMed Central, v.~2, n.~1, p.~1--3, 2010.}
+
+\bibitem[Weidendorfer 2008]{weidendorfer2008sequential}
+\abntrefinfo{Weidendorfer}{WEIDENDORFER}{2008}
+{WEIDENDORFER, J. Sequential performance analysis with callgrind and
+  kcachegrind. In:  \textbf{Tools for High Performance Computing}. [S.l.]:
+  Springer, 2008. p. 93--113.}
+
+\bibitem[Wolfe 1978]{wolfe1978numerical}
+\abntrefinfo{Wolfe}{WOLFE}{1978}
+{WOLFE, M.~A. \textbf{Numerical methods for unconstrained optimization: an
+  introduction}. [S.l.]: Van Nostrand Reinhold, 1978.}
+
+\bibitem[Yang 2007]{yang2007paml}
+\abntrefinfo{Yang}{YANG}{2007}
+{YANG, Z. Paml 4: phylogenetic analysis by maximum likelihood.
+\textbf{Molecular biology and evolution}, Oxford University Press, v.~24, n.~8,
+  p. 1586--1591, 2007.}
+
+\bibitem[Yang 2020]{yang2020paml}
+\abntrefinfo{Yang}{YANG}{2020}
+{YANG, Z. \textbf{PAML: Phylogenetic Analysis by Maximum Likelihood}.
+[S.l.], 2020.}
+
+\bibitem[Yang and Nielsen 2002]{yang2002codon}
+\abntrefinfo{Yang and Nielsen}{YANG; NIELSEN}{2002}
+{YANG, Z.; NIELSEN, R. Codon-substitution models for detecting molecular
+  adaptation at individual sites along specific lineages.
+\textbf{Molecular biology and evolution}, Oxford University Press, v.~19, n.~6,
+  p. 908--917, 2002.}
+
+\end{thebibliography}

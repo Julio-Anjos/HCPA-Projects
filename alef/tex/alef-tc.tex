@@ -13,9 +13,6 @@
 Clínicas de Porto Alegre}
 
 \author{Farah}{Alef}
-% alguns documentos podem ter varios autores:
-% \author{Flaumann}{Frida Gutenberg}
-% \author{Flaumann}{Klaus Gutenberg}
 
 % orientador e co-orientador são opcionais (não diga isso pra eles :))
 \advisor[Prof.~Dr.]{Geyer}{Claudio Fernando Resin}
@@ -30,40 +27,6 @@ Clínicas de Porto Alegre}
 \location{Porto Alegre}{RS}
 
 % itens individuais da nominata podem ser redefinidos com os comandos
-% abaixo:
-% \renewcommand{\nominataReit}{Prof\textsuperscript{a}.~Wrana Maria Panizzi}
-% \renewcommand{\nominataReitname}{Reitora}
-% \renewcommand{\nominataPRE}{Prof.~Jos{\'e} Carlos Ferraz Hennemann}
-% \renewcommand{\nominataPREname}{Pr{\'o}-Reitor de Ensino}
-% \renewcommand{\nominataPRAPG}{Prof\textsuperscript{a}.~Joc{\'e}lia Grazia}
-% \renewcommand{\nominataPRAPGname}{Pr{\'o}-Reitora Adjunta de P{\'o}s-Gradua{\c{c}}{\~a}o}
-% \renewcommand{\nominataDir}{Prof.~Philippe Olivier Alexandre Navaux}
-% \renewcommand{\nominataDirname}{Diretor do Instituto de Inform{\'a}tica}
-% \renewcommand{\nominataCoord}{Prof.~Carlos Alberto Heuser}
-% \renewcommand{\nominataCoordname}{Coordenador do PPGC}
-% \renewcommand{\nominataBibchefe}{Beatriz Regina Bastos Haro}
-% \renewcommand{\nominataBibchefename}{Bibliotec{\'a}ria-chefe do Instituto de Inform{\'a}tica}
-% \renewcommand{\nominataChefeINA}{Prof.~Jos{\'e} Valdeni de Lima}
-% \renewcommand{\nominataChefeINAname}{Chefe do \deptINA}
-% \renewcommand{\nominataChefeINT}{Prof.~Leila Ribeiro}
-% \renewcommand{\nominataChefeINTname}{Chefe do \deptINT}
-
-% A seguir são apresentados comandos específicos para alguns
-% tipos de documentos.
-
-% Relatório de Pesquisa [rp]:
-% \rp{123}             % numero do rp
-% \financ{CNPq, CAPES} % orgaos financiadores
-
-% Trabalho Individual [ti]:
-% \ti{123}     % numero do TI
-% \ti[II]{456} % no caso de ser o segundo TI
-
-% Monografias de Especialização [espec]:
-% \espec{Redes e Sistemas Distribuídos}      % nome do curso
-% \coord[Profa.~Dra.]{Weber}{Taisy da Silva} % coordenador do curso
-% \dept{INA}                                 % departamento relacionado
-
 %
 % palavras-chave
 % iniciar todas com letras minúsculas, exceto no caso de abreviaturas
@@ -100,8 +63,6 @@ Clínicas de Porto Alegre}
 %\chapter*{Agradecimentos}
 %Agradeço ao \LaTeX\ por não ter vírus de macro\ldots
 
-
-
 % resumo na língua do documento
 \begin{abstract}
   A análise filogenética compreende o estudo da evolução dos organismos e suas
@@ -126,19 +87,20 @@ Clínicas de Porto Alegre}
 
 % lista de abreviaturas e siglas
 % o parametro deve ser a abreviatura mais longa
-\begin{listofabbrv}{SPMD}
-    \item[SMP] Symmetric Multi-Processor
-    \item[NUMA] Non-Uniform Memory Access
-    \item[SIMD] Single Instruction Multiple Data
-    \item[SPMD] Single Program Multiple Data
-    \item[ABNT] Associação Brasileira de Normas Técnicas
+\begin{listofabbrv}{HPCA}
+    \item[HCPA] Hospital de Clínicas de Porto Alegre
+    \item[PAML] \textit{Phylogenetic Analysis By Maximum Likelihood}
+    \item[CPU] \textit{Central Processing Unit}
+    \item[GPU] \textit{Graphics Processing Unit}
+    \item[BFGS] Broyden–Fletcher–Goldfarb–Shanno
+    \item[DNA] Ácido desoxirribonucleico
+    \item[RNA] Ácido ribonucleico
 \end{listofabbrv}
 
 % idem para a lista de símbolos
-% \begin{listofsymbols}{$\alpha\beta\pi\omega$}
-%     \item[$\sum{\frac{a}{b}}$] Somatório do produtório
-%     \item[$\alpha\beta\pi\omega$] Fator de inconstância do resultado
-% \end{listofsymbols}
+\begin{listofsymbols}{$\omega$}
+    \item[$\omega$] Taxa de substituição
+\end{listofsymbols}
 
 % sumario
 \tableofcontents
@@ -170,12 +132,268 @@ de ponta a ponta da análise. Com isso, obteve-se uma redução significativa do
 tempo total de execução da análise, que de vários dias passou a levar algumas
 horas.
 
+\section{Análise filogenética}
+
 A análise filogenética, cujos softwares associados foram objeto de estudo desse
 trabalho, compreende o estudo da evolução de um ou mais organismos e suas
-características. Para compreender tal análise em mais detalhes, convém primeiro
-reforçar alguns conceitos mais básicos de biologia.
+características. Os pesquisadores do HCPA realizam tal estudo evolutivo a nível
+molecular, através da comparação da informação genética de diferentes linhagens
+ou populações de um ser.
 
-\section{Conceitos de biologia}
+A informação genética presente no DNA dos seres vivos, objeto de estudo do
+grupo de pesquisa do HCPA, é utilizada no processo de síntese proteica, onde os
+códons (tripla de nucleotídeos) presentes no RNA mensageiro, gerado a partir do
+DNA, determinam a síntese de aminoácidos específicos, componentes das
+proteínas, macromoléculas fundamentais à vida.
+
+Existem quatro tipos de nucleotídeos no código genético, formados por adenina
+(A), guanina (G), uracila (U), e citosina (C). Dessa forma, existem $4^3 = 64$
+códons distintos, dos quais três sâo códons de terminação, que indicam o fim da
+etapa de tradução na síntese protéica, enquanto os outros 61 códons traduzem
+para um aminoácido específico.
+
+Apenas 20 aminoácidos compõem as proteínas em seres vivos. Sendo assim, a
+maioria dos aminoácidos é traduzido por mais de um códon. Em outras palavras, a
+substituição de certos códons no DNA não produz alteração nos aminoácidos
+gerados na síntese proteica.
+
+As substituições que não geram alterações na síntese proteica são chamadas de
+sinônimas ou silenciosas, enquanto as que modificam os aminoácidos gerados são
+não-sinônimas. Acredita-se que as substituições sinônimas sejam mais comuns e
+não sofram tanta pressão seletiva. A taxa de substituiçõs sinônimas e não
+sinônimas $\omega = \frac{dN}{dS}$ é uma medida de seleção natual, conforme a
+tabela abaixo.\cite{yang2002codon}
+
+\begin{table}[h]
+    \caption{Taxas de substituição}
+    % OBS: não use \begin{center}, pois este aumenta o espaçamento entre a caption/legend e a tabela
+    % Para figuras, a aparência é melhor com o espaçamento extra
+    \centering
+        \begin{tabular}{c|c}
+          \hline
+          \textit{Taxa}  &   \textit{Seleção} \\
+          \hline
+          \hline
+          $\omega = 1$ & Seleção neutra \\
+          $\omega < 1$ & Seleção negativa ou purificadora \\
+          $\omega > 1$ & Seleção positiva \\
+          \hline
+        \end{tabular}
+      \legend{Fonte: \cite{yang2002codon}}
+    \label{tbl:ex1}
+\end{table}
+
+Existem diversos modelos de análise dessas substituições em diferentes
+linhagens de um indivíduo, e variados softwares que os implementam. Esse
+trabalho foca nos modelos e softwares de análise filogenética
+utilizados pelo grupo do HCPA.
+
+\section{Software utilizado e abordagens selecionadas}
+
+O \textit{Phylogenetic Analysis by Maximum Likelihood} (PAML) é um pacote de
+software com ferrametas para análise filogenética utilizando métodos
+estatísticos de máxima verossimilhança.\cite{yang2007paml} Dentre
+outras ferramentas disponíveis no pacote se destaca o codeml,
+amplamente utilizado na literatura.\cite{maldonado2016lmap}
+
+Apesar de estatisticamente robusto,\cite{maldonado2016lmap} o codeml
+possui implementação ingênua de métodos numéricos computacionalmente
+custosos.\cite{yang2020paml} Para o caso de uso do grupo de pesquisa em
+genética do HCPA, o tempo de execução é de vários dias.
+
+Na literatura encontra-se implementações diversas que buscam melhorar o
+desempenho do codeml. Em \cite{moretti2012gcodeml} os autores fornecem
+uma solução para cluster; em \cite{maldonado2016lmap} é implementado uma
+ferramenta para execução paralela de múltiplos \textit{jobs} do codeml
+em uma única máquina (em CPU); em \cite{schabauer2012slimcodeml} os autores
+re-escrevem o software melhorando sua organização e otimizando-o,
+substituindo implementações ingênuas por aquelas de bibliotecas de métodos
+numéricos como BLAS e LAPACK, e em \cite{valle2014optimization} os
+mesmos autores fornecem uma implementação paralela (em CPU) para um
+sub-conjunto de métodos do seu software.
+
+Nesse trabalho foram exploradas todas as soluções supracitadas com exceção da
+abordagem para cluster, visto que os pesquisadores do HCPA vem
+utilizando um \textit{setup} com apenas uma máquina, além da solução em
+questão ser customizada para um cluster específico ao qual os autores
+desse trabalho não possuem acesso.
+
+Além disso, nesse trabalho o codeml foi perfilado utilizando as ferramentas
+callgrind e kcachegrind,\cite{weidendorfer2008sequential} para os dados
+de entrada do caso de uso do grupo de pesquisa do HCPA. Com base no
+resultado desse perfil de execução, foram implementadas e testadas
+algumas abordagens de paralelismo em CPU das rotinas que consumiam o
+maior tempo de execução do codeml, mas tal abordagem foi posteriormente
+descartada em favor das soluções encontradas na literatura, conforme
+descrito em \ref{subsec:codemlpar}. Uma abordagem para GPU foi estudada, mas igualmente
+descartada em favor das soluções existentes, conforme descrito em \ref{subsec:codemlpar}.
+
+\subsection{Perfil de execução e estudo de implementação paralela}
+\label{subsec:codemlpar}
+
+A fim de determinar os gargalos de desempenho do codeml para o caso de uso do
+grupo de pesquisa do HCPA, foi traçado um perfil de execução da aplicação com
+os dados de entrada fornecidos pelos pesquisadores do HCPA utilizando as
+ferramentas callgrind e kcachegrind.\cite{weidendorfer2008sequential}
+
+O perfil de execução revelou que $97,28\%$ do tempo de execução da aplicação
+era dispendido na rotina \textit{ming2}. Um estudo do código fonte revela
+que ela implementa o algoritmo de Broyden–Fletcher–Goldfarb–Shanno (BFGS), um
+método numérico para resolução de problemas de otimização. Tal método possui,
+no caso do codeml, duas sub-rotinas responsáveis por quase a totalidade de seu
+tempo de execução: \textit{gradientB} e \textit{LineSearch2}.
+
+A rotina \textit{gradientB}, responsável por $42,99\%$ do tempo total da
+aplicação, implementa o cálculo do gradiente via diferenças finitas, enquanto
+\textit{LineSearch2}, responsável por $53,27\%$ do tempo de execução,
+implementa um método numérico de busca linear utilizando interpolação
+quadrática, descrito em \cite{wolfe1978numerical}. A
+figura~\ref{fig:kcachegrind} fornece uma visualização da pilha de chamadas em
+questão.
+
+\begin{figure}
+  \caption{Pilha de chamadas do codeml}
+    \begin{center}
+        \includegraphics[width=0.3\linewidth]{img/kcachegrind.png}
+    \end{center}
+    \legend{Fonte: Os Autores}
+    \label{fig:kcachegrind}
+\end{figure}
+
+Foi considerada uma implementação paralela para todos os métodos numéricos
+supracitados. Em um primeiro momento o cálculo do gradiente foi paralelizado
+utilizando OpenMP, um modelo de programação paralela para sistemas com
+múltiplos processadores com memória compartilhada.\cite{chandra2001parallel} A
+escolha se justifica pela implementação ser trivial.
+
+A fim de garantir a corretude da implementação paralela, foram desenvolvidos
+testes unitários para a função, utilizando dados de entrada arbitrários e
+comparando os resultados da implementação sequencial e paralela. Os testes
+revelaram que a implementação paralela gerava resultados diferentes da
+sequencial. Um estudo da implementação revelou que ela está correta, mas a
+função cujo grandiente está sendo calculado é implementada de forma não
+\textit{thread-safe}, gerando condições de corrida.
+
+Foi considerado a re-implementação das funções sendo diferenciadas, todavia, o
+uso extensivo de variáveis globais e memória compartilhada na implementação
+original do codeml demonstrou-se um grande obstáculo para essa abordagem, que
+por isso foi abandonada.
+
+A partir daí foram voltadas as atenções para \textit{LineSearch2}, mas não foi
+encontrado na literatura implementações paralelas para o método descrito em
+\cite{wolfe1978numerical}, e o algoritmo não é de paralelização trivial,
+portando tal abordagem também foi abandonada.
+
+Por fim, as atenções foram voltadas para o próprio \textit{ming2}, cujo método
+numérico (BFGS) é iterativo. Foi realizada uma revisão bibliográfica, que
+revelou implementações paralelas desse algoritmo para GPU em
+\cite{fei2014parallel}. Todavia, além de complexa e de difícil adaptação para o
+caso do codeml, o algoritmo não performa bem para entradas
+pequenas,\cite{fei2014parallel}. que é o caso do codeml que trabalha com um
+tamanho fixo de 61 (o número códons que traduzem para aminoácidos). Dessa
+forma, essa abordagem também foi descartada.
+
+Esgotadas todas possibilidades de paralelização das rotinas responsáveis por
+quase a totalidade do tempo de execução do codeml para o caso de uso dos
+pesquisadores do HCPA, partiu-se para um estudo das soluções presentes na
+literatura.
+
+\subsection{Estudo do desempenho de soluções da literatura}
+
+A primeira aplicação a ser testada foi o
+slimcodeml,\cite{schabauer2012slimcodeml} visto que o
+fastcodeml\cite{valle2014optimization} não implementa os modelos necessários à
+análise do grupo do HCPA. Utilizando os dados de entrada fornecidos por
+pesquisadores do grupo, obteve-se uma redução no tempo total de execução de
+16h38m para 5h24m, uma redução de 67,53\% no tempo de execução. Os testes foram
+realizados em um ambiente controlado, de uso exclusivo dos autores, em uma
+máquina TODO.
+
+Em um segundo momento foi testado a aplicação TODO,\cite{maldonado2016lmap}
+
+\section{samtools}
+
+Outra aplicação utilizada no pipeline de análise do grupo de pesquisa em
+genética é o pacote samtools,\cite{li2009sequence} aplicação amplamente
+utilizada na literatura para análise de sequências
+genéticas.\cite{danecek2021twelve} O samtoools e a ferramenta bcftools que o
+acompanha são construídos em cima da biblioteca htslib, dos mesmos autores, que
+permite a leitura e manipulação de arquivos de arquivos em formatos diversos
+representando sequências genéticas alinhadas.\cite{danecek2021twelve}
+
+Em mais detalhes, o formato SAM traz uma representação em texto-plano das
+sequências genéticas alinhadas, o BAM é seu equivalente binário, e o CRAM é uma
+versão binária com compressão. Enquanto o samtools manipula esses arquivos, o
+bcftools manipula os arquivos no formato VCF, que armazena informação de
+variantes genéticas em texto-plano, e no formato BCF, seu equivalente
+binário.\cite{danecek2021twelve}
+
+Os dados de sequenciamento genético utilizados como entrada no pipeline de
+análise do grupo de pesquisa do HCPA são obtidos no formato CRAM do projeto
+1000 Genomes, um esforço colaborativo internacional que visa sequenciar o
+genoma humano e disponibilizar a informação publicamente.\cite{via20101000}
+
+Nesse trabalho foi estutdado, otimizado, e paralelizado o pipeline de análise
+do grupo de pesquisa do HCPA utilizando o samtools e o bcftools, reduzindo o
+tempo de execução de vários dias para poucas horas.
+
+\subsection{Estudo e otimização}
+
+O pipeline de análise original fornecido pelos pesquisadores pode ser dividido
+em duas etapas. Na primeira etapa é executada uma conversão de formato de CRAM
+para BAM e uma rotina de indexação dos arquivos (usado pelo samtools para
+agilizar etapas posteriores da análise). Essa etapa na sua forma originalmente
+usada pelo grupo de pesquisa encontra-se reproduzida na figura~\ref{fig:stage1_orig}.
+
+\begin{figure}
+  \caption{Etapa 1: Original}
+    \begin{center}
+      \includegraphics[width=0.5\linewidth]{img/stage1_orig.png}
+    \end{center}
+    \legend{Fonte: Os Autores}
+    \label{fig:stage1_orig}
+\end{figure}
+
+
+\subsection{Paralelização}
+
+TODO
+
+%Alguns estudos medem seleção positiva comparando pares de DNA para
+%  estimar as taxas de substituição sob todos sítios.  Todavia, devido a
+%  limitações estruturais e funcionais a evolução afeta somente alguns síteos
+%  proteicos.  O software PAML utiliza modelos de substituição de códon em que
+%  \omega varia ao longo de síteos e linhagens.
+%
+%  No software, os _branch models_ permitem variar \omega entre diversas
+%  ramificações da filogenia.  Os _site models_ permitem variar \omega entre
+%  sites (entre codons ou aminoácidos na proteína). Diversos modelos são
+%  implementados no codeml usando a variável Nssites e model=0.
+%
+%  (!) O codeml usa métodos de maximum-likelihood, um problema de otimização
+%  multi-dimensional resolvido numericamente. O PAML implementa dois algoritmos
+%  iterativos: O primeiro (method=0) é um algoritmo de minimização de propósito
+%  geral que faz uso de derivadas de primeiro grau determinadas através de
+%  diferenças finitas (paralilizável!) e de segundo grau (determinadas usando
+%  BFGS).  O segundo (method=1) Usa BFGS de forma iterada até a convergência ser
+%  atingida, e uma fase de otimização de ramificações é realizada
+%  sequencialmente para cada ramificação (branch) até todas serem otimizadas.
+%  Manual diz que estimativas são correlacionadas.
+%
+%  > codeml is a part of the PAML package, which is a suite of programs for
+%  > phylogenetic analyses of DNA or protein sequences using maximum likelihood
+%  > (ML).
+%  >
+%  > In simple words, the aim of codeml is to detect positive selection events
+%  > in the history of species.
+%  >
+%  > With the seqtype set to 1, codeml carries out ML analysis of protein-coding
+%  > DNA sequences using codon substitution models (e.g., Goldman and Yang
+%  > 1994). With seqtype set to 2, codeml carries out ML analysis of amino acid
+%  > sequences under a number of amino acid substitution models.
+%
+
+%\section{samtools}
 
 
 
@@ -183,7 +401,7 @@ reforçar alguns conceitos mais básicos de biologia.
 %
 %Esta seção faz referência às Figuras~\ref{fig:estrutura},~\ref{fig:ex1} e~\ref{fig:ex2}, a título de exemplo. A primeira figura apresenta a estrutura de uma figura. A \emph{descrição} deve aparecer \textbf{acima} da figura. Abaixo da figura, deve ser indicado a origem da imagem, mesmo se essa for apenas os autores do texto.
 %
-%A Figura~\ref{fig:ex1} representa o caso mais comum, onde a figura propriamente dita é importada de um arquivo ( neste exemplo o formato é \texttt{eps} ou \texttt{pdf}. Veja a seção \ref{sec:fig_format}). A Figura~\ref{fig:ex2} exemplifica o uso do environment \texttt{picture}, para desenhar usando o próprio~\LaTeX.
+%A Figura~\ref{fig:ex1} representa o caso mais comum, onde a figura propriamente dita é importada de um arquivo ( neste exemplo o formato é \texttt{eps} ou \texttt.png}. Veja a seção \ref{sec:fig_format}). A Figura~\ref{fig:ex2} exemplifica o uso do environment \texttt{picture}, para desenhar usando o próprio~\LaTeX.
 %
 %\begin{figure}[h]
 %    \caption{Descrição da Figura deve ir no topo}
@@ -257,7 +475,7 @@ reforçar alguns conceitos mais básicos de biologia.
 %\subsection{Formato de Figuras}
 %\label{sec:fig_format}
 %
-%O LaTeX permite utilizar vários formatos de figuras, entre eles \emph{eps}, \emph{pdf}, \emph{jpeg} e \emph{png}. Programas de diagramação como Inkscape (e mesmo LibreOffice) permitem gerar arquivos de imagens vetoriais que podem ser utilizados pelo LaTeX sem dificuldade. Pacotes externos permitem utilizar SVG e outros formatos.
+%O LaTeX permite utilizar vários formatos de figuras, entre eles \emph{eps}, \emph.png}, \emph{jpeg} e \emph{png}. Programas de diagramação como Inkscape (e mesmo LibreOffice) permitem gerar arquivos de imagens vetoriais que podem ser utilizados pelo LaTeX sem dificuldade. Pacotes externos permitem utilizar SVG e outros formatos.
 %
 %Dia e xfig são programas utilizados por dinossauros para gerar figuras vetoriais. Se possível, evite-os.
 %
@@ -271,57 +489,6 @@ reforçar alguns conceitos mais básicos de biologia.
 %\paragraph{Parágrafo}
 %Exemplo de um parágrafo.
 
-\section{Sobre as referências bibliográficas}
-
-A classe \emph{iiufrgs} faz uso do pacote \emph{abnTeX2} com algumas alterações
-feitas por Sandro Rama Fiorini. Culpe ele se algo der errado. Agradeça a ele
-pelo que der certo. As modificações dão uma camada de tinta NATBIB-style,
-já que o abntex2 usa uns comandos de citação feitos para alienígenas de 5 braços
-wtf. Exemplos de citação:
-
-\begin{itemize}
-    \item \emph{cite}: Unicórnios são verdes \cite{Adams2009Conceptual};
-    \item \emph{citep}:Unicórnios são verdes \citep{Adams2009Conceptual};
-    \item \emph{citet}: Segundo \citet{Adams2009Conceptual}, unicórnios são
-    verdes.
-    \item \emph{citen or citenum}: Segundo \citen{Adams2009Conceptual},
-    unicórnios são verdes.
-    \item \emph{citeauthor e citeyearpar}: Segundo artigos de
-    \citeauthor{Adams2009Conceptual} , unicórnios são verdes
-    \citeyearpar{Adams2009Conceptual}.
-
-\end{itemize}
-
-O estilo abnt fornecido antigamente pelo UTUG não é mais recomendado, pois não
-produz saída de acordo com as exigências da biblioteca.
-
-Recomenda-se o uso de bibtex para gerenciar as referências (veja o arquivo
-biblio.bib).
-
-\section{Mais uma Seção}
-
-Agora vamos fazer várias seções para termos valores de 2 dígitos no \contentsname.
-
-\section{Mais uma Seção}
-\section{Mais uma Seção}
-\section{Mais uma Seção}
-\section{Mais uma Seção}
-\section{Mais uma Seção}
-\section{Mais uma Seção}
-\section{Mais uma Seção}
-\section{Mais uma Seção}
-\section{Mais uma Seção}
-
-
-% e aqui vai a parte principal
-%
-% \chapter{Estado da arte}
-% \chapter{Mais estado da arte}
-% \chapter{A minha contribuição}
-% \chapter{Prova de que a minha contribuição é válida}
-% \chapter{Conclusão}
-
-% referências
 % aqui será usado o environment padrao `thebibliography'; porém, sugere-se
 % seriamente o uso de BibTeX e do estilo abnt.bst (veja na página do
 % UTUG)
