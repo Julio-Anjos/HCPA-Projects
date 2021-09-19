@@ -1,0 +1,8 @@
+digraph G {
+  ming2 [ label="ming2\n97,28%" ]
+  linesearch [ label="linesearch\n53,27%" ]
+  gradientB [ label="gradientB\n42,99%" ]
+
+  ming2 -> linesearch
+  ming2 -> gradientB
+}

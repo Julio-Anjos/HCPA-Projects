@@ -1,0 +1,32 @@
+digraph G {
+  CRAM1 [ label="Indivíduo 1\n.CRAM" ]
+  CRAM2 [ label="Indivíduo 2\n.CRAM" ]
+  CRAMN [ label="Indivíduo N\n.CRAM" ]
+
+  view [ label = "samtools view -b" ]
+  index [ label = "samtools index" ]
+
+  BAM1 [ label="Indivíduo 1\n.BAM" ]
+  BAM2 [ label="Indivíduo 2\n.BAM" ]
+  BAMN [ label="Indivíduo N\n.BAM" ]
+
+  BAI1 [ label="Indivíduo 1\n.BAI" ]
+  BAI2 [ label="Indivíduo 2\n.BAI" ]
+  BAIN [ label="Indivíduo N\n.BAI" ]
+
+  CRAM1 -> view
+  CRAM2 -> view
+  CRAMN -> view
+
+  view -> BAM1
+  view -> BAM2
+  view -> BAMN
+
+  BAM1 -> index
+  BAM2 -> index
+  BAMN -> index
+
+  index -> BAI1
+  index -> BAI2
+  index -> BAIN
+}
