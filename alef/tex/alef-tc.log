@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2019/dev/Debian) (preloaded format=pdflatex 2019.11.4)  18 SEP 2021 13:01
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2019/dev/Debian) (preloaded format=pdflatex 2019.11.4)  19 SEP 2021 14:49
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -720,6 +720,13 @@ text indent calculated (lof, 1): 21.0pt
 number indent calculated (lof, 1): 18.0pt
 text noindent (lof, 1): 21.0pt
 number noindent (lof, 1): 0.0pt
+number indent by \l@... (lof, 1):  18.0pt
+text indent by \l@... (lof, 1):  27.60004pt
+number indent by parent (lof, 1):  18.0pt
+text indent calculated (lof, 1): 21.0pt
+number indent calculated (lof, 1): 18.0pt
+text noindent (lof, 1): 21.0pt
+number noindent (lof, 1): 0.0pt
 )
 \tf@lof=\write4
 \openout4 = `alef-tc.lof'.
@@ -825,11 +832,11 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 [10
 
 ] [11]
-<img/kcachegrind.png, id=181, 221.82875pt x 121.45375pt>
+<img/kcachegrind.png, id=183, 302.12875pt x 202.7575pt>
 File: img/kcachegrind.png Graphic file (type png)
 <use img/kcachegrind.png>
 Package pdftex.def Info: img/kcachegrind.png  used on input line 257.
-(pdftex.def)             Requested size: 128.0387pt x 70.1022pt.
+(pdftex.def)             Requested size: 128.0387pt x 85.92484pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
@@ -850,40 +857,47 @@ Underfull \hbox (badness 10000) has occurred while \output is active
  []
 
 [14]
-<img/stage1_orig.png, id=232, 322.20375pt x 335.2525pt>
+<img/stage1_orig.png, id=234, 872.25874pt x 519.9425pt>
 File: img/stage1_orig.png Graphic file (type png)
 <use img/stage1_orig.png>
-Package pdftex.def Info: img/stage1_orig.png  used on input line 351.
-(pdftex.def)             Requested size: 213.39568pt x 222.04489pt.
- (./alef-tc.bbl [15 <./img/stage1_orig.png>])
+Package pdftex.def Info: img/stage1_orig.png  used on input line 356.
+(pdftex.def)             Requested size: 362.77525pt x 216.2402pt.
+<img/stage2_orig.png, id=236, 870.25125pt x 712.6625pt>
+File: img/stage2_orig.png Graphic file (type png)
+<use img/stage2_orig.png>
+Package pdftex.def Info: img/stage2_orig.png  used on input line 376.
+(pdftex.def)             Requested size: 362.77525pt x 297.08698pt.
 
-AED: lastpage setting LastPage
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
+ [15 <./img/stage1_orig.png>] (./alef-tc.bbl
 Underfull \hbox (badness 10000) has occurred while \output is active
 \T1/ptm/m/n/10.95 16
  []
 
-[16
+[16 <./img/stage2_orig.png>]) 
+AED: lastpage setting LastPage
+[17
 
 ]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 503.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 503.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 527.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 527.
  (./alef-tc.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 503.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 503.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 527.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 527.
 Package rerunfilecheck Info: File `alef-tc.out' has not changed.
 (rerunfilecheck)             Checksum: E81A8315A12C6D5E4AA3BA2ACF58C69E;2825.
 
 
 LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 503.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 527.
  ) 
 Here is how much of TeX's memory you used:
- 22148 strings out of 492615
- 368615 string characters out of 6131390
- 455067 words of memory out of 5000000
- 25822 multiletter control sequences out of 15000+600000
+ 22156 strings out of 492615
+ 368765 string characters out of 6131390
+ 455118 words of memory out of 5000000
+ 25827 multiletter control sequences out of 15000+600000
  554102 words of font info for 47 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  54i,10n,67p,787b,498s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -894,10 +908,10 @@ fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/t
 ype1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw
 /times/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.p
 fb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on alef-tc.pdf (16 pages, 118299 bytes).
+Output written on alef-tc.pdf (17 pages, 242690 bytes).
 PDF statistics:
- 284 PDF objects out of 1000 (max. 8388607)
- 250 compressed objects within 3 object streams
- 58 named destinations out of 1000 (max. 500000)
- 139 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 292 PDF objects out of 1000 (max. 8388607)
+ 256 compressed objects within 3 object streams
+ 60 named destinations out of 1000 (max. 500000)
+ 144 words of extra memory for PDF output out of 10000 (max. 10000000)
 

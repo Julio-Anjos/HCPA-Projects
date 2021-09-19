@@ -1,32 +1,34 @@
 digraph G {
   CRAM1 [ label="Indivíduo 1\n.CRAM" ]
-  CRAM2 [ label="Indivíduo 2\n.CRAM" ]
   CRAMN [ label="Indivíduo N\n.CRAM" ]
 
-  view [ label = "samtools view -b" ]
-  index [ label = "samtools index" ]
+  view1 [ label = "samtools view -b" ]
+  viewN [ label = "samtools view -b" ]
+  index1 [ label = "samtools index" ]
+  indexN [ label = "samtools index" ]
 
-  BAM1 [ label="Indivíduo 1\n.BAM" ]
-  BAM2 [ label="Indivíduo 2\n.BAM" ]
-  BAMN [ label="Indivíduo N\n.BAM" ]
+  viewchr1 [ label = "samtools view chr" ]
+  viewchrN [ label = "samtools view chr" ]
 
-  BAI1 [ label="Indivíduo 1\n.BAI" ]
-  BAI2 [ label="Indivíduo 2\n.BAI" ]
-  BAIN [ label="Indivíduo N\n.BAI" ]
+  CHR1_1 [ label="Cromossomo 1\nIndivíduo 1\n.BAM" ]
+  CHR22_1 [ label="Cromossomo 22\nIndivíduo 1\n.BAM" ]
 
-  CRAM1 -> view
-  CRAM2 -> view
-  CRAMN -> view
+  CHR1_N [ label="Cromossomo 1\nIndivíduo N\n.BAM" ]
+  CHR22_N [ label="Cromossomo 22\nIndivíduo N\n.BAM" ]
 
-  view -> BAM1
-  view -> BAM2
-  view -> BAMN
+  CRAM1 -> view1
+  CRAMN -> viewN
 
-  BAM1 -> index
-  BAM2 -> index
-  BAMN -> index
+  view1 -> index1
+  viewN -> indexN
 
-  index -> BAI1
-  index -> BAI2
-  index -> BAIN
+  index1 -> viewchr1
+  indexN -> viewchrN
+
+  viewchr1 -> CHR1_1
+  viewchrN -> CHR1_N
+
+  viewchr1 -> CHR22_1
+  viewchrN -> CHR22_N
 }
+

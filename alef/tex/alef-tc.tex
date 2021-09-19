@@ -2,6 +2,7 @@
 \usepackage[utf8]{inputenc}   % pacote para acentuação
 \usepackage{graphicx}         % pacote para importar figuras
 \usepackage{times}            % pacote para usar fonte Adobe Times
+\usepackage{algpseudocode}
 % \usepackage{palatino}
 % \usepackage{mathptmx}       % p/ usar fonte Adobe Times nas fórmulas
 \usepackage[alf,abnt-emphasize=bf]{abntex2cite}	% pacote para usar citações abnt
@@ -31,16 +32,13 @@ Clínicas de Porto Alegre}
 % palavras-chave
 % iniciar todas com letras minúsculas, exceto no caso de abreviaturas
 %
-\keyword{análise filogenética}
+\keyword{bioinformática}
 \keyword{otimização}
 \keyword{paralelismo}
 %\keyword{}
 
 %\settowidth{\seclen}{1.10~}
 
-%
-% inicio do documento
-%
 \begin{document}
 
 % folha de rosto
@@ -76,7 +74,7 @@ Clínicas de Porto Alegre}
 % resumo na outra língua
 % como parametros devem ser passados o titulo e as palavras-chave
 % na outra língua, separadas por vírgulas
-\begin{englishabstract}{Study and optimization of the phylogenetic analysis software used by Hospital de Clínicas de Porto Alegre}{Phylogenetic analysis. Optimization. Parallelism.} Phylogenetic analysis comprises the study of the evolution of living beings and their characteristics. In this paper we studied and optimized the performance bottlenecks present in the phylogenetic analysis software used by the genetics research group from the Hospital de Clínicas de Porto Alegre, using parallel programming techniques. The analysis total execution time was reduced from X to Y. % TODO
+\begin{englishabstract}{Study and optimization of the phylogenetic analysis software used by Hospital de Clínicas de Porto Alegre}{Bioinformatics, optimization, parallelism} Phylogenetic analysis comprises the study of the evolution of living beings and their characteristics. In this paper we studied and optimized the performance bottlenecks present in the phylogenetic analysis software used by the genetics research group from the Hospital de Clínicas de Porto Alegre, using parallel programming techniques. The analysis total execution time was reduced from X to Y. % TODO
 \end{englishabstract}
 
 % lista de figuras
@@ -100,6 +98,8 @@ Clínicas de Porto Alegre}
 % idem para a lista de símbolos
 \begin{listofsymbols}{$\omega$}
     \item[$\omega$] Taxa de substituição
+    \item[$dN$] Substituições não-sinônimas
+    \item[$dS$] Substituições sinônimas
 \end{listofsymbols}
 
 % sumario
@@ -189,6 +189,8 @@ trabalho foca nos modelos e softwares de análise filogenética
 utilizados pelo grupo do HCPA.
 
 \section{Software utilizado e abordagens selecionadas}
+
+\section{Pacote PAML}
 
 O \textit{Phylogenetic Analysis by Maximum Likelihood} (PAML) é um pacote de
 software com ferrametas para análise filogenética utilizando métodos
@@ -311,7 +313,7 @@ máquina TODO.
 
 Em um segundo momento foi testado a aplicação TODO,\cite{maldonado2016lmap}
 
-\section{samtools}
+\section{Pacote samtools}
 
 Outra aplicação utilizada no pipeline de análise do grupo de pesquisa em
 genética é o pacote samtools,\cite{li2009sequence} aplicação amplamente
@@ -337,99 +339,79 @@ Nesse trabalho foi estutdado, otimizado, e paralelizado o pipeline de análise
 do grupo de pesquisa do HCPA utilizando o samtools e o bcftools, reduzindo o
 tempo de execução de vários dias para poucas horas.
 
-\subsection{Estudo e otimização}
+\subsection{Fluxo de análise original}
 
-O pipeline de análise original fornecido pelos pesquisadores pode ser dividido
+O fluxo de análise original fornecido pelos pesquisadores pode ser dividido
 em duas etapas. Na primeira etapa é executada uma conversão de formato de CRAM
-para BAM e uma rotina de indexação dos arquivos (usado pelo samtools para
-agilizar etapas posteriores da análise). Essa etapa na sua forma originalmente
-usada pelo grupo de pesquisa encontra-se reproduzida na figura~\ref{fig:stage1_orig}.
+para BAM utilizando o comando \textit{samtools view -b}, seguida de uma rotina
+de indexação dos arquivos utilizando \textit{samtools index}.
+
+Uma vez convertidos e indexados, cada arquivo de entrada é separado em 22
+arquivos de saída, um para cada par de cromossomos autossômicos humanos,
+utilizando o comando \textit{samtools view chr}. Essa etapa na sua forma
+originalmente usada pelo grupo de pesquisa encontra-se reproduzida na
+figura~\ref{fig:stage1_orig}.
 
 \begin{figure}
-  \caption{Etapa 1: Original}
+  \caption{Fluxo de análise original, etapa 1}
     \begin{center}
-      \includegraphics[width=0.5\linewidth]{img/stage1_orig.png}
+      \includegraphics[width=0.85\linewidth]{img/stage1_orig.png}
     \end{center}
     \legend{Fonte: Os Autores}
     \label{fig:stage1_orig}
 \end{figure}
 
+Numa segunda etapa, para cada cromossomo são aglutinados os respectivos
+arquivos de todos indivíduos, utilizando o comando \textit{samtools merge}.
+Posteriormente esses arquivos são indexados, e os comandos \textit{bcftools
+mpileup} e \textit{bcftools call} são invocados para executar a chamada de
+variantes.
 
-\subsection{Paralelização}
+Por fim, o comando \textit{bcftools view} é executado para converter a saída do
+formato BCF para VCF. Independente do número de arquivos de entrada, a saída é
+sempre 22 arquivos. Essa etapa encontra-se reproduzida na
+figura~\ref{fig:stage2_orig}.
 
-TODO
+\begin{figure}
+  \caption{Fluxo de análise original, etapa 2}
+    \begin{center}
+      \includegraphics[width=0.85\linewidth]{img/stage2_orig.png}
+    \end{center}
+    \legend{Fonte: Os Autores}
+    \label{fig:stage2_orig}
+\end{figure}
 
-%Alguns estudos medem seleção positiva comparando pares de DNA para
-%  estimar as taxas de substituição sob todos sítios.  Todavia, devido a
-%  limitações estruturais e funcionais a evolução afeta somente alguns síteos
-%  proteicos.  O software PAML utiliza modelos de substituição de códon em que
-%  \omega varia ao longo de síteos e linhagens.
-%
-%  No software, os _branch models_ permitem variar \omega entre diversas
-%  ramificações da filogenia.  Os _site models_ permitem variar \omega entre
-%  sites (entre codons ou aminoácidos na proteína). Diversos modelos são
-%  implementados no codeml usando a variável Nssites e model=0.
-%
-%  (!) O codeml usa métodos de maximum-likelihood, um problema de otimização
-%  multi-dimensional resolvido numericamente. O PAML implementa dois algoritmos
-%  iterativos: O primeiro (method=0) é um algoritmo de minimização de propósito
-%  geral que faz uso de derivadas de primeiro grau determinadas através de
-%  diferenças finitas (paralilizável!) e de segundo grau (determinadas usando
-%  BFGS).  O segundo (method=1) Usa BFGS de forma iterada até a convergência ser
-%  atingida, e uma fase de otimização de ramificações é realizada
-%  sequencialmente para cada ramificação (branch) até todas serem otimizadas.
-%  Manual diz que estimativas são correlacionadas.
-%
-%  > codeml is a part of the PAML package, which is a suite of programs for
-%  > phylogenetic analyses of DNA or protein sequences using maximum likelihood
-%  > (ML).
-%  >
-%  > In simple words, the aim of codeml is to detect positive selection events
-%  > in the history of species.
-%  >
-%  > With the seqtype set to 1, codeml carries out ML analysis of protein-coding
-%  > DNA sequences using codon substitution models (e.g., Goldman and Yang
-%  > 1994). With seqtype set to 2, codeml carries out ML analysis of amino acid
-%  > sequences under a number of amino acid substitution models.
-%
+\subsection{Fluxo de análise otimizado}
 
-%\section{samtools}
+Através de um estudo da literatura e do manual das ferramentas utilizadas
+percebeu-se oportunidade de melhorias no fluxo de análise utilizado pelos
+pesquisadores. Em particular, em,\cite{danecek2021twelve} os autores observam
+que o uso do comando \textit{samtools view -b}, para conversão de BAM para
+CRAM, apesar de frequentemente presente em guias na internet é normalmente
+desnecessário, uma vez que as ferramentas possuem suporte a CRAM.
+
+Foram realizados testes de desempenho de cada uma das etapas do fluxo original
+de análise, e a conversão de CRAM para BAM era particularmente custosa.
+Observado isso, foi testado e comprovado que todo restante da análise poderia
+ser executado sem essa etapa, observando o suporte para CRAM e comparando as
+saídas do fluxo otimizado com o fluxo original.
+
+Além disso, foi observado que ambas etapas eram embaraçosamente paralelas,
+consistindo de passos independentes para cada arquivo de entrada. Como os
+pesquisadores do HCPA possuem acesso a máquinas multiprocessadas, foi realizada
+uma paralelização de ambas etapas utilizado GNU Parallel\cite{tange2011gnu}.  A
+escolha dessa ferramenta se deu pela facilidade de uso, disponibilidade nos
+ambientes usados pelos pesquisadores, e suporte a ajuste automático do número
+de \textit{jobs} paralelos ao número de núcleos de processamento disponíveis.
+
+Foi desenvolvida uma ferramenta para execução do fluxo de análise otimizado e
+paralelizado. Um pseudo-código da ferramenta encontra-se reproduzido abaixo.
+
+\begin{algorithmic}
+  \For{CRAM EM
+\end{algorithmic}
 
 
-
-%\section{Figuras e tabelas}
-%
-%Esta seção faz referência às Figuras~\ref{fig:estrutura},~\ref{fig:ex1} e~\ref{fig:ex2}, a título de exemplo. A primeira figura apresenta a estrutura de uma figura. A \emph{descrição} deve aparecer \textbf{acima} da figura. Abaixo da figura, deve ser indicado a origem da imagem, mesmo se essa for apenas os autores do texto.
-%
-%A Figura~\ref{fig:ex1} representa o caso mais comum, onde a figura propriamente dita é importada de um arquivo ( neste exemplo o formato é \texttt{eps} ou \texttt.png}. Veja a seção \ref{sec:fig_format}). A Figura~\ref{fig:ex2} exemplifica o uso do environment \texttt{picture}, para desenhar usando o próprio~\LaTeX.
-%
-%\begin{figure}[h]
-%    \caption{Descrição da Figura deve ir no topo}
-%    \begin{center}
-%        % Aqui vai um includegraphics , um picture environment ou qualquer
-%        % outro comando necessário para incorporar o formato de imagem
-%        % utilizado.
-%        \begin{picture}(100,100)
-%            \put(0,0){\line(0,1){100}}
-%            \put(0,0){\line(1,0){100}}
-%            \put(100,100){\line(0,-1){100}}
-%            \put(100,100){\line(-1,0){100}}
-%            \put(10,50){Uma Imagem}
-%        \end{picture}
-%    \end{center}
-%    \label{fig:estrutura}
-%    \legend{Fonte: Os Autores}
-%\end{figure}
-%
-%\begin{figure}
-%    \caption{Exemplo de figura importada de um arquivo e também exemplo de caption muito grande que ocupa mais de uma linha na Lista~de~Figuras}
-%    \begin{center}
-%        \includegraphics[width=8em]{fig}
-%    \end{center}
-%    \legend{Fonte: Os Autores}
-%    \label{fig:ex1}
-%\end{figure}
-%
 %% o `[h]' abaixo é um parâmetro opcional que sugere que o LaTeX coloque a
 %% figura exatamente neste ponto do texto. Somente preocupe-se com esse tipo
 %% de formatação quando o texto estiver completamente pronto (uma frase a mais
@@ -472,30 +454,6 @@ TODO
 %    \label{tbl:ex1}
 %\end{table}
 %
-%\subsection{Formato de Figuras}
-%\label{sec:fig_format}
-%
-%O LaTeX permite utilizar vários formatos de figuras, entre eles \emph{eps}, \emph.png}, \emph{jpeg} e \emph{png}. Programas de diagramação como Inkscape (e mesmo LibreOffice) permitem gerar arquivos de imagens vetoriais que podem ser utilizados pelo LaTeX sem dificuldade. Pacotes externos permitem utilizar SVG e outros formatos.
-%
-%Dia e xfig são programas utilizados por dinossauros para gerar figuras vetoriais. Se possível, evite-os.
-%
-%\subsection{Classificação dos etc.}
-%
-%O formato do instituo de informática define 5 níveis: capítulo, seção, subseção e outros 2 sem nome.
-%
-%\subsubsection{Subsubseção}
-%Exemplo de uma subsubseção.
-%
-%\paragraph{Parágrafo}
-%Exemplo de um parágrafo.
-
-% aqui será usado o environment padrao `thebibliography'; porém, sugere-se
-% seriamente o uso de BibTeX e do estilo abnt.bst (veja na página do
-% UTUG)
-%
-% observe também o estilo meio estranho de alguns labels; isso é
-% devido ao uso do pacote `natbib', que permite fazer citações de
-% autores, ano, e diversas combinações desses
 
 \bibliographystyle{abntex2-alf}
 \bibliography{biblio}
