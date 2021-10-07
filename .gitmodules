@@ -21,4 +21,4 @@
 	url = https://github.com/samtools/bcftools.git
 [submodule "alef/infufrgs"]
 	path = alef/infufrgs
-	url = git@github.com:schnorr/infufrgs.git
+	url = https://github.com/schnorr/infufrgs.git
