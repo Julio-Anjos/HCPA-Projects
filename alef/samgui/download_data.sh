@@ -25,8 +25,10 @@ then
 fi
 
 cd "$1"
-rm -f samgui.test
-touch samgui.test 1>/dev/null 2>/dev/null
+cramlist_local="cramlist_local"
+echo "Will overwrite file $cramlist_local with the requested CRAM list."
+rm -f "$cramlist_local"
+touch "$cramlist_local" 1>/dev/null 2>/dev/null
 if test $? -ne 0
 then
   echo "No write permission on $1?">&2
@@ -41,7 +43,7 @@ then
 fi
 
 #
-# Check for space 
+# Check for space and output local list
 #
 
 lines="$(wc -l $2 | cut -d' ' -f1)"
@@ -58,6 +60,7 @@ do
   bname="$(basename $file)"
   thisgbs=$((this / 1024 / 1024 / 1024))
   echo "${thisgbs}G $bname"
+  echo "$(pwd)/$bname">>"$cramlist_local"
   i=$((i+1))
 done
 echo "Required space: $((required / 1024 / 1024 / 1024))G"

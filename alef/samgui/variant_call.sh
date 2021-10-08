@@ -21,30 +21,106 @@
 # Setup
 #
 
+# Abort on error (enable only after argp for pretty error reporting)
+#set -e
+#set -o pipefail
+
+if test $# -lt 2 || test -z "$1" || test -z "$2"
+then
+  echo "Expected input: origin cram_list" >&2
+  exit 1
+fi
+
+ls -d "$1" 1>/dev/null 2>/dev/null
+if test $? -ne 0
+then
+  echo "Could not locate origin $1." >&2
+  exit 1
+fi
+cd "$1"
+
+samtools_folder_path="$(pwd)/samtools"
+samtools="$samtools_folder_path/samtools"
+
+bcftools_folder_path="$(pwd)/bcftools"
+bcftools="$bcftools_folder_path/bcftools"
+
+vcfutils="$bcftools_folder_path/misc/vcfutils.pl"
+
+ls -d "$samtools_folder_path" 1>/dev/null 2>/dev/null
+if test $? -ne 0
+then
+  echo "Could not locate samtools folder path at $samtools_folder_path." >&2
+  exit 1
+fi
+
+ls -d "$bcftools_folder_path" 1>/dev/null 2>/dev/null
+if test $? -ne 0
+then
+  echo "Could not locate bcftools folder path at $bcftools_folder_path." >&2
+  exit 1
+fi
+
+function samtools_build {
+  cd "$samtools_folder_path"
+  #git --no-pager log --pretty=oneline --max-count=1
+  #git stash
+  make clean
+  make -j6
+}
+
+function bcftools_build {
+  cd "$bcftools_folder_path"
+  #git --no-pager log --pretty=oneline --max-count=1
+  #git stash
+  make clean
+  make -j6
+}
+
+function common_setup {
+  # env setup
+  cd "$origin"
+  profile_path="$(pwd)/$1_$(date +'%d_%m_%y_%H%M%S')"
+  mkdir "$profile_path"
+  cd "$profile_path"
+}
+
+#
+# Argument parsing
+#
+
+cram_list="$2"
+ls -l "$cram_list" 1>/dev/null 2>/dev/null
+if test $? -ne 0
+then
+  echo "Could not access cram list at $cram_list" >&2
+  exit 1
+fi
+
+for file in $(cat "$cram_list")
+do
+  ls -l "$file" 1>/dev/null 2>/dev/null
+  if test $? -ne 0
+  then
+    echo "Could not access file $file from cram list." >&2
+    exit 1
+  fi
+done
+
 # Abort on error
 set -e
 set -o pipefail
 
-source common.sh
-
-# Get input
-echo "Expected input: runtype cram_list ref"
-runtype="$1"
-cram_list="$2"
-ref="$3"
-
-# Validate input
-ls -d "$samtools_folder_path"
-test -n "$runtype"
-test -n "$cram_list"
-test -n "$ref"
-ls -l "$cram_list"
-cat "$cram_list" | xargs ls -l
-ls -l "$ref"
+# Separate .fa from .cram
+ref="$(grep $cram_list -Pie '\.fa$')"
+cram_list_actual="$(mktemp)"
+grep "$cram_list" -Pie '\.cram$'>"$cram_list_actual"
+cram_list="$cram_list_actual"
 
 #
 # Stage 1 decl
 #
+
 function do_foreach_cram { # $1=Cram
   # Index
   cram="$1"
@@ -71,6 +147,7 @@ function do_foreach_cram { # $1=Cram
 #
 # Stage 2 decl
 #
+
 function do_foreach_region { # $1=Region 
   argv="$(grep region_list.txt -e region$1_ | perl -pe 's/\n/ /g')"
 
@@ -115,72 +192,39 @@ function do_foreach_region { # $1=Region
 # More setup
 samtools_build
 bcftools_build
-common_setup "pipeline_$runtype"
+common_setup "samgui"
 
 #
 # Actually running stuff
 #
+
 echo "Starting at $(date)... Space used by our pipeline: $(du -hs)"
-if test "$runtype" = "seq"
-then
-  #
-  # Sequential run 
-  # 
+#
+# Parallel run
+#
 
-  # Setup
-  time_start=$(date +%s%3N)
-  rm -f region_list.txt
+# Setup
+time_start=$(date +%s%3N)
+rm -f region_list.txt
+export SHELL=$(type -p bash)
+export -f do_foreach_cram
+export -f do_foreach_region
+export samtools="$samtools"
+export bcftools="$bcftools"
+export vcfutils="$vcfutils"
+export ref="$ref"
 
-  # Stage 1
-  echo "Starting stage 1 at $(date)."
-  for cram in $(cat "$cram_list")
-  do
-    do_foreach_cram "$cram"
-  done
-  echo "Ended stage 1 at $(date). Used $(du -hs)"
+# Stage 1
+echo "Starting stage 1 at $(date)."
+cat "$cram_list" | parallel do_foreach_cram {}
+echo "Ended stage 1 at $(date). Used $(du -hs)"
 
-  # Stage 2
-  echo "Starting stage 2 at $(date)."
-  for i in $(seq 1 22)
-  do
-    do_foreach_region $i
-  done
-  echo "Ended stage 2 at $(date). Used $(du -hs)"
+# Stage 2
+echo "Starting stage 2 at $(date)."
+seq 1 22 | parallel do_foreach_region {}
+echo "Ended stage 2 at $(date). Used $(du -hs)"
 
-  # Report results
-  time_end=$(date +%s%3N)
-  echo "total_time=$((time_end - time_start))"
-elif test "$runtype" = "par"
-then
-  #
-  # Parallel run
-  #
-
-  # Setup
-  time_start=$(date +%s%3N)
-  rm -f region_list.txt
-  export SHELL=$(type -p bash)
-  export -f do_foreach_cram
-  export -f do_foreach_region
-  export samtools="$samtools"
-  export bcftools="$bcftools"
-  export vcfutils="$vcfutils"
-  export ref="$ref"
-
-  # Stage 1
-  echo "Starting stage 1 at $(date)."
-  cat "$cram_list" | parallel do_foreach_cram {}
-  echo "Ended stage 1 at $(date). Used $(du -hs)"
-
-  # Stage 2
-  echo "Starting stage 2 at $(date)."
-  seq 1 22 | parallel do_foreach_region {}
-  echo "Ended stage 2 at $(date). Used $(du -hs)"
-
-  # Report results
-  time_end=$(date +%s%3N)
-  echo "total_time=$((time_end - time_start))"
-else
-  echo "Unimplemented... Expecting par or seq"
-fi
+# Report results
+time_end=$(date +%s%3N)
+echo "total_time=$((time_end - time_start))"
 echo "Ending at $(date)... Space used by our pipeline: $(du -hs)"
