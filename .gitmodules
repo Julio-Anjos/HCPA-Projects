@@ -22,3 +22,6 @@
 [submodule "alef/infufrgs"]
 	path = alef/infufrgs
 	url = https://github.com/schnorr/infufrgs.git
+[submodule "alef/vcftools"]
+	path = alef/vcftools
+	url = https://github.com/vcftools/vcftools.git
