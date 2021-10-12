@@ -14,7 +14,8 @@ set -o pipefail
 #   -r,--remote remote_addr
 #
 #   -J,--hop hop_addr
-# 
+##     Jump through this address to reach the remote address.
+ 
 
 #
 # Options parsing

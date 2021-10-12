@@ -8,7 +8,7 @@
 #   FOR REGION_I IN 1,22 DO
 #     VIEW CRAM_J REGION_I >CJ_RI
 #
-# Stage 2 - Merge CRAMs and generate VCFs for each region
+# Stage 2 - Merge CRAMs, generate and filter VCFs for each region
 #
 # FOR REGION_I IN 1,22 DO PARALLEL
 #   MERGE (CJ_RI FOR J IN LIST)>MERGED_I
@@ -16,6 +16,17 @@
 #   MPILEUP
 #   CALL
 #   BCF VIEW
+#   VCF REMOVE INDELS
+#   VCF FILTER
+#
+# Stage 3 - Merge and filter VCFs
+#
+# VCF CONCAT
+# BCF VIEW
+# BCF INDEX
+# BCF ANNOTATE
+# BCF VIEW
+# VCF FILTER
 
 #
 # Setup
@@ -45,6 +56,9 @@ samtools="$samtools_folder_path/samtools"
 bcftools_folder_path="$(pwd)/bcftools"
 bcftools="$bcftools_folder_path/bcftools"
 
+vcftools_folder_path="$(pwd)/vcftools"
+vcftools="$vcftools_folder_path/vcftools"
+
 vcfutils="$bcftools_folder_path/misc/vcfutils.pl"
 
 ls -d "$samtools_folder_path" 1>/dev/null 2>/dev/null
@@ -71,6 +85,14 @@ function samtools_build {
 
 function bcftools_build {
   cd "$bcftools_folder_path"
+  #git --no-pager log --pretty=oneline --max-count=1
+  #git stash
+  make clean
+  make -j6
+}
+
+function vcftools_build {
+  cd "$vcftools_folder_path"
   #git --no-pager log --pretty=oneline --max-count=1
   #git stash
   make clean
@@ -180,11 +202,27 @@ function do_foreach_region { # $1=Region
   echo "Removing uncalled BCFs. Used $(du -hs)"
   rm merged_region$1.bcf
 
+  # TODO is this necessary? vcftools seems to work with BCFs
   echo "View region $1 at $(date). Used $(du -hs)"
-  "$bcftools" view call_merged_region$1.bcf | "$vcfutils" varFilter - >final_region$1.vcf
+  "$bcftools" view call_merged_region$1.bcf | "$vcfutils" varFilter - >region$1.vcf
 
   # Cleanup BCFs - already have the VCFs
   rm call_merged_region$1.bcf
+
+  # TODO: Test this!
+
+  # TODO can't we replace this with --skip-indels at mpileup time?
+  echo "Removing indels for region $1 at $(date). Used $(du -hs)"
+  "$vcftools" --vcf region$1.vcf --remove-indels --recode --recode-INFO-all --out region$1_noindels.vcf
+
+  echo "Removing VCFs with indels for region $1 at $(date). Used $(du -hs)"
+  rm region$1.vcf
+
+  echo "Filtering VCF for region $1 at $(date). Used $(du -hs)"
+  "$vcftools" --vcf region$1_noindels.vcf --max-missing 0.5 --minDP 5 --min-alleles 2 --max-alleles 2 --minQ 20 --recode --recode-INFO-all --out region$1_filtered.vcf
+
+  echo "Removing unfiltered VCFs for region $1 at $(date). Used $(du -hs)"
+  rm region$1_noindels.vcf
 
   echo "Done region $1 at $(date). Used $(du -hs)"
 }
@@ -192,6 +230,7 @@ function do_foreach_region { # $1=Region
 # More setup
 samtools_build
 bcftools_build
+vcftools_build
 common_setup "samgui"
 
 #
@@ -211,6 +250,7 @@ export -f do_foreach_cram
 export -f do_foreach_region
 export samtools="$samtools"
 export bcftools="$bcftools"
+export vcftools="$vcftools"
 export vcfutils="$vcfutils"
 export ref="$ref"
 
