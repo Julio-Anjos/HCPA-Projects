@@ -631,7 +631,7 @@ interface gráfica para execução do pipeline otimizado.
 \section{Fluxo de análise original}
 
 O fluxo de análise original fornecido pelos pesquisadores pode ser dividido
-em duas etapas. Na primeira etapa é executada uma conversão de formato de CRAM
+em três etapas. Na primeira etapa é executada uma conversão de formato de CRAM
 para BAM utilizando o comando \textit{SAMtools view -b}, seguida de uma rotina
 de indexação dos arquivos utilizando \textit{SAMtools index}.
 
@@ -669,6 +669,9 @@ figura~\ref{fig:stage2_orig}.
     \legend{Fonte: Os Autores}
     \label{fig:stage2_orig}
 \end{figure}
+
+A última etapa consiste de concatenar todos arquivos gerados na etapa anterior
+e realizar uma série de filtros utilizando a ferramenta VCFtools.\cite{10.1093/bioinformatics/btr330}
 
 \section{Fluxo de análise otimizado}
 

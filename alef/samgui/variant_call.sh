@@ -57,7 +57,8 @@ bcftools_folder_path="$(pwd)/bcftools"
 bcftools="$bcftools_folder_path/bcftools"
 
 vcftools_folder_path="$(pwd)/vcftools"
-vcftools="$vcftools_folder_path/vcftools"
+vcftools="$vcftools_folder_path/src/cpp/vcftools"
+vcftools_concat="$vcftools_folder_path/src/perl/vcftools-concat"
 
 vcfutils="$bcftools_folder_path/misc/vcfutils.pl"
 
@@ -95,6 +96,8 @@ function vcftools_build {
   cd "$vcftools_folder_path"
   #git --no-pager log --pretty=oneline --max-count=1
   #git stash
+  ./autogen.sh
+  ./configure
   make clean
   make -j6
 }
@@ -133,8 +136,9 @@ done
 set -e
 set -o pipefail
 
-# Separate .fa from .cram
+# Separate .fa and .vcf.gz from .cram
 ref="$(grep $cram_list -Pie '\.fa$')"
+vcfref="$(grep $cram_list -Pie '\.vcf\.gz$')"
 cram_list_actual="$(mktemp)"
 grep "$cram_list" -Pie '\.cram$'>"$cram_list_actual"
 cram_list="$cram_list_actual"
@@ -143,7 +147,7 @@ cram_list="$cram_list_actual"
 # Stage 1 decl
 #
 
-function do_foreach_cram { # $1=Cram
+function do_stage1 { # $1=Cram
   # Index
   cram="$1"
   echo "Indexing $cram at $(date)..."
@@ -170,7 +174,7 @@ function do_foreach_cram { # $1=Cram
 # Stage 2 decl
 #
 
-function do_foreach_region { # $1=Region 
+function do_stage2 { # $1=Region 
   argv="$(grep region_list.txt -e region$1_ | perl -pe 's/\n/ /g')"
 
   # Merge
@@ -227,6 +231,46 @@ function do_foreach_region { # $1=Region
   echo "Done region $1 at $(date). Used $(du -hs)"
 }
 
+#
+# Stage 3 decl
+#
+function do_stage3 {
+  argv=$(seq 1 22 | xargs -I'{}' echo "region{}_filtered.vcf")
+
+  # Concat
+  echo "Cat regions at $(date). Used $(du -hs)"
+  "$vcftools_concat" $argv >final.vcf # Do not quote argv
+
+  echo "Rm uncat regions at $(date). Used $(du -hs)"
+  rm region*_filtered.vcf
+
+  # TODO it's probably better to have ref unzipped in the first place...
+
+  # Zip
+  echo "Zip final VCF at $(date). Used $(du -hs)"
+  "$bcftools" view final.vcf -Oz -o final.vcf.gz
+
+  echo "Rm unzipped vcf at $(date). Used $(du -hs)"
+  rm region*_filtered.vcf
+
+  # Index
+  echo "Index final VCF at $(date). Used $(du -hs)"
+  "$bcftools" index pop1.vcf.gz
+  "$bcftools" index "$vcfref"
+
+  # Annotate
+  echo "Annotate final VCF at $(date). Used $(du -hs)"
+  "$bcftools" annotate -c ID -a "$vcfref" final.vcf.gz >finalrsID.vcf.gz
+
+  # Convert
+  echo "Convert final VCF at $(date). Used $(du -hs)"
+  "$bcftools" view finalrsID.vcf.gz -Ov -o finalrsID.vcf
+
+  echo "Removing VCF indices at $(date). Used $(du -hs)"
+  # TODO
+}
+
+
 # More setup
 samtools_build
 bcftools_build
@@ -246,23 +290,29 @@ echo "Starting at $(date)... Space used by our pipeline: $(du -hs)"
 time_start=$(date +%s%3N)
 rm -f region_list.txt
 export SHELL=$(type -p bash)
-export -f do_foreach_cram
-export -f do_foreach_region
+export -f do_stage1
+export -f do_stage2
 export samtools="$samtools"
 export bcftools="$bcftools"
 export vcftools="$vcftools"
+export vcftools_concat="$vcftools_concat"
 export vcfutils="$vcfutils"
 export ref="$ref"
 
 # Stage 1
 echo "Starting stage 1 at $(date)."
-cat "$cram_list" | parallel do_foreach_cram {}
+cat "$cram_list" | parallel do_stage1 {}
 echo "Ended stage 1 at $(date). Used $(du -hs)"
 
 # Stage 2
 echo "Starting stage 2 at $(date)."
-seq 1 22 | parallel do_foreach_region {}
+seq 1 22 | parallel do_stage2 {}
 echo "Ended stage 2 at $(date). Used $(du -hs)"
+
+# Stage 3
+echo "Starting stage 3 at $(date)."
+do_stage3 
+echo "Ended stage 3 at $(date). Used $(du -hs)"
 
 # Report results
 time_end=$(date +%s%3N)
