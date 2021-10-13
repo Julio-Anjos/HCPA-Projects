@@ -139,8 +139,8 @@ filogenética;\cite{maldonado2016lmap} o pacote ANGSD, utilizado para comparaç�
 de sequências genéticas de diferentes populações de uma
 espécie;\cite{korneliussen2014angsd} e o pacote SAMtools, amplamente utilizado
 na literatura para manipulação de arquivos de sequências genéticas
-alinhadas,\cite{danecek2021twelve} e usado pelo grupo como uma alternativa ao
-software ANGSD.
+alinhadas e chamada de variantes,\cite{danecek2021twelve} e usado pelo grupo
+como uma alternativa ao software ANGSD.
 
 Cada um desses softwares apresentava problemas de desempenho diferentes dentro
 do pipeline de análise genética do grupo de pesquisa. Nomeadamente, o PAML e o
@@ -168,10 +168,12 @@ SAMtools a alternativa favorecida.
 A fim de compreender o uso e funcionamento dos softwares que foram objeto de
 estudo desse trabalho, convém elucidar alguns conceitos de bioinformática. Na
 seção \ref{sec:filo} é apresentado o conceito de análise filogenética, objeto
-de estudo dos usuários do pacote PAML, enquanto que na seção \ref{sec:pbs} é
-exposto o conceito de análise de variações genéticas de diferentes populações
-de uma espécie através do método \textit{Population Branch Statistic} (PBS),
-para o qual os pacotes ANGSD e SAMtools são empregados.
+de estudo dos usuários do pacote PAML, na seção \ref{sec:call} é exposto o
+conceito de análise de variações genéticas de diferentes populações de uma
+espécie através de um processo denominado chamada de variantes, para o qual os
+pacotes ANGSD e SAMtools são empregados, e na seção \ref{sec:formats} são
+brevemente expostos os formatos de arquivos utilizados para cada um desses
+processos.
 
 \subsection{Análise filogenética}
 \label{sec:filo}
@@ -230,8 +232,8 @@ estatísticos de máxima verossimilhança para comparar a hipótese de ocorrênc
 desses eventos contra a hipótese nula de seleção neutra ou
 negativa.\cite{moretti2012gcodeml}
 
-\subsection{Population Branch Statistic}
-\label{sec:pbs}
+\subsection{Chamada de variantes}
+\label{sec:call}
 
 Um dos objetos de estudo da bioinformática é a compreensão dos genes envolvidos
 em variações fenotípicas observadas entre diferentes populações de uma
@@ -259,8 +261,37 @@ mais aprofundada do método foge ao escopo desse trabalho, e pode ser
 encontrada em \cite{yi2010sequencing}.
 
 Os pesquisadores do HCPA utilizam os pacotes ANGSD e SAMtools para realizar
-etapas da análise de variações fenotípicas entre populações humanas
-utilizando o método PBS.
+a chamada de variantes visando entender variações fenotípicas entre populações
+humanas, utilizando para isso o método PBS.
+
+\subsection{Formatos de arquivos}
+\label{sec:formats}
+
+Fundamental ao entendimento de algumas otimizações realizadas nesse trabalho é
+um conhecimento básico dos diferentes formatos de arquivo utilizados para
+armazenamento de informação genética, no campo da bioinformática. Neste
+trabalho foram trablhados com arquivos nos formatos SAM, BAM, CRAM, BCF, VCF, e
+FASTA, descritos brevemente nesta seção.
+
+Os formatos SAM, BAM, e CRAM, representam sequências genéticas alinhadas a um
+genoma de referência. O formato SAM traz uma representação em texto-plano, o
+BAM é seu equivalente binário, e o CRAM é uma versão binária com compressão.
+Tais arquivos podem ser manipulados com a ferramenta samtools.\cite{danecek2021twelve}
+
+A chamada de variantes realiza comparações entre múltiplos arquivos nos
+formatos supracitados, produzindo arquivos que representam as variantes
+encontradas. Quando essas informações são armazenadas em texto-plano diz-se do
+arquivo VCF, seu equivalente binário sendo o formato BCF, ambos gerados e
+manipulados pela ferramenta bcftools.\cite{danecek2021twelve}
+
+Convém mencionar ainda o formato FASTA, utilizado para representar sequências
+de nucleotídeos ou aminoácidos. Introduzido pela primeira vez em
+\cite{doi:10.1126/science.298342}, é hoje ubíquoto no campo da
+bioinformática.\cite{shen2016seqkit} Os genomas de referência aos quais as
+demais sequências genéticas são alinhadas são fornecidos nesse formato, e o
+pacote SAMtools providencia ferramental para manipulação desses arquivos.
+
+% TODO falar dos formatos do PAML
 
 \chapter{Pacote PAML}
 
@@ -539,9 +570,8 @@ etapa anterior, nunca termina a execução devido a uso de memória
 proibitivamente elevado, para os dados de entrada dos pesquisadores do HCPA.
 
 A entrada da primeira etapa consiste em arquivos nos formatos BAM ou CRAM,
-respectivamente uma representação binária de sequências genéticas alinhadas e
-seu equivalente com compressão, um arquivo de entrada para cada indivíduo de
-cada população sob análise. O angsd então utiliza a biblioteca
+descritos na seção \ref{sec:formats}, um arquivo de entrada para cada indivíduo
+de cada população sob análise. O angsd então utiliza a biblioteca
 htslib\cite{bonfield2021htslib} para manipulação desses arquivos.
 
 Uma primeira observação realizada através de reuniões com os pesquisadores é
@@ -554,7 +584,7 @@ mais detalhes na seção \ref{sec:SAMtools}, e leva algumas horas para cada
 arquivo de entrada. Todavia, como observado anterioremente, o angsd trabalha
 também com o formato CRAM, fato esse observado através do estudo do manual da
 ferramenta.  Sendo assim, a etapa de conversão é desnecessária. Essa observação
-já economizou algumas horas de execução aos pesquisadores.
+já economizou algumas horas de execução.
 
 Eliminada essa etapa de pré-processamento dos dados, realizou-se um estudo do
 software a fim de elucidar seu funcionamento, para posteriormente realizar um
@@ -606,38 +636,51 @@ aplicação amplamente utilizada na literatura para análise de sequências
 genéticas.\cite{danecek2021twelve} O samtoools e a ferramenta bcftools que o
 acompanha são construídos em cima da biblioteca htslib, dos mesmos autores, que
 permite a leitura e manipulação de arquivos de arquivos em formatos diversos
-representando sequências genéticas alinhadas. Dentro outras funcionalidades
-dessas ferramentas destaca-se a chamada de variantes, processo de comparação de
-sequências genéticas alinhadas.\cite{danecek2021twelve}
+representando sequências genéticas alinhadas, descritos em \ref{sec:formats}.
+Dentro outras funcionalidades dessas ferramentas destaca-se a chamada de
+variantes, processo de comparação de sequências genéticas
+alinhadas.\cite{danecek2021twelve}
 
-Em mais detalhes, o formato SAM traz uma representação em texto-plano das
-sequências genéticas alinhadas, o BAM é seu equivalente binário, e o CRAM é uma
-versão binária com compressão. Enquanto o SAMtools manipula esses arquivos, o
-bcftools realiza a chamada de variantes, tendo tais arquivos como entrada,
-produzindo como saída arquivos no formato VCF, que armazena informação de
-variantes genéticas em texto-plano, e no formato BCF, seu equivalente
-binário.\cite{danecek2021twelve}
+Em mais detalhes, a aplicação samtools providencia o comando \textit{view} para
+conversão entre formatos de arquivo, filtragem, e extração de porções de um
+arquivo, enquanto comandos como \textit{sort} e \textit{merge} permitem
+reordenar e agrupar os arquivos de diversas formas, e os comandos
+\textit{index} e \textit{faidx} indexam os arquivos para acesso aleatório
+rápido. A ferramenta providencia uma série de outras funcionalidades que fogem
+ao escopo desse trabalho e estão descritas em \cite{danecek2021twelve}.
 
-Os dados de sequenciamento genético utilizados como entrada no pipeline de
-análise do grupo de pesquisa do HCPA são obtidos no formato CRAM do projeto
-1000 Genomes, um esforço colaborativo internacional que visa sequenciar o
-genoma humano e disponibilizar a informação publicamente.\cite{via20101000}
+Já a aplicação bcftools, parte do pacote SAMtools, providencia comandos para
+execução da chamada de variantes -- \textit{mpileup} e \textit{call}, que
+calculam as variantes entre as sequências alinhadas lidas e agrupadas através
+de um processo descrito em \cite{li2011improving}. O bcftools providencia mais
+21 comandos com mais de 230 opções diferentes para diversas análises das
+sequências genéticas alinhadas manipuladas pelo samtools. Uma descrição
+completa desses comandos foge ao escopo desse trabalho e pode ser encontrada em
+\cite{danecek2021twelve}.
 
 Nesse trabalho foi estutdado, otimizado, e paralelizado o pipeline de análise
-do grupo de pesquisa do HCPA utilizando o SAMtools e o bcftools, reduzindo o
-tempo de execução de vários dias para poucas horas, e desenvolvida uma
-interface gráfica para execução do pipeline otimizado.
+do grupo de pesquisa do HCPA utilizando o pacote SAMtools para chamada de
+variantes, reduzindo o tempo de execução de vários dias para poucas horas, e
+desenvolvida uma interface gráfica para execução do pipeline otimizado.
 
 \section{Fluxo de análise original}
 
-O fluxo de análise original fornecido pelos pesquisadores pode ser dividido
-em três etapas. Na primeira etapa é executada uma conversão de formato de CRAM
-para BAM utilizando o comando \textit{SAMtools view -b}, seguida de uma rotina
-de indexação dos arquivos utilizando \textit{SAMtools index}.
+A fim de realizar a chamada de variantes, os pesquisadores primeiro obtém as
+sequências genéticas alinhadas de múltiplos indivíduos de pelo menos três
+populações no formato CRAM, bem como o genoma de referência no formato FASTA,
+descritos na seção \ref{sec:formats}. Todos dados são obtidos do projeto 1000
+Genomes, um esforço colaborativo internacional que visa sequenciar o genoma
+humano e disponibilizar a informação publicamente.\cite{via20101000}
+
+O fluxo de análise original fornecido pelos pesquisadores pode ser dividido em
+três etapas, após a obtenção dos dados. Na primeira etapa é executada uma
+conversão de formato de CRAM para BAM utilizando o comando \textit{samtools
+view -b}, seguida de uma rotina de indexação dos arquivos utilizando
+\textit{samtools index}.
 
 Uma vez convertidos e indexados, cada arquivo de entrada é separado em 22
 arquivos de saída, um para cada par de cromossomos autossômicos humanos,
-utilizando o comando \textit{SAMtools view chr}. Essa etapa na sua forma
+utilizando o comando \textit{samtools view chr}. Essa etapa na sua forma
 originalmente usada pelo grupo de pesquisa encontra-se reproduzida na
 figura~\ref{fig:stage1_orig}.
 
@@ -678,9 +721,11 @@ e realizar uma série de filtros utilizando a ferramenta VCFtools.\cite{10.1093/
 Através de um estudo da literatura e do manual das ferramentas utilizadas
 percebeu-se oportunidade de melhorias no fluxo de análise utilizado pelos
 pesquisadores. Em particular, em,\cite{danecek2021twelve} os autores observam
-que o uso do comando \textit{SAMtools view -b}, para conversão de CRAM para
+que o uso do comando \textit{samtools view -b}, para conversão de CRAM para
 BAM, apesar de frequentemente presente em guias na internet é normalmente
-desnecessário, uma vez que as ferramentas possuem suporte a CRAM.
+desnecessário, uma vez que as ferramentas possuem suporte a CRAM. Isso ocorre
+por motivos históricos, pois originalmente o SAMtools não trabalhava com
+arquivos CRAM.\cite{danecek2021twelve}
 
 Foram realizados testes de desempenho de cada uma das etapas do fluxo original
 de análise, e a conversão de CRAM para BAM era particularmente custosa.
