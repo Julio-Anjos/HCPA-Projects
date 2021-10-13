@@ -13,7 +13,7 @@
 #
 #   -l,--local local_list
 #     Copy this local CRAM list to the remote path at the remote address.
-# 
+#
 
 #
 # Options parsing
@@ -74,6 +74,11 @@ then
   copy_cmd="$copy_cmd -J $hop_addr"
 fi
 
+#
+# Copy necessary files to remote host:remote path
+#
+
+"$copy_cmd" prepare_docker.sh "$remote_host:$remote_path"
 "$copy_cmd" download_data.sh "$remote_host:$remote_path"
 "$copy_cmd" variant_call.sh "$remote_host:$remote_path"
 "$copy_cmd" cramlist_remote "$remote_host:$remote_path"
