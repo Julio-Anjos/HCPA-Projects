@@ -716,11 +716,18 @@ figura~\ref{fig:stage2_orig}.
 A última etapa consiste de concatenar todos arquivos gerados na etapa anterior
 e realizar uma série de filtros utilizando a ferramenta VCFtools.\cite{10.1093/bioinformatics/btr330}
 
+Convém ressaltar que os pesquisadores vinham realizando cada uma das etapas
+manualmente, porventura repetindo comandos para cada arquivo de entrada ou para
+cada cromossomo. Além disso, algumas etapas geram arquivos intermediários que
+são necessários somente à etapa posterior, arquivos esses na casa de gigabytes
+cada. Isso gerava a necessidade de uma limpeza manual dos arquivos depois de
+cada etapa.
+
 \section{Fluxo de análise otimizado}
 
 Através de um estudo da literatura e do manual das ferramentas utilizadas
 percebeu-se oportunidade de melhorias no fluxo de análise utilizado pelos
-pesquisadores. Em particular, em,\cite{danecek2021twelve} os autores observam
+pesquisadores. Em particular, em \cite{danecek2021twelve} os autores observam
 que o uso do comando \textit{samtools view -b}, para conversão de CRAM para
 BAM, apesar de frequentemente presente em guias na internet é normalmente
 desnecessário, uma vez que as ferramentas possuem suporte a CRAM. Isso ocorre
@@ -731,15 +738,40 @@ Foram realizados testes de desempenho de cada uma das etapas do fluxo original
 de análise, e a conversão de CRAM para BAM era particularmente custosa.
 Observado isso, foi testado e comprovado que todo restante da análise poderia
 ser executado sem essa etapa, observando o suporte para CRAM e comparando as
-saídas do fluxo otimizado com o fluxo original.
+saídas do fluxo otimizado com o fluxo original. Dessa forma, essa etapa de
+conversão foi removida no fluxo otimizado.
 
-Além disso, foi observado que ambas etapas eram embaraçosamente paralelas,
-consistindo de passos independentes para cada arquivo de entrada. Como os
-pesquisadores do HCPA possuem acesso a máquinas multiprocessadas, foi realizada
-uma paralelização de ambas etapas utilizado GNU Parallel\cite{tange2011gnu}. A
-escolha dessa ferramenta se deu pela facilidade de uso, disponibilidade nos
-ambientes usados pelos pesquisadores, e suporte a ajuste automático do número
-de \textit{jobs} paralelos ao número de núcleos de processamento disponíveis.
+Ainda em \cite{danecek2021twelve} os autores comentam que conversões de BCF
+para VCF são custosas e porventura desnecessárias. Na última etapa do fluxo de
+análise original é realizada tal conversão seguida de um filtro, para uso dos
+arquivos pela ferramenta VCFtools. Apesar do nome, essa ferramenta também
+trabalha com arquivos no formato BCF.\cite{man2015vcftools} Foi experimentada a
+remoção da etapa de conversão supracitada, substituindo o filtro com o
+utilitário \textit{vcfutils} do pacote SAMtools pela filtragem com o próprio
+bcftools utilizando o comando \textit{filter}. Com isso foi observado que a
+maior parte do tempo de execução está na filtragem e não na conversão, e não
+houve diferença significativa de desempenho do VCFtools usando BCF ou VCF. Por
+fim, os pesquisadores precisam dos arquivos de saída finais no formato VCF para
+análise estatística dos dados em texto plano, portanto uma conversão é
+inevitável. Dessa forma, diferente da conversão de CRAM para BAM, a conversão
+de BCF para VCF foi mantida no fluxo otimizado.
+
+Na última etapa do fluxo original estava presente uma etapa de indexação das
+variantes do genoma de referência, sendo uma etapa custosa, visto que o arquivo
+sendo indexado possui 15GB comprimido, precisa ser descomprimido e depois
+indexado. Todavia, o mesmo projeto que fornece o arquivo das variantes do
+genoma de referência também fornece o respectivo arquivo de índice, que tem
+apenas 2,7 megabytes. Dessa forma, a etapa de indexação foi substituída pelo
+download do índice de referência, novamente economizando tempo de execução.
+
+Foi observado ainda que ambas etapas do fluxo original eram embaraçosamente
+paralelas, consistindo de passos independentes para cada arquivo de entrada.
+Como os pesquisadores do HCPA possuem acesso a máquinas multiprocessadas, foi
+realizada uma paralelização de ambas etapas utilizado GNU
+Parallel\cite{tange_ole_2021_5233953}. A escolha dessa ferramenta se deu pela facilidade
+de uso, disponibilidade nos ambientes usados pelos pesquisadores, e suporte a
+ajuste automático do número de \textit{jobs} paralelos ao número de núcleos de
+processamento disponíveis.
 
 Foi desenvolvida uma ferramenta para execução do fluxo de análise otimizado e
 paralelizado. Um pseudo-código da ferramenta encontra-se reproduzido abaixo.
