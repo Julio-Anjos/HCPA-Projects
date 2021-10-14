@@ -1,9 +1,0 @@
-Check if --skip-indels on bctools mpileup vs vcftools --remove-indels is the same
-Check if we must use VCF with vcftools -- seems to support BCFs...
-Have VCF ref unzipped in the first place...
-
-Treat mount point accordingly
-Review docker paths to run (prepare mount point?)
-Allow numthreads config
-Interrupting + progress checking
-Allow skip indexing

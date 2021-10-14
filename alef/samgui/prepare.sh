@@ -68,7 +68,6 @@ then
   exit 1
 fi
 
-
 remote_host="$1"
 remote_path="$2"
 copy_cmd="scp"
@@ -76,6 +75,7 @@ if test -n "$hop_addr"
 then
   copy_cmd="$copy_cmd -J $hop_addr"
 fi
+
 #
 # Copy necessary files to remote host:remote path
 #
@@ -83,7 +83,6 @@ fi
 "$copy_cmd" prepare_docker.sh "$remote_host:$remote_path"
 "$copy_cmd" download_data.sh "$remote_host:$remote_path"
 "$copy_cmd" variant_call.sh "$remote_host:$remote_path"
-"$copy_cmd" cramlist_remote "$remote_host:$remote_path"
 
 if test -n "$local_list"
 then

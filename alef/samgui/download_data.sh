@@ -45,6 +45,8 @@ fi
 #
 
 lines="$(wc -l $2 | cut -d' ' -f1)"
+statusfile="/tmp/samgui.status"
+echo "1,0,$lines">"$statusfile"
 available="$(df -P . | tail -n 1 | awk '{ print $4}')"
 available=$((available * 1024))
 echo "Available space: $((available / 1024 / 1024 / 1024))G"
@@ -78,4 +80,6 @@ for file in $(cat $2)
 do
   echo "Downloading file... $i/$lines"
   wget "$file"
+  echo "1,$i,$lines">"$statusfile"
+  i=$((i+1))
 done

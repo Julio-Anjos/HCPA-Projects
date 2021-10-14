@@ -3,7 +3,7 @@
 echo "$(basename $0): Started with params: $@"
 
 # Synopsis
-#   exec_docker image_name data_source script [params]
+#   exec_docker start_container image_name data_source script [params]
 #
 # Description
 #   Executes script on image_name with /DATA bound to data_source on the host, starting it if not running
@@ -13,21 +13,22 @@ echo "$(basename $0): Started with params: $@"
 # Argument parsing
 #
 
-if test $# -lt 3 || test -z "$1" || test -z "$2" || test -z "$3"
+if test $# -lt 4 || test -z "$1" || test -z "$2" || test -z "$3" || test -z "$4"
 then
-  echo "Expected: image_name data_source script params">&2
+  echo "Expected: start_container image_name data_source script params">&2
   exit 1
 fi
 
-if ! test -d "$2"
+data_source="$3"
+if ! test -d "$data_source"
 then
-  echo "Cannot access path $2.">&2
+  echo "Cannot access path $data_source.">&2
   exit 1
 fi
 
-if test "$2" == "${2#/}"
+if test "$data_source" == "${data_source#/}"
 then
-  echo "$2 is not an absolute path">&2
+  echo "$data_source is not an absolute path">&2
   exit 1
 fi
 
@@ -35,21 +36,25 @@ fi
 # Start if not running
 #
 
-image_name="$1"
+image_name="$2"
 docker ps | grep samgui
-if test $? -ne 0
+if test $? -ne 0 
 then
-  # TODO volumes support, or at least custom target name, don't rely on /DATA being available
-  # TODO custom image name, don't rely on samgui being available
-  docker run --name samgui --mount type=bind,source="$2",target=/DATA -it -d "$image_name"
+  if test "$1" = "y"
+  then
+    docker run --name samgui --mount type=bind,source="$data_source",target=/DATA -it -d "$image_name"
+  else
+    echo "Docker not running and requested not to run. 1=$1" >&2
+    exit 1
+  fi
 fi
 
 #
 # Execute on docker
 #
 
-cmd="$3"
-shift 3
+cmd="$4"
+shift 4
 
 if test -f "$cmd"
 then

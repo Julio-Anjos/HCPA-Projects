@@ -32,9 +32,7 @@
 # Setup
 #
 
-# Abort on error (enable only after argp for pretty error reporting)
-#set -e
-#set -o pipefail
+echo "$(basename $0): Started with params: $@"
 
 if test $# -lt 2 || test -z "$1" || test -z "$2"
 then
@@ -158,6 +156,10 @@ set -o pipefail
 cram_list_actual="$(mktemp)"
 grep "$cram_list" -Pie '\.cram$'>"$cram_list_actual"
 cram_list="$cram_list_actual"
+
+# Write to a status file - assumes only one run at a time
+statusfile="/tmp/samgui.status"
+echo "2,0,4">"$statusfile"
 
 #
 # Stage 1 decl
@@ -331,21 +333,25 @@ export vcfutils="$vcfutils"
 export ref="$ref"
 
 # Stage 1
+echo "2,1,4">"$statusfile"
 echo "Starting stage 1 at $(date)."
 cat "$cram_list" | parallel do_stage1 {}
 echo "Ended stage 1 at $(date). Used $(du -hs)"
 
 # Stage 2
+echo "2,2,4">"$statusfile"
 echo "Starting stage 2 at $(date)."
 seq 1 22 | parallel do_stage2 {}
 echo "Ended stage 2 at $(date). Used $(du -hs)"
 
 # Stage 3
+echo "2,3,4">"$statusfile"
 echo "Starting stage 3 at $(date)."
 do_stage3
 echo "Ended stage 3 at $(date). Used $(du -hs)"
 
 # Report results
+echo "2,4,4">"$statusfile"
 time_end=$(date +%s%3N)
 echo "total_time=$((time_end - time_start))"
 echo "Ending at $(date)... Space used by our pipeline: $(du -hs)"

@@ -89,13 +89,21 @@ fi
 # Remote execution
 #
 
+if test -n "$hop_addr"
+then
+  remote_cmd="ssh -J $hop_addr"
+else
+  remote_cmd="ssh"
+fi
+
+
 if test -n "$remote_addr"
 then
-  if test -n "$hop_addr"
+  if test -f "$file"
   then
-    ssh -J "$hop_addr" "$remote_addr" "bash -s -- $@" <"$file"
+    "$remote_cmd" "$remote_addr" "bash -s -- $@" <"$file"
   else
-    ssh "$remote_addr" "bash -s -- $@" <"$file"
+    "$remote_cmd" "$remote_addr" "$file $@" 
   fi
 else
   "$file" "$@"
