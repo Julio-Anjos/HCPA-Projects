@@ -88,12 +88,11 @@ def prepare_env(gui):
   # Docker is ok, finish building the remote exec cmd
   remote_cmd += ' exec_docker.sh ' + gui.docker + ' ' + gui.data
   # Create the necessary directory structure
-  rc = call(remote_cmd + ' mkdir -p /DATA/data', shell=True)
+  rc = call(remote_cmd + ' mkdir -p /DATA/results', shell=True)
   if rc != 0:
     raise SamGUIException('Could not create remote directory structure' + g_refMsg)
-  call(remote_cmd + ' mkdir -p /DATA/results', shell=True)
   if gui.local != '':
-    call(remote_cmd + ' mv /DATA/' + gui.local + ' /DATA/data/cramlist_local', shell=True)
+    call(remote_cmd + ' mv /DATA/' + gui.local + ' /DATA/results/cramlist_local', shell=True)
   return remote_cmd
 
 def download_files(remote_cmd):
@@ -108,7 +107,7 @@ with gui.RunMe:
     remote_cmd = prepare_env(gui)
     if gui.ftp != '':
       download_files(remote_cmd)
-    call_cmd = ' /DATA/variant_call.sh /DATA /DATA/data/cramlist_local'
+    call_cmd = ' /DATA/variant_call.sh /DATA /DATA/results/cramlist_local'
     call(remote_cmd + call_cmd, shell=True)
   else:
     #gui.remote = 'gppd1@143.54.48.77'

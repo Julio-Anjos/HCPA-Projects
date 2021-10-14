@@ -49,56 +49,47 @@ then
 fi
 cd "$1"
 
-samtools_folder_path="$(pwd)/samtools"
-samtools="$samtools_folder_path/samtools"
+# Assumes already in PATH
+samtools="samtools"
+bcftools="bcftools"
+vcftools="vcftools"
+vcftools_concat="vcf-concat"
+vcfutils="vcfutils.pl"
 
-bcftools_folder_path="$(pwd)/bcftools"
-bcftools="$bcftools_folder_path/bcftools"
+# This might be necessary if vcftools perl scripts are not on PATH
+# export PERLLIB="$vcftools_folder_path/src/perl:$PERLLIB"
 
-vcftools_folder_path="$(pwd)/vcftools"
-vcftools="$vcftools_folder_path/src/cpp/vcftools"
-vcftools_concat="$vcftools_folder_path/src/perl/vcf-concat"
-export PERLLIB="$vcftools_folder_path/src/perl:$PERLLIB"
-
-vcfutils="$bcftools_folder_path/misc/vcfutils.pl"
-
-if ! test -d "$samtools_folder_path"
+if ! test -x "$(command -v $samtools)"
 then
-  echo "Could not locate samtools folder path at $samtools_folder_path." >&2
-  exit 1
+  echo "$samtools not found on PATH or not executable.">&2
+  exit
 fi
 
-if ! test -d "$bcftools_folder_path"
+if ! test -x "$(command -v $bcftools)"
 then
-  echo "Could not locate bcftools folder path at $bcftools_folder_path." >&2
-  exit 1
+  echo "$bcftools not found on PATH or not executable.">&2
+  exit
 fi
 
-function samtools_build {
-  cd "$samtools_folder_path"
-  #git --no-pager log --pretty=oneline --max-count=1
-  #git stash
-  make clean
-  make -j6
-}
+if ! test -x "$(command -v $vcftools)"
+then
+  echo "$vcftools not found on PATH or not executable.">&2
+  exit
+fi
 
-function bcftools_build {
-  cd "$bcftools_folder_path"
-  #git --no-pager log --pretty=oneline --max-count=1
-  #git stash
-  make clean
-  make -j6
-}
+if ! test -x "$(command -v $vcfutils)"
+then
+  echo "$vcfutils not found on PATH or not executable.">&2
+  exit
+fi
 
-function vcftools_build {
-  cd "$vcftools_folder_path"
-  #git --no-pager log --pretty=oneline --max-count=1
-  #git stash
-  ./autogen.sh
-  ./configure
-  make clean
-  make -j6
-}
+if ! test -x "$(command -v $vcftools_concat)"
+then
+  echo "$vcftools_concat not found on PATH or not executable.">&2
+  exit
+fi
+
+numprocs=$(grep -c '^processor' /proc/cpuinfo)
 
 function common_setup {
   # env setup
@@ -314,11 +305,7 @@ function do_stage3 {
   "$bcftools" view finalrsID.vcf.gz -Ov -o finalrsID.vcf
 }
 
-
 # More setup
-samtools_build
-bcftools_build
-vcftools_build
 common_setup "samgui"
 
 #
