@@ -53,69 +53,73 @@ with gui.help_data:
     log.debug('help_data pressed')
     QMessageBox.information(None, "Info", "Path on the remote host where the data is or will be once downloaded. A mount point to this location will be accessed from docker.")
 
+def validate_input(gui):
+  if gui.remote == '':
+    raise SamGUIException('Local execution not supported :(')
+  if gui.hop != '' and gui.remote == '':
+      raise SamGUIException('Hop host but no remote host supplied.')
+  if gui.data == '':
+    raise SamGUIException('Data path not supplied')
+  if gui.ftp != '' and gui.local != '':
+    raise SamGUIException('Requested FTP download but also supplied local CRAM list')
+  elif gui.ftp == '' and gui.local == '':
+    raise SamGUIException('Did not request FTP download nor supplied local CRAM list')
+  # Defaults
+  if gui.docker == '':
+    log.info('No docker image supplied, using afarah1/ubuntu-samtools')
+    gui.docker = 'afarah1/ubuntu-samtools'
+
+def prepare_env(gui):
+  log.info('Preparing remote environment ' + gui.remote + ' with hop to ' + gui.hop)
+  remote_cmd=''
+  # Copy the necessary files to the remote host
+  rc = call('./prepare.sh %s %s %s' % (gui.remote, gui.data, gui.hop), shell=True)
+  if rc != 0:
+    raise SamGUIException('Remote host preparation failed' + g_refMsg)
+  # Build the remote exec cmd
+  remote_cmd = './exec_remote.sh -r ' + gui.remote
+  if gui.hop != '':
+    remote_cmd += ' -J ' + gui.hop
+  remote_cmd += ' --'
+  # Validate the remote host
+  rc = call(remote_cmd + ' prepare_docker.sh ' + gui.docker, shell=True)
+  if rc != 0:
+    raise SamGUIException('Remote host docker preparation failed' + g_refMsg)
+  # Docker is ok, finish building the remote exec cmd
+  remote_cmd += ' exec_docker.sh ' + gui.docker + ' ' + gui.data
+  # Create the necessary directory structure
+  rc = call(remote_cmd + ' mkdir -p /DATA/data', shell=True)
+  if rc != 0:
+    raise SamGUIException('Could not create remote directory structure' + g_refMsg)
+  call(remote_cmd + ' mkdir -p /DATA/results', shell=True)
+  if gui.local != '':
+    call(remote_cmd + ' mv /DATA/' + gui.local + ' /DATA/data/cramlist_local', shell=True)
+  return remote_cmd
+
+def download_files(remote_cmd):
+  log.info('Obtaining CRAMs from remote host')
+  download_cmd = ' /DATA/download_data.sh /DATA/data /DATA/cramlist_remote'
+  call(remote_cmd + download_cmd, shell=True)
+
 with gui.RunMe:
   if gui.is_running:
     log.info('Run requested.')
-
-    # Sanity checks
-    if gui.hop != '' and gui.remote == '':
-        raise SamGUIException('Hop host but no remote host supplied.')
-    if gui.data == '':
-      raise SamGUIException('Data path not supplied')
-    if gui.ftp != '' and gui.local != '':
-      raise SamGUIException('Requested FTP download but also supplied local CRAM list')
-    elif gui.ftp == '' and gui.local == '':
-      raise SamGUIException('Did not request FTP download nor supplied local CRAM list')
-
-    # Defaults
-    if gui.docker == '':
-      log.info('No docker image supplied, using afarah1/ubuntu-samtools')
-      gui.docker = 'afarah1/ubuntu-samtools'
-
-    # Prepare the remote env and cmd
-    remote_cmd=''
-    if gui.remote != '':
-      # Copy the necessary files to the remote host
-      log.info('Preparing remote environment at', gui.remote, 'with hop to', gui.hop)
-      rc = call('./prepare.sh %s %s %s' % (gui.remote, gui.data, gui.hop), shell=True)
-      if rc != 0:
-        raise SamGUIException('Remote host preparation failed' + g_refMsg)
-      # Build the remote exec cmd
-      remote_cmd = './exec_remote.sh -r ' + gui.remote
-      if gui.hop != '':
-        remote_cmd += ' -J ' + gui.hop
-      # Validate the remote host
-      rc = call(remote_cmd + ' ./prepare_docker.sh ' + gui.docker)
-      if rc != 0:
-        raise SamGUIException('Remote host docker preparation failed' + g_refMsg)
-      # Docker is ok, finish building the remote exec cmd
-      remote_cmd += ' exec_docker.sh ' + gui.docker + ' ' + gui.data
-    else:
-      raise SamGUIException('Local execution unsupported') # TODO
-    # Create the necessary directory structure
-    rc = call(remote_cmd + ' mkdir -p /DATA/data', shell=True)
-    if rc != 0:
-      raise SamGUIException('Could not create remote directory structure' + g_refMsg)
-    call(remote_cmd + ' mkdir -p /DATA/results', shell=True)
-    if gui.local != '':
-      call(remote_cmd + ' mv /DATA/' + gui.local + ' /DATA/data/cramlist_local', shell=True)
-
-    # Obtain files from FTP
+    validate_input(gui)
+    remote_cmd = prepare_env(gui)
     if gui.ftp != '':
-      log.info('Obtaining CRAMs from remote host', gui.ftp)
-      download_cmd = ' /DATA/download_data.sh /DATA/data /DATA/cramlist_remote'
-      call(remote_cmd + download_cmd, shell=True)
-
-    # Run!
-    call_cmd = '/DATA/variant_call.sh /DATA /DATA/data/cramlist_local'
-    call(remote_cmd + call_cmd)
+      download_files(remote_cmd)
+    call_cmd = ' /DATA/variant_call.sh /DATA /DATA/data/cramlist_local'
+    call(remote_cmd + call_cmd, shell=True)
   else:
-    gui.remote = 'gppd1@143.54.48.77'
-    gui.hop = 'afarah@portal.inf.ufrgs.br'
+    #gui.remote = 'gppd1@143.54.48.77'
+    #gui.hop = 'afarah@portal.inf.ufrgs.br'
+    gui.remote = 'root@afarah.info'
+    gui.hop = ''
     gui.ftp = ''
     gui.local = 'cramlist_local'
     gui.docker = 'afarah1/ubuntu-samtools'
-    gui.data = '/DATA'
-    gui.vcffilter = '--max-missing 0.5 --minDP 5 --min-alleles 2 --max-alleles 2 --minQ 20'
+    #gui.data = '/DATA'
+    gui.data = '/mnt/volume_nyc3_01'
+    gui.vcffilter = '--max-missing 0.5 --minDP 5 --min-alleles 2 --max-alleles 2 --minQ 20' # TODO actually use this
 
 gui.run()

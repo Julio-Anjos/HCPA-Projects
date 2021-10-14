@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "$(basename $0): Started with params: $@"
+
 # Synopsis
 #   exec_docker image_name data_source script [params]
 #
@@ -29,13 +31,6 @@ then
   exit 1
 fi
 
-ls -l "$3" 1>/dev/null 2>/dev/null
-if test $? -ne 0
-then
-  echo "Cannot access file $3.">&2
-  exit 1
-fi
-
 #
 # Start if not running
 #
@@ -55,4 +50,11 @@ fi
 
 cmd="$3"
 shift 3
-docker exec samgui bash $cmd $@
+
+if test -f "$cmd"
+then
+  docker exec samgui bash $cmd $@
+else
+  docker exec samgui $cmd $@
+fi
+

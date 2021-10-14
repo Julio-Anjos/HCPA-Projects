@@ -15,6 +15,8 @@
 #     Copy this local CRAM list to the remote path at the remote address.
 #
 
+echo "$(basename $0): Started with params: $@"
+
 #
 # Options parsing
 #
@@ -66,14 +68,14 @@ then
   exit 1
 fi
 
-remote_addr="$1"
+
+remote_host="$1"
 remote_path="$2"
 copy_cmd="scp"
 if test -n "$hop_addr"
 then
   copy_cmd="$copy_cmd -J $hop_addr"
 fi
-
 #
 # Copy necessary files to remote host:remote path
 #

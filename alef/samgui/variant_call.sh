@@ -145,8 +145,18 @@ fi
 vcfrefidx="$(grep $cram_list -Pie '\.vcf\.gz\.(tbi|csi)$')"
 if test $? -ne 0
 then
-  echo "Could not find VCF reference index file on cram list." >&2
-  exit 1
+  echo "WARNING: Could not find VCF reference index file on cram list!" >&2
+  if test "$(basename $vcfref)" = "00-All.vcf.gz"
+  then
+    echo "Will attempt to download VCF ref idx from NCBI." >&2
+    wget "https://ftp.ncbi.nlm.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/VCF/00-All.vcf.gz.tbi"
+    if test $? -eq 0
+    then
+      vcfrefidx="$(pwd)/00-All.vcf.gz.tbi"
+    fi
+  else
+    echo "Will manually index VCF ref idx, which is SLOW!!!" >&2
+  fi
 fi
 
 # Abort on error
@@ -285,9 +295,14 @@ function do_stage3 {
   "$bcftools" index final.vcf.gz
 
   # Make sure we have the reference index
-  if test "$(dirname $vcfrefidx)" != "$(pwd)"
+  if test -n "$vcfrefidx" 
   then
-    ln -s $vcfrefidx
+    if test "$(dirname $vcfrefidx)" != "$(pwd)"
+    then
+      ln -s "$vcfrefidx"
+    fi
+  else
+    "$bcftools" index "$vcfref"
   fi
 
   # Annotate

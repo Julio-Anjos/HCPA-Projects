@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "$(basename $0): Started with params: $@"
+
 # preapre_docker.sh image_name
 
 if test $# -ne 1 || test -z "$1"
