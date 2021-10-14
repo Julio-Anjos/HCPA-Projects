@@ -17,8 +17,7 @@ then
   exit 1
 fi
 
-ls -d "$1" 1>/dev/null 2>/dev/null
-if test $? -ne 0
+if ! test -d "$1"
 then
   echo "Cannot access path $1.">&2
   exit 1
@@ -35,8 +34,7 @@ then
   exit 1
 fi
 
-ls -l "$2" 1>/dev/null 2>/dev/null
-if test $? -ne 0
+if ! test -f "$2"
 then
   echo "Cannot access file $2.">&2
   exit 1

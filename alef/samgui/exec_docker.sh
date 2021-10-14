@@ -17,8 +17,7 @@ then
   exit 1
 fi
 
-ls -ld "$2" 1>/dev/null 2>/dev/null
-if test $? -ne 0
+if ! test -d "$2"
 then
   echo "Cannot access path $2.">&2
   exit 1

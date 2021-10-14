@@ -42,8 +42,7 @@ then
   exit 1
 fi
 
-ls -d "$1" 1>/dev/null 2>/dev/null
-if test $? -ne 0
+if ! test -d "$1"
 then
   echo "Could not locate origin $1." >&2
   exit 1
@@ -63,15 +62,13 @@ export PERLLIB="$vcftools_folder_path/src/perl:$PERLLIB"
 
 vcfutils="$bcftools_folder_path/misc/vcfutils.pl"
 
-ls -d "$samtools_folder_path" 1>/dev/null 2>/dev/null
-if test $? -ne 0
+if ! test -d "$samtools_folder_path"
 then
   echo "Could not locate samtools folder path at $samtools_folder_path." >&2
   exit 1
 fi
 
-ls -d "$bcftools_folder_path" 1>/dev/null 2>/dev/null
-if test $? -ne 0
+if ! test -d "$bcftools_folder_path"
 then
   echo "Could not locate bcftools folder path at $bcftools_folder_path." >&2
   exit 1
@@ -116,8 +113,7 @@ function common_setup {
 #
 
 cram_list="$2"
-ls -l "$cram_list" 1>/dev/null 2>/dev/null
-if test $? -ne 0
+if ! test -f "$cram_list"
 then
   echo "Could not access cram list at $cram_list" >&2
   exit 1
@@ -125,8 +121,7 @@ fi
 
 for file in $(cat "$cram_list")
 do
-  ls -l "$file" 1>/dev/null 2>/dev/null
-  if test $? -ne 0
+  if ! test -f "$file"
   then
     echo "Could not access file $file from cram list." >&2
     exit 1
@@ -168,16 +163,21 @@ cram_list="$cram_list_actual"
 #
 
 function do_stage1 { # $1=Cram
-  # Index
-  cram="$1"
-  echo "Indexing $cram at $(date)..."
-  "$samtools" index "$cram"
-  echo "Finished indexing $cram at $(date)..."
-
   # Setup
-  index="$cram.crai"
+  cram="$1"
   cram_name="${cram##*/}"
   cram_name="${cram_name%.*}"
+  index="$cram.crai"
+
+  # Index if necessary
+  if test -f "$index"
+  then
+    echo "Index file already exists, skip index phase."
+  else
+    echo "Indexing $cram at $(date)..."
+    "$samtools" index "$cram"
+    echo "Finished indexing $cram at $(date)..."
+  fi
 
   # View regions
   echo "Viewing regions for $cram at $(date)"
