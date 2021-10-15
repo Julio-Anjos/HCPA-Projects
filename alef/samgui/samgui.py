@@ -248,14 +248,16 @@ def abort_all():
     rc = call(g_remoteCmd + ' docker ps | grep samgui', shell=True)
     if rc != 0:
       log.info('Could not abort because it is not running in the first place')
-      set_status('Idle', 0)
+      #set_status('Idle', 0) --- Do not do this. Wait for async check, otherwise it won't sync up
     else:
       log.warning('Could not abort, please do it manually' + g_refMsg)
   else:
-    set_status('Idle', 0)
+    #set_status('Idle', 0) --- Do not do this. Wait for async check, otherwise it won't sync up
     rc = call(g_remoteCmd + ' docker container rm samgui', shell=True)
     if rc != 0:
       log.warning('Could not remove stopped container, please remove it manually by running docker container prune')
+    else:
+      log.debug('Sucessfully removed container')
 
 with gui.help_remote:
   if gui.is_running:

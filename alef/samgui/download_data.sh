@@ -55,11 +55,16 @@ i=1
 for file in $(cat $2)
 do
   echo "Checking file sizes... $i/$lines"
-  this="$(curl -sI $file | grep -i Content-Length | awk '{print $2}' | perl -pe 's/(\n|\r)//g')"
-  required=$((required + this))
   bname="$(basename $file)"
-  thisgbs=$((this / 1024 / 1024 / 1024))
-  echo "${thisgbs}G $bname"
+  this="$(curl -sI $file | grep -i Content-Length | awk '{print $2}' | perl -pe 's/(\n|\r)//g')"
+  if test -n "$this"
+  then
+    required=$((required + this))
+    thisgbs=$((this / 1024 / 1024 / 1024))
+    echo "${thisgbs}G $bname"
+  else
+    echo "curl could not retrieve file size..."
+  fi
   echo "$(pwd)/$bname">>"$cramlist_local"
   i=$((i+1))
 done
