@@ -7,6 +7,9 @@ from subprocess import Popen, PIPE, call
 import logging
 import os
 from time import sleep
+from pathlib import Path
+import signal
+import sys
 
 logging.basicConfig(level=os.environ.get("LOGLEVEL", "DEBUG"), format='SAMGUI: %(asctime)s %(levelname)s %(name)s %(message)s')
 log = logging.getLogger(__name__)
@@ -43,6 +46,35 @@ def set_defaults():
   gui.vcffilter = '--max-missing 0.5 --minDP 5 --min-alleles 2 --max-alleles 2 --minQ 20' # TODO actually use this
   gui.progress = 0
   gui.state = 'Idle'
+
+def tostring(gui):
+  return ','.join([gui.remote, gui.hop, gui.ftp, gui.local, gui.docker, gui.data, gui.vcffilter])
+
+def fromstring(string):
+  gui.remote, gui.hop, gui.ftp, gui.local, gui.docker, gui.data, gui.vcffilter = string.split(',')
+
+def save_state():
+  log.debug('Saving state')
+  try:
+    Path('samgui.state').write_text(tostring(gui))
+  except Exception as e:
+    log.warning('Could not write to samgui.state')
+
+def load_state():
+  log.debug('Loading state')
+  try:
+    fromstring(Path('samgui.state').read_text())
+  except FileNotFoundError:
+    log.debug('samgui.state not found')
+  except Exception as e:
+    log.warning('samgui.state not readable: %s' % e)
+
+def handle_sigint(sig, frame):
+  log.debug('Received SIGINT, saving state. Send SIGTERM or SIGKILL if necessary')
+  try:
+    save_state()
+  finally:
+    sys.exit(0)
 
 def validate_input_common():
   if gui.remote == '':
@@ -165,6 +197,7 @@ def prepare_env():
   if g_UserProcess.returncode != 0:
     raise SamGUIException('Remote host docker preparation failed' + g_refMsg)
   set_status('Preparing', 100)
+  sleep(0.5)
 
 def build_and_prepare():
   build_cmds()
@@ -303,6 +336,8 @@ with gui.skip:
 #gui.progress.maximum = 3
 #gui.widgets['progress'].setFormat('%v/%m steps')
 
+signal.signal(signal.SIGINT, handle_sigint)
 set_defaults()
+load_state()
 gui.timer_start(check_status, 5)
 gui.run()
