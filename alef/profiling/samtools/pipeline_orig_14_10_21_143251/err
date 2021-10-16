@@ -1,0 +1,7 @@
+ar: `u' modifier ignored since `D' is the default (see `U')
+[bam_sort_core] merging from 452 files and 1 in-memory blocks...
+[bam_sort_core] merging from 331 files and 1 in-memory blocks...
+[mpileup] 2 samples in 1 input files
+[mpileup] maximum number of reads per input file set to -d 250
+Note: The maximum per-sample depth with -d 250 is 125.0x
+rm: cannot remove 'merged_region1.bai': No such file or directory
