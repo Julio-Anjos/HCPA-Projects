@@ -1,0 +1,44 @@
+digraph G {
+  merge1 [ label = "samtools merge" ]
+  merge22 [ label = "samtools merge" ]
+
+  index1 [ label = "samtools index" ]
+  mpileup1 [ label = "bcftools mpileup" ]
+  call1 [ label = "bcftools call" ]
+  view1 [ label = "bcftools view" ]
+
+  index22 [ label = "samtools index" ]
+  mpileup22 [ label = "bcftools mpileup" ]
+  call22 [ label = "bcftools call" ]
+  view22 [ label = "bcftools view" ]
+
+  CHR1_1 [ label="Cromossomo 1\nIndivíduo 1\n.BAM" ]
+  CHR22_1 [ label="Cromossomo 22\nIndivíduo 1\n.BAM" ]
+
+  CHR1_N [ label="Cromossomo 1\nIndivíduo N\n.BAM" ]
+  CHR22_N [ label="Cromossomo 22\nIndivíduo N\n.BAM" ]
+
+  VCF1 [ label="Variantes 1\n.VCF" ]
+  VCF22 [ label="Variantes 22\n.VCF" ]
+
+  CHR1_1 -> merge1
+  CHR1_N -> merge1
+
+  CHR22_1 -> merge22
+  CHR22_N -> merge22
+
+  merge1 -> index1
+  merge22 -> index22
+
+  index1 -> mpileup1
+  index22 -> mpileup22
+
+  mpileup1 -> call1
+  mpileup22 -> call22
+
+  call1 -> view1
+  call22 -> view22
+
+  view1 -> VCF1
+  view22 -> VCF22
+}
