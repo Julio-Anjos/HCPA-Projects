@@ -173,9 +173,12 @@ function do_stage1 { # $1=Cram
   index="$cram.crai"
 
   # Index if necessary
-  if test -f "$index"
+  if test -n "$index" && test -f "$index"
   then
-    echo "Index file already exists, skip index phase."
+    if test "$(dirname $index)" != "$(pwd)"
+    then
+      ln -s "$index"
+    fi
   else
     echo "Indexing $cram at $(date)..."
     "$samtools" index "$cram"
@@ -210,7 +213,7 @@ function do_stage2 { # $1=Region
 
   # Clenup umerged CRAMs
   echo "Removing unmerged CRAMs for region $1"
-  rm $argv # Do not quote argv
+  rm -f $argv # Do not quote argv
 
   # Mpileup
   echo "Mpileup region $1 at $(date). Used $(du -hs)"
@@ -228,14 +231,14 @@ function do_stage2 { # $1=Region
 
   # Cleanup uncalled BCFs
   echo "Removing uncalled BCFs. Used $(du -hs)"
-  rm merged_region$1.bcf
+  rm -f merged_region$1.bcf
 
   # Convert to VCF + filter. This is necessary even though VCFtools accepts BCF
   echo "View region $1 at $(date). Used $(du -hs)"
   "$bcftools" view call_merged_region$1.bcf | "$vcfutils" varFilter - >region$1.vcf
 
   # Cleanup BCFs - already have the VCFs
-  rm call_merged_region$1.bcf
+  rm -f call_merged_region$1.bcf
 
   # Remove indels
   # OBS: Perhaps this could be replaced this with --skip-indels at mpileup time
@@ -246,7 +249,7 @@ function do_stage2 { # $1=Region
 
   # Cleanup VCFs
   echo "Removing VCFs with indels for region $1 at $(date). Used $(du -hs)"
-  rm region$1.vcf
+  rm -f region$1.vcf
 
   # Filter VCFs
   echo "Filtering VCF for region $1 at $(date). Used $(du -hs)"
@@ -254,7 +257,7 @@ function do_stage2 { # $1=Region
 
   # Cleanup VCFs
   echo "Removing unfiltered VCFs for region $1 at $(date). Used $(du -hs)"
-  rm region$1_noindels.recode.vcf
+  rm -f region$1_noindels.recode.vcf
 
   echo "Done region $1 at $(date). Used $(du -hs)"
 }
@@ -271,7 +274,7 @@ function do_stage3 {
 
   # Cleanup
   echo "Rm uncat regions at $(date). Used $(du -hs)"
-  rm region*_filtered.recode.vcf
+  rm -f region*_filtered.recode.vcf
 
   # Zip
   # OBS: We did not output zipped before because vcf-concat can't handle it.
@@ -281,7 +284,7 @@ function do_stage3 {
 
   # Clenaup
   echo "Rm unzipped vcf at $(date). Used $(du -hs)"
-  rm region*_filtered.vcf
+  rm -f region*_filtered.vcf
 
   # Index
   echo "Index final VCF at $(date). Used $(du -hs)"
