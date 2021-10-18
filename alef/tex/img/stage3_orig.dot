@@ -1,0 +1,32 @@
+digraph G {
+  node [ shape=box ]
+
+  VCF1 [ label="Variantes 1\n.VCF" ]
+  VCF22 [ label="Variantes 22\n.VCF" ]
+  VCFREF [ label="Variantes referência\n.VCF" ]
+
+  cat [ label="vcf-concat" ]
+  view [ label="bcftools view" ]
+  index [ label="bcftools index" ]
+
+  indexref [ label="bcftools index" ]
+
+  annotate [ label="bcftools annotate" ]
+  viewf [ label="bcftools view" ]
+
+  VCFf [ label = "Variantes anotadas\n.VCF " ]
+
+  VCF1 -> cat
+  VCF22 -> cat
+
+  cat -> view
+  view -> index
+
+  VCFREF -> indexref
+
+  index -> annotate
+  indexref -> annotate
+
+  annotate -> viewf
+  viewf -> VCFf
+}

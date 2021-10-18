@@ -1,4 +1,6 @@
 digraph G {
+  node [ shape=box ]
+
   merge1 [ label = "samtools merge" ]
   merge22 [ label = "samtools merge" ]
 
@@ -6,11 +8,15 @@ digraph G {
   mpileup1 [ label = "bcftools mpileup" ]
   call1 [ label = "bcftools call" ]
   view1 [ label = "bcftools view" ]
+  rmindels1 [ label = "vcftools remove-indels" ]
+  filter1 [ label = "vcftools filter" ]
 
   index22 [ label = "samtools index" ]
   mpileup22 [ label = "bcftools mpileup" ]
   call22 [ label = "bcftools call" ]
   view22 [ label = "bcftools view" ]
+  rmindels22 [ label = "vcftools remove-indels" ]
+  filter22 [ label = "vcftools filter" ]
 
   CHR1_1 [ label="Cromossomo 1\nIndivíduo 1\n.BAM" ]
   CHR22_1 [ label="Cromossomo 22\nIndivíduo 1\n.BAM" ]
@@ -21,6 +27,8 @@ digraph G {
   VCF1 [ label="Variantes 1\n.VCF" ]
   VCF22 [ label="Variantes 22\n.VCF" ]
 
+  REF [ label="Genoma referência\n.FASTA" ]
+
   CHR1_1 -> merge1
   CHR1_N -> merge1
 
@@ -29,6 +37,9 @@ digraph G {
 
   merge1 -> index1
   merge22 -> index22
+
+  REF -> mpileup1
+  REF -> mpileup22
 
   index1 -> mpileup1
   index22 -> mpileup22
@@ -39,6 +50,12 @@ digraph G {
   call1 -> view1
   call22 -> view22
 
-  view1 -> VCF1
-  view22 -> VCF22
+  view1 -> rmindels1
+  view22 -> rmindels22
+
+  rmindels1 -> filter1
+  rmindels22 -> filter22
+
+  filter1 -> VCF1
+  filter22 -> VCF22
 }

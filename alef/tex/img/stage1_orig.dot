@@ -1,4 +1,6 @@
 digraph G {
+  node [ shape=box ]
+
   CRAM1 [ label="Indivíduo 1\n.CRAM" ]
   CRAMN [ label="Indivíduo N\n.CRAM" ]
 
