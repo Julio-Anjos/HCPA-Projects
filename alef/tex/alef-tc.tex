@@ -208,7 +208,7 @@ gerados na síntese proteica.
 
 As substituições que não geram alterações na síntese proteica são chamadas de
 sinônimas ou silenciosas, enquanto as que modificam os aminoácidos gerados são
-não-sinônimas. Acredita-se que as substituições sinônimas sejam mais comuns e
+não sinônimas. Acredita-se que as substituições sinônimas sejam mais comuns e
 não sofram tanta pressão seletiva. A taxa de substituições sinônimas e não
 sinônimas $\omega = \frac{dN}{dS}$ é uma medida de seleção natural, conforme a
 tabela abaixo.\cite{yang2002codon}
@@ -278,10 +278,10 @@ Fundamental ao entendimento de algumas otimizações realizadas nesse trabalho �
 um conhecimento básico dos diferentes formatos de arquivo utilizados para
 armazenamento de informação genética, no campo da bioinformática. Neste
 trabalho foram trabalhados com arquivos nos formatos SAM, BAM, CRAM, BCF, VCF,
-e FASTA, descritos brevemente nesta seção.
+FASTA, e NWK, descritos brevemente nesta seção.
 
 Os formatos SAM, BAM, e CRAM, representam sequências genéticas alinhadas a um
-genoma de referência. O formato SAM traz uma representação em texto-plano, o
+genoma de referência. O formato SAM traz uma representação em texto plano, o
 BAM é seu equivalente binário, e o CRAM é uma versão binária com compressão.
 Tais arquivos podem ser manipulados com a ferramenta samtools, do pacote
 SAMtools.\cite{danecek2021twelve} Amostras de sequências genéticas de
@@ -298,13 +298,13 @@ SAMtools.\cite{danecek2021twelve}
 
 Já o formato FASTA é utilizado para representar sequências
 de nucleotídeos ou aminoácidos. Introduzido pela primeira vez em
-\cite{fasta}, é hoje ubíquoto no campo da
+\cite{fasta}, é hoje ubíquo no campo da
 bioinformática.\cite{shen2016seqkit} Os genomas de referência aos quais as
 demais sequências genéticas são alinhadas são fornecidos nesse formato, e o
 pacote SAMtools providencia ferramental para manipulação desses arquivos. O
 genoma de referência é publicado pelo órgão \textit{Genome Reference
 Consortium} (GRC), e a publicação mais atual é nomeada GRCh38, de
-2013.\cite{GUO201783}
+2013.\cite{GUO201783} Além disso, o software PAML recebe arquivos nesse formato.
 
 % TODO Convém entrar no mérito disso?
 Convém mencionar que o projeto 1000 Genomes fornece ainda sequências alinhadas
@@ -314,7 +314,13 @@ alinhados ao GRCh38, encontram-se disponíveis em \textit{mirrors} como do
 \textit{National Center for Biotechnology} (NCBI), providenciando maior largura
 de banda.\cite{clarke20121000}
 
-% TODO falar dos formatos do PAML
+Por fim, para o software PAML, além de arquivos FASTA contendo as sequências
+genéticas dos indivíduos da árvore filogenética, a árvore em si consiste de uma
+das entradas do software. A árvore é fornecida no formato NWK ou Newick, um
+formato texto plano com representação flexível, que basicamente separa os nodos
+por vírgula e utiliza parênteses para distinguir nodos internos de folhas.
+Originalmente introduzido na aplicação PHYLIP \cite{felsenstein1993phylip}, é
+amplamente utilizado para representação de árvores filogenéticas.\cite{fredslund2006phy}
 
 \chapter{Desenvolvimento}
 
@@ -535,7 +541,7 @@ diferenciada ter sido implementada de forma não \textit{thread-safe} pelos
 autores do codeml, gerando condições de corrida que inviabilizam a simples
 paralelização da rotina em questão.
 
-Foi considerado a re-implementação das funções sendo diferenciadas, todavia, o
+Foi considerado a reimplementação das funções sendo diferenciadas, todavia, o
 uso extensivo de variáveis globais e memória compartilhada na implementação
 original do codeml demonstrou-se um grande obstáculo para essa abordagem, que
 por isso foi abandonada. Foi estudada então a implementação do slimcodeml, que
@@ -619,7 +625,7 @@ principal problema de desempenho. Através de um estudo do código fonte foi
 observado que o utilitário implementa dois otimizadores, um legado utilizando
 BFGS (o mesmo algoritmo usado no pacote PAML) e o padrão utilizando
 ``Electromagnetism-like Mechanism'', um método estocástico de otimização
-não-linear que utiliza mecanismos de atração e repulsão para mover
+não linear que utiliza mecanismos de atração e repulsão para mover
 ''partículas`` na direção ótima.\cite{5636954} Foi observado ainda que,
 independente do otimizador utilizado, a alocação de memória é a mesma. Fatores
 que influenciam no uso de memória incluem o número de threads e o número de
@@ -747,7 +753,7 @@ conversão nos resultados.
 Em \cite{herzeel2015elprep} os autores desenvolvem uma aplicação
 multiprocessada para preparo dos arquivos de sequência genética alinhadas para
 posterior realização do processo de chamada de variantes. A ferramenta,
-denominada elPrep, visa substiutir o SAMtools e alternativas, realizando o
+denominada elPrep, visa substituir o SAMtools e alternativas, realizando o
 processamento inteiramente em memória volátil. Os autores observam que isso
 incorre em alto uso de RAM quando a chamada de variantes é realizada por
 cromossomo, caso de uso dos pesquisadores do HCPA. Para uma amostra (NA12878)
@@ -909,7 +915,7 @@ Parallel\cite{tange_ole_2021_5233953}. A escolha dessa ferramenta se deu pela
 facilidade de uso, disponibilidade nos ambientes usados pelos pesquisadores, e
 suporte a ajuste automático do número de \textit{jobs} paralelos ao número de
 núcleos de processamento disponíveis. Foi desenvolvida uma ferramenta para
-execução do fluxo de análise otimizado e paralelizado. Um pseudo-código da
+execução do fluxo de análise otimizado e paralelizado. Um pseudo código da
 ferramenta encontra-se reproduzido abaixo.
 
 \begin{algorithmic}
@@ -1006,7 +1012,7 @@ somente a paralelização de \textit{jobs} sob os arquivos de entrada, com
 remoção automática dos arquivos intermediários gerados por cada etapa, operação
 antes realizada manualmente pelos pesquisadores. Observa-se que é precisamente
 esse tipo de abordagem que tomam os softwares sambamba e elPrep, que apresentam
-uso de memória demasiadamente elevado. 
+uso de memória demasiadamente elevado.
 
 Por fim, foram realizados testes de desempenho da ferramenta sambamba, descrita
 em \ref{sec:samant}, a fim de comparar com a ferramenta desenvolvida pelos
@@ -1134,7 +1140,7 @@ literatura, análise de desempenho das soluções encontradas e da solução de
 referência usada pelos pesquisadores do HCPA (pacote PAML), além de uma
 tentativa de paralelização do software original. Com isso, concluiu-se que uma
 implementação paralela exigiria grande esforço, provavelmente necessitando uma
-re-escrita do software para eliminar compartilhamento de memória e uso
+reescrita do software para eliminar compartilhamento de memória e uso
 abundante de variáveis globais presentes na implementação original que
 dificultam sua paralelização. Além disso, foi encontrada solução na literatura
 que reduz em mais da metade o tempo de processamento para o caso de uso dos
@@ -1187,7 +1193,7 @@ em cima de Apache Parquet e Apache Avro.  Outros trabalhos como
 \cite{boufea2017managing} apresentam abordagens semelhantes, enquanto que em
 \cite{decap2015halvade} os autores desenvolvem um framework para pipelines de
 análise genética incluindo chamada de variantes baseado no GATK utilizando o
-modelo de programação MapReduce e o software Apache Hadoop. 
+modelo de programação MapReduce e o software Apache Hadoop.
 
 Todavia, os métodos empregados e os resultados obtidos na chamada de variantes
 utilizando essas e outras ferramentas são diferentes e muitas vezes
