@@ -1,51 +1,145 @@
 #!/bin/bash
 
+__usage="
+Synopsis
+  $(basename $0) [options] list
+
+Description
+  Runs parallel variant calling jobs using samtools, bcftools, and vcftools for files in list.
+
+  The options are as follows:
+
+  -i, --indels
+    Do not filter out indels on the VCF.
+
+  -f, --filter file
+    Custom vcftools filter. Default is --max-missing 0.5 --minDP 5 --min-alleles 2 --max-alleles 2 --minQ 20.
+
+  -h, --help
+    Displays this text.
+
+  The list is expected to be a plain text file containing:
+
+  CRAM files -- the individual samples of aligned sequences
+    Only CRAM is supported but the code is easy to adapt to add BAM and SAM support.
+
+    If you place index files in the same directory of the .cram files but
+    with a trailing .crai extension they will be used and no indexing will
+    take place on stage 1.
+
+  A FASTA file -- the reference genome to which the sequences are aligned to
+    The extension should be .fa or .fasta. It can be compressed (.gz)
+
+  A VCF file -- the variants of the reference genome
+    The extension should be .vcf.gz (it must be compressed)
+
+  A VCF index -- of the reference genome variants
+    The extension should be .vcf.gz.tbi or .vcf.gz.csi.
+
+    If you do not supply this file the program will atempt to download it
+    from NCBI. It should be only a few MBs.
+
+Observations
+  samtools, bcftools, and vcftools are expected to be on PATH. You can easily
+  change that by editing the setup code.
+
+ The algorithm is as follows:
+
+  Stage 1 - Index and view regions for each CRAM
+
+    FOR CRAM_J IN LIST DO PARALLEL
+      INDEX CRAM_J
+      FOR REGION_I IN 1,22 DO
+        VIEW CRAM_J REGION_I >CJ_RI
+
+  Stage 2 - Merge CRAMs, generate and filter VCFs for each region
+
+    FOR REGION_I IN 1,22 DO PARALLEL
+      MERGE (CJ_RI FOR J IN LIST)>MERGED_I
+      INDEX MERGED_I
+      MPILEUP
+      CALL
+      BCF VIEW
+      VCF REMOVE INDELS
+      VCF FILTER
+
+  Stage 3 - Merge and filter VCFs
+
+    VCF CONCAT
+    BCF VIEW
+    BCF INDEX
+    BCF ANNOTATE
+    BCF VIEW
+    VCF FILTER
+"
+
 #
-# Stage 1 - Index and view regions for each CRAM
+# Options parsing
 #
-# FOR CRAM_J IN LIST DO PARALLEL
-#   INDEX CRAM_J
-#   FOR REGION_I IN 1,22 DO
-#     VIEW CRAM_J REGION_I >CJ_RI
-#
-# Stage 2 - Merge CRAMs, generate and filter VCFs for each region
-#
-# FOR REGION_I IN 1,22 DO PARALLEL
-#   MERGE (CJ_RI FOR J IN LIST)>MERGED_I
-#   INDEX MERGED_I
-#   MPILEUP
-#   CALL
-#   BCF VIEW
-#   VCF REMOVE INDELS
-#   VCF FILTER
-#
-# Stage 3 - Merge and filter VCFs
-#
-# VCF CONCAT
-# BCF VIEW
-# BCF INDEX
-# BCF ANNOTATE
-# BCF VIEW
-# VCF FILTER
+
+PARSED=$(getopt -o 'ihf:' --long 'indels,help,filter:' -- "$@")
+if test $? -ne 0
+then
+  exit 2
+fi
+
+eval set -- "$PARSED"
+unset PARSED
+
+filter="--max-missing 0.5 --minDP 5 --min-alleles 2 --max-alleles 2 --minQ 20"
+filter_file=""
+indels="n"
+while true
+do
+  case "$1" in
+    '-i'|'--indels')
+      indels="y"
+      shift 1
+      continue
+      ;;
+    '-h'|'--help')
+      echo "$__usage"
+      shift 1
+      exit 0
+      ;;
+    '-f'|'--filter')
+      filter_file="$2"
+      shift 2
+      continue
+      ;;
+    '--')
+      shift
+      break
+      ;;
+    *)
+      echo 'Missing param parsing, please report (and/or fix) this bug.'>&2
+      exit 1
+      ;;
+  esac
+done
+
+shift $(($OPTIND - 1))
+
+if test -n "$filter_file" 
+then
+  if test -f "$filter_file"
+  then
+    filter="$(head -n 1 $filter_file)"
+  else
+    echo "WARNING: Filter file supplied, but not accessible: $filter_file. Using default filter." >&2
+  fi
+fi
 
 #
 # Setup
 #
 
-echo "$(basename $0): Started with params: $@"
-
-if test $# -lt 2 || test -z "$1" || test -z "$2"
+if test $# -lt 1 || test -z "$1"
 then
-  echo "Expected input: origin cram_list" >&2
+  echo "Unexpected usage."
+  echo "$__usage"
   exit 1
 fi
-
-if ! test -d "$1"
-then
-  echo "Could not locate origin $1." >&2
-  exit 1
-fi
-cd "$1"
 
 # Assumes already in PATH
 samtools="samtools"
@@ -87,11 +181,8 @@ then
   exit
 fi
 
-numprocs=$(grep -c '^processor' /proc/cpuinfo)
-
 function common_setup {
   # env setup
-  cd "$origin"
   profile_path="$(pwd)/$1_$(date +'%d_%m_%y_%H%M%S')"
   mkdir "$profile_path"
   cd "$profile_path"
@@ -101,7 +192,7 @@ function common_setup {
 # Argument parsing
 #
 
-cram_list="$2"
+cram_list="$1"
 if ! test -f "$cram_list"
 then
   echo "Could not access cram list at $cram_list" >&2
@@ -244,8 +335,13 @@ function do_stage2 { # $1=Region
   # OBS: Perhaps this could be replaced this with --skip-indels at mpileup time
   # but this command is pretty fast (3s), so it was not tested. Removing indels
   # early on did not seem to improve performance or reduce output size...
-  echo "Removing indels for region $1 at $(date). Used $(du -hs)"
-  "$vcftools" --vcf region$1.vcf --remove-indels --recode --recode-INFO-all --out region$1_noindels
+  if test "$indels" = "n"
+  then
+    echo "Removing indels for region $1 at $(date). Used $(du -hs)"
+    "$vcftools" --vcf region$1.vcf --remove-indels --recode --recode-INFO-all --out region$1_noindels
+  else
+    mv region$1.vcf region$1_noindels.recode.vcf
+  fi
 
   # Cleanup VCFs
   echo "Removing VCFs with indels for region $1 at $(date). Used $(du -hs)"
@@ -253,7 +349,7 @@ function do_stage2 { # $1=Region
 
   # Filter VCFs
   echo "Filtering VCF for region $1 at $(date). Used $(du -hs)"
-  "$vcftools" --vcf region$1_noindels.recode.vcf --max-missing 0.5 --minDP 5 --min-alleles 2 --max-alleles 2 --minQ 20 --recode --recode-INFO-all --out region$1_filtered
+  "$vcftools" --vcf region$1_noindels.recode.vcf "$filter" --recode --recode-INFO-all --out region$1_filtered
 
   # Cleanup VCFs
   echo "Removing unfiltered VCFs for region $1 at $(date). Used $(du -hs)"
