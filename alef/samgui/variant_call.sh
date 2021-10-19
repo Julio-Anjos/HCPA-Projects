@@ -381,6 +381,7 @@ function do_stage3 {
   # Clenaup
   echo "Rm unzipped vcf at $(date). Used $(du -hs)"
   rm -f region*_filtered.vcf
+  rm -f final.vcf
 
   # Index
   echo "Index final VCF at $(date). Used $(du -hs)"
@@ -400,6 +401,10 @@ function do_stage3 {
   # Annotate
   echo "Annotate final VCF at $(date). Used $(du -hs)"
   "$bcftools" annotate -c ID -a "$vcfref" final.vcf.gz >finalrsID.vcf.gz
+
+  # Cleanup
+  echo "Remove un-annotated VCF at $(date). Used $(du -hs)"
+  rm -f final.vcf.gz
 
   # Unzip
   echo "Convert final VCF at $(date). Used $(du -hs)"
