@@ -101,9 +101,9 @@ Clínicas de Porto Alegre}
     \item[GATK] \textit{Genome Analysis Toolkit}
     \item[PAML] \textit{Phylogenetic Analysis By Maximum Likelihood}
     \item[NCBI] \textit{National Center for Biotechnology}
+    \item[BFGS] Broyden–Fletcher–Goldfarb–Shanno
     \item[CPU] \textit{Central Processing Unit}
     \item[GPU] \textit{Graphics Processing Unit}
-    \item[BFGS] Broyden–Fletcher–Goldfarb–Shanno
     \item[API] \textit{Application Programming Interface}
     \item[DNA] Ácido desoxirribonucleico
     \item[RNA] Ácido ribonucleico
@@ -112,8 +112,9 @@ Clínicas de Porto Alegre}
     \item[PBS] \textit{Population Branch Statistic}
     \item[GRC] \textit{Genome Reference Consortium}
     \item[IPC] \textit{Inter process communication}
-    \item[GB] Giga byte
     \item[GHz] Giga hertz
+    \item[GB] Giga byte
+    \item[TB] Tera byte
     \item[IO] \textit{Input output}
 \end{listofabbrv}
 
@@ -414,7 +415,7 @@ doravante ``Thor1''.
           Clock CPU & 2.90 GHz (base), 4.5 GHz (turbo) \\
           Cache CPU & 9M \\
           RAM & 64 GB \\
-          Disco & SSD NVMe SandDisk SN750 (1TB)
+          Disco & SSD NVMe SandDisk SN750 (1 TB) \\
           \hline
         \end{tabular}
       \legend{Fonte: Os autores}
@@ -743,7 +744,44 @@ trabalho foram realizados testes de desempenho dessa aplicação, realizando uma
 conversão prévia da entrada de CRAM para BAM e considerando o tempo dessa
 conversão nos resultados.
 
-% TODO Halvade https://academic.oup.com/bioinformatics/article/31/15/2482/188534?login=true
+Em \cite{herzeel2015elprep} os autores desenvolvem uma aplicação
+multiprocessada para preparo dos arquivos de sequência genética alinhadas para
+posterior realização do processo de chamada de variantes. A ferramenta,
+denominada elPrep, visa substiutir o SAMtools e alternativas, realizando o
+processamento inteiramente em memória volátil. Os autores observam que isso
+incorre em alto uso de RAM quando a chamada de variantes é realizada por
+cromossomo, caso de uso dos pesquisadores do HCPA. Para uma amostra (NA12878)
+com 15GB, consideravelmente menor que as entradas utilizadas pelos
+pesquisadores do HCPA, o software dos autores utilizou 216GB de RAM. No caso de
+ambientes com restrição de memória, os autores recomendam o uso de outras
+ferramentas para compor o pipeline, incluindo a ferramenta sambamda, descrita
+acima, e o próprio SAMtools. Outro fator limitante é que a ferramenta trabalha
+apenas com arquivos nos formatos BAM e SAM, sem suporte a CRAM, da mesma forma
+que o sambamba. Além disso, não há suporte para alguns dos comandos do
+SAMtools utilizados no pipeline de chamada de variantes dos pesquisadores do
+HCPA. Vale mencionar que, apesar de implementação própria, os resultados são
+idênticos àqueles das ferramentas que o elPrep visa substituir, segundo os
+autores. Devido à ausência de suporte a CRAM, uso de RAM proibitivamente
+elevado, e ausência de comandos fundamentais à execução do pipeline usado pelos
+pesquisadores, não foram realizados testes mais aprofundados dessa ferramenta
+nesse trabalho.
+
+Através de um estudo da literatura foram encontradas ferramentas que visam
+substituir o SAMtools, melhorando seu tempo de execução através do uso de
+técnicas de programação paralela. Todavia, essas ferramentas apresentam
+limitações importantes ao caso de uso dos pesquisadores do HCPA. Nomeadamente:
+algumas ferramentas possuem tempo de execução superior ao SAMtools apesar do
+paralelismo; algumas ferramentas não suportam arquivos no formato CRAM, formato
+atualmente usado pelo projeto 1000 Genomes, de onde são obtidos os arquivos de
+entrada; algumas ferramentas apresentam uso de memória proibitivamente elevado;
+algumas ferramentas possuem implementações próprias sem testes extensivos dos
+resultados contra a implementação de referência (SAMtools). Visando superar
+essas deficiências estudou-se em detalhe o pipeline de análise realizado pelo
+grupo e desenvolveu-se uma ferramenta própria, que ao mesmo tempo reduz o tempo
+de processamento utilizando técnicas de processamento paralelo, utiliza a
+implementação de referência, apresenta uso de memória controlado, e possui
+suporte ao formato CRAM. O desenvolvimento dessa aplicação bem como os
+resultados dos testes de desempenho são descritos nas seções seguintes.
 
 \subsection{Fluxo de análise original}
 
@@ -917,7 +955,7 @@ utilizando todos núcleos de processamento disponíveis.
           \hline
           58 GB (2 CRAMs) & 1d 4h 55m & 4h59m \\
           124 GB (4 CRAMs) & 2d 9h 50m & 7h39m \\
-          232 GB (8 CRAMs) & TODO & TODO \\
+          232 GB (8 CRAMs) & 4d 14h 35m & TODO \\
           \hline
         \end{tabular}
       \legend{Fonte: Os autores}
@@ -941,7 +979,7 @@ encontram-se reproduzidos na tabela \ref{tbl:speedup}.
           1 núcleo & TODO & TODO \\
           2 núcleos & TODO & TODO \\
           4 núcleos & TODO & TODO \\
-          6 núcleos & TODO & TODO \\
+          6 núcleos & 4h59m & TODO \\
           \hline
         \end{tabular}
       \legend{Fonte: Os autores}
@@ -966,14 +1004,16 @@ softwares como ANGSD e PVCtools. Dessa forma, uma vez testado e observado que o
 uso de memória tornava-se elevado demais utilizando um pipeline, foi mantida
 somente a paralelização de \textit{jobs} sob os arquivos de entrada, com
 remoção automática dos arquivos intermediários gerados por cada etapa, operação
-antes realizada manualmente pelos pesquisadores.
+antes realizada manualmente pelos pesquisadores. Observa-se que é precisamente
+esse tipo de abordagem que tomam os softwares sambamba e elPrep, que apresentam
+uso de memória demasiadamente elevado. 
 
-Por fim, foram realizados testes de desempenho da ferramenta sambamba,
-mencionada em \ref{sec:samant}, a fim de comparar com a ferramenta desenvolvida
-pelos autores bem como considerar incorporar o uso do sambamba nela. Os
-resultados encontram-se descritos na seção \ref{sec:sambamba}.
+Por fim, foram realizados testes de desempenho da ferramenta sambamba, descrita
+em \ref{sec:samant}, a fim de comparar com a ferramenta desenvolvida pelos
+autores bem como considerar incorporar o uso do sambamba nela. Os resultados
+encontram-se descritos na seção \ref{sec:sambamba}.
 
-\subsection{Aplicação sambamba}
+\subsection{Testes das aplicações sambamba}
 \label{sec:sambamba}
 
 Foram realizados testes de desempenho da aplicação sambamba, descrita na seção
@@ -1020,12 +1060,15 @@ na versão mais atual do sambamba como em versões anteriores. A tabela
     \label{tbl:sambamba}
 \end{table}
 
-Diante desses resultados optou-se por não incorporar o sambamba à ferramenta
-desenvolvida. O único cenário em que seu uso seria benéfico é na visualização
-das regiões, mas como o sambamba não trabalha com CRAM seria necessário uma
-conversão custosa, de várias horas para cada arquivo de entrada, para uma
-redução no tempo de execução de poucos minutos para alguns segundos. No total,
-não traria benefícios à ferramenta.
+Observa-se que os resultados não são diretamente comparáveis com aqueles
+apresentados em \cite{tarasov2015sambamba}, visto que lá os autores utilizam
+arquivos BAM com o SAMtools, enquanto que neste trabalho são utilizados
+arquivos CRAM, significativamente menores. Diante desses resultados optou-se
+por não incorporar o sambamba à ferramenta desenvolvida. O único cenário em que
+seu uso seria benéfico é na visualização das regiões, mas como o sambamba não
+trabalha com CRAM seria necessário uma conversão custosa, de várias horas para
+cada arquivo de entrada, para uma redução no tempo de execução de poucos
+minutos para alguns segundos. No total, não traria benefícios à ferramenta.
 
 \subsection{Ambiente e interface}
 
@@ -1118,29 +1161,33 @@ confiabilidade à ferramenta versus implementações próprias como no caso da
 sambamba, além de suporte a arquivos CRAM. Ao mesmo tempo, a ferramenta
 apresenta tempo de execução superior ao uso sequencial da implementação de
 referência, e a ausência de necessidade de conversão de CRAM para BAM torna-a
-superior em alguns aspectos à ferramenta sambamba, sendo uma alternativa de
-paralelização de chamada de variantes. Por fim, a disponibilização de uma
-interface gráfica facilita o uso por profissionais não familiarizados com
-interfaces de linha de comando, e o uso de containers Docker facilita a
-reprodução dos resultados obtidos nesse trabalho.
+superior em alguns aspectos às ferramentas sambamba e elPrep, sendo uma
+alternativa de paralelização de chamada de variantes. Por fim, a
+disponibilização de uma interface gráfica facilita o uso por profissionais não
+familiarizados com interfaces de linha de comando, e o uso de containers Docker
+facilita a reprodução dos resultados obtidos nesse trabalho.
 
 \section{Discussão e trabalho futuro}
 
-Existem diversas ferramentas utilizados para chamadas de variante. Uma com
-amplo uso na literatura\cite{de2017gatk} é a Genome Analysis Toolkit
-(GATK)\cite{mckenna2010genome}, que implementa um modelo de MapReduce para
-paralelismo das tarefas, inclusive de chamada de variantes. Outras abordagens
-ainda mais distantes daquela adotada no SAMtools envolvem redes neurais, como
-no caso da ferramenta DeepVariant,\cite{poplin2018universal} que, apesar de ter
-tempos de execução piores que seus pares, possui implementações paralelas
-recentes que afirmam superar tais deficiências.\cite{ahmad2021vc} Outra
-implementação de interesse, descrita em \cite{massie2013adam}, substitui os
-formatos de arquivo SAM, BAM, CRAM, VCF e BCF por uma implementação própria,
-visando superar algumas de suas deficiências, além de providenciar APIs para
-sua manipulação. A implementação é voltada para frameworks do projeto Apache
-como Hadoop e Spark, sendo construída em cima de Apache Parquet e Apache Avro.
-Outros trabalhos como \cite{boufea2017managing} apresentam abordagens
-semelhantes.
+Além do pacote SAMtools e softwares alternativos a ele, existem diversas
+ferramentas utilizados para chamadas de variante utilizando modelos diferentes
+daquele empregado pelo SAMtools. Uma com amplo uso na
+literatura\cite{de2017gatk} é a GATK\cite{mckenna2010genome}, que implementa um
+modelo de MapReduce para paralelismo das tarefas, inclusive de chamada de
+variantes. Outras abordagens ainda mais distantes daquela adotada no SAMtools
+envolvem redes neurais, como no caso da ferramenta
+DeepVariant,\cite{poplin2018universal} que, apesar de ter tempos de execução
+piores que seus pares, possui implementações paralelas recentes que afirmam
+superar tais deficiências.\cite{ahmad2021vc} Outra implementação de interesse,
+descrita em \cite{massie2013adam}, substitui os formatos de arquivo SAM, BAM,
+CRAM, VCF e BCF por uma implementação própria, visando superar algumas de suas
+deficiências, além de providenciar APIs para sua manipulação. A implementação é
+voltada para frameworks do projeto Apache como Hadoop e Spark, sendo construída
+em cima de Apache Parquet e Apache Avro.  Outros trabalhos como
+\cite{boufea2017managing} apresentam abordagens semelhantes, enquanto que em
+\cite{decap2015halvade} os autores desenvolvem um framework para pipelines de
+análise genética incluindo chamada de variantes baseado no GATK utilizando o
+modelo de programação MapReduce e o software Apache Hadoop. 
 
 Todavia, os métodos empregados e os resultados obtidos na chamada de variantes
 utilizando essas e outras ferramentas são diferentes e muitas vezes
@@ -1148,10 +1195,10 @@ complementares àqueles do SAMtools e demais softwares de chamada de
 variantes.\cite{gezsi2015variantmetacaller}\cite{guo2015seqmule}
 
 Um trabalho futuro consiste em explorar o uso dessas ferramentas junto aos
-pesquisadores, com avaliação tanto de seu desempenho como a aplicabilidade
-desse ferramental considerando os resultados potencialmente diferentes entre
-si, para o caso de uso do HCPA, levando em consideração a literatura a respeito
-dessas ferramentas.
+pesquisadores do grupo de pesquisa em genética, com avaliação tanto de seu
+desempenho como da aplicabilidade desse ferramental considerando os resultados
+potencialmente diferentes entre si, para o caso de uso do HCPA, levando em
+consideração a literatura a respeito dessas ferramentas.
 
 \bibliographystyle{abntex2-alf}
 \bibliography{biblio}
