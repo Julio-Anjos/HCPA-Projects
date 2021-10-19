@@ -349,7 +349,7 @@ function do_stage2 { # $1=Region
 
   # Filter VCFs
   echo "Filtering VCF for region $1 at $(date). Used $(du -hs)"
-  "$vcftools" --vcf region$1_noindels.recode.vcf "$filter" --recode --recode-INFO-all --out region$1_filtered
+  "$vcftools" --vcf region$1_noindels.recode.vcf $filter --recode --recode-INFO-all --out region$1_filtered
 
   # Cleanup VCFs
   echo "Removing unfiltered VCFs for region $1 at $(date). Used $(du -hs)"
@@ -430,6 +430,7 @@ export vcftools="$vcftools"
 export vcftools_concat="$vcftools_concat"
 export vcfutils="$vcfutils"
 export ref="$ref"
+export filter="$filter"
 
 # Stage 1
 echo "2,1,4">"$statusfile"
