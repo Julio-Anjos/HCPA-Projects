@@ -336,6 +336,13 @@ implementação ingênua de métodos numéricos computacionalmente
 custosos.\cite{yang2020paml} Para o caso de uso do grupo de pesquisa em
 genética do HCPA, o tempo de execução é de vários dias.
 
+Em suma, o codeml detecta os eventos de seleção utilizando diferentes modelos
+de variação das taxas de substituição $\omega$ ao longo da sequência genética
+(\textit{site models} ou modelos de sítio) e das linhagens da árvore
+filogenética (\textit{branch models} ou modelos de linhagem). Métodos
+estatísticos de máxima verossimilhança são então empregados para selecionar
+qual dos modelos tem o melhor ajuste (\textit{best fit}).
+
 Neste trabalho foi realizada uma revisão bibliográfica a respeito do software
 em questão e de alternativas a ele; foram realizadas análises de seu desempenho
 através de perfis de execução, identificando as rotinas responsáveis pela maior
@@ -366,8 +373,15 @@ o ambiente de execução aos quais os pesquisadores possuem acesso não é de um
 cluster, portanto essa solução não foi estudada mais a fundo nesse trabalho.
 
 Em \cite{maldonado2016lmap} é implementado uma
-ferramenta para execução paralela de múltiplos \textit{jobs} do codeml
-em uma única máquina (em CPU). % TODO expandir
+ferramenta, chamada LMAP, para execução paralela de múltiplos \textit{jobs} do
+codeml em uma única máquina (em CPU). Diferente do gcodeml, o LMAP lança um
+\textit{job} para cada modelo (de variação do $\omega$) do codeml, não para
+cada arquivo de entrada. Dessa forma a execução é paralela mesmo para um único
+arquivo de entrada, dado múltiplos modelos de variação do $\omega$, que é
+justamente o caso de uso dos pesquisadores do HCPA. O LMAP faz isso criando,
+para uma entrada única, uma estrutura de diretórios com múltiplas entradas
+iguais mas configurações de modelo diferentes. O LMAP utiliza a implementação
+original do codeml, que é a implementação de referência na área.
 
 Em \cite{schabauer2012slimcodeml} os autores otimizam e organizam software
 original (codeml), mantendo o formato de entrada e saída bem como os métodos
@@ -428,12 +442,10 @@ doravante ``Thor1''.
     \label{tbl:thor1}
 \end{table}
 
-Em um segundo momento foi testado a aplicação LMAP.\cite{maldonado2016lmap}
-% TODO resultados dos testes da LMAP
-
-A tabela \ref{tbl:paml} apresenta uma comparação dos tempos de execução de cada
-uma das ferramentas estudadas para os arquivos de entrada fornecidos pelos
-pesquisadores do HCPA, no ambiente de execução descrito na tabela \ref{tbl:thor1}.
+Em um segundo momento foi testado a aplicação LMAP. A tabela \ref{tbl:paml}
+apresenta uma comparação dos tempos de execução de cada uma das ferramentas
+estudadas para os arquivos de entrada fornecidos pelos pesquisadores do HCPA,
+no ambiente de execução descrito na tabela \ref{tbl:thor1}.
 
 \begin{table}[h]
     \caption{Tempos de execução das ferramentas de análise filogenética}
