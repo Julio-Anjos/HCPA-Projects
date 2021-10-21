@@ -28,7 +28,7 @@ gui = Gui(
   [ 'Remote host*', '__remote__', (['Help'], 'help_remote'), 'Hop host', '__hop__', (['Help'], 'help_hop') ],
   [ 'Download CRAM list', '__ftp__', (['Help'], 'help_ftp'), 'Local CRAM list', '__local__', (['Help'], 'help_local')],
   [ 'Docker image name*','__docker__', (['Help'], 'help_docker'), 'Data path*', '__data__', (['Help'], 'help_data') ],
-  [ 'VCF filter params*','__vcffilter__', ___ , ___, ___, ___],
+  [ 'VCF filter params*','__vcffilter__', ___ , ___, (C('Keep indels'), 'keep'), (['Help'], 'help_filter')],
   [ (['Run all'], 'runall'), (['Run download'], 'download'), (['Run variant call'], 'vcall'), (['Check status'], 'status'), (['Abort all'], 'abort'), (C('Skip setup'), 'skip')],
  [ 'state', P('progress'), ___, ___, ___, ___]
 )
@@ -43,15 +43,17 @@ def set_defaults():
   gui.docker = 'afarah1/ubuntu-samtools'
   #gui.data = '/DATA'
   gui.data = '/mnt/volume_nyc3_01'
-  gui.vcffilter = '--max-missing 0.5 --minDP 5 --min-alleles 2 --max-alleles 2 --minQ 20' # TODO actually use this
+  gui.vcffilter = '--max-missing 0.5 --minDP 5 --min-alleles 2 --max-alleles 2 --minQ 20' 
   gui.progress = 0
   gui.state = 'Idle'
 
 def tostring(gui):
-  return ','.join([gui.remote, gui.hop, gui.ftp, gui.local, gui.docker, gui.data, gui.vcffilter])
+  return ','.join([gui.remote, gui.hop, gui.ftp, gui.local, gui.docker, gui.data, gui.vcffilter, str(gui.keep.isChecked()), str(gui.skip.isChecked())])
 
 def fromstring(string):
-  gui.remote, gui.hop, gui.ftp, gui.local, gui.docker, gui.data, gui.vcffilter = string.split(',')
+  gui.remote, gui.hop, gui.ftp, gui.local, gui.docker, gui.data, gui.vcffilter, keep, skip = string.split(',')
+  gui.keep.setChecked(keep == "True")
+  gui.skip.setChecked(skip == "True")
 
 def save_state():
   log.debug('Saving state')
@@ -62,12 +64,16 @@ def save_state():
 
 def load_state():
   log.debug('Loading state')
+  # Load program state
   try:
     fromstring(Path('samgui.state').read_text())
   except FileNotFoundError:
     log.debug('samgui.state not found')
   except Exception as e:
     log.warning('samgui.state not readable: %s' % e)
+  # TODO Update filter file
+  #try:
+  #  Path('samgui.filter')
 
 def handle_sigint(sig, frame):
   log.debug('Received SIGINT, saving state. Send SIGTERM or SIGKILL if necessary')
@@ -289,6 +295,11 @@ with gui.help_data:
     log.debug('help_data pressed')
     QMessageBox.information(None, "Info", "Path on the remote host where the data is or will be once downloaded. A mount point to this location will be accessed from docker.")
 
+with gui.help_filter:
+  if gui.is_running:
+    log.debug('help_filter pressed')
+    QMessageBox.information(None, "Info", "Parameters for VCF filtering during variant calling. Check 'keep indels' if you do not wish to remove indels from VCF.")
+
 with gui.runall:
   if gui.is_running:
     log.info('Run requested.')
@@ -329,9 +340,13 @@ with gui.abort:
 
 with gui.skip:
   if gui.is_running:
-    log.info('Skip checked')
+    log.debug('Skip status=%s' % gui.skip.isChecked())
     if gui.skip.isChecked():
       QMessageBox.warning(None, "Warning", "Skipping setup may break things, make sure you know what you are doing!")
+
+with gui.keep:
+  if gui.is_running:
+    log.debug('Keep status=%s' % gui.keep.isChecked())
 
 # Max does not seem to work, so we'll have to normalize to a percentage...
 #gui.progress.minimum = 0
