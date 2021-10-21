@@ -83,7 +83,10 @@ fi
 "$copy_cmd" prepare_docker.sh "$remote_host:$remote_path"
 "$copy_cmd" download_data.sh "$remote_host:$remote_path"
 "$copy_cmd" variant_call.sh "$remote_host:$remote_path"
-
+if test -f samgui.filter
+then
+  "$copy_cmd" samgui.filter "$remote_host:$remote_path"
+fi
 if test -n "$local_list"
 then
   "$copy_cmd" "$local_list" "$remote_host:$remote_path"

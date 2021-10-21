@@ -23,6 +23,7 @@ g_remoteCmd = ''
 g_UserProcess = None
 g_StatusProcess = None
 g_StatusProcess_gb = False
+c_defaultFilter = '--max-missing 0.5 --minDP 5 --min-alleles 2 --max-alleles 2 --minQ 20' 
 
 gui = Gui(
   [ 'Remote host*', '__remote__', (['Help'], 'help_remote'), 'Hop host', '__hop__', (['Help'], 'help_hop') ],
@@ -43,7 +44,7 @@ def set_defaults():
   gui.docker = 'afarah1/ubuntu-samtools'
   #gui.data = '/DATA'
   gui.data = '/mnt/volume_nyc3_01'
-  gui.vcffilter = '--max-missing 0.5 --minDP 5 --min-alleles 2 --max-alleles 2 --minQ 20' 
+  gui.vcffilter = c_defaultFilter
   gui.progress = 0
   gui.state = 'Idle'
 
@@ -71,9 +72,13 @@ def load_state():
     log.debug('samgui.state not found')
   except Exception as e:
     log.warning('samgui.state not readable: %s' % e)
-  # TODO Update filter file
-  #try:
-  #  Path('samgui.filter')
+
+def update_filter_file():
+  # Update filter file
+  try:
+    Path('samgui.filter').write_text(gui.vcffilter)
+  except Exception as e:
+    log.error('Could not write VCF filter to file: %s' % e)
 
 def handle_sigint(sig, frame):
   log.debug('Received SIGINT, saving state. Send SIGTERM or SIGKILL if necessary')
@@ -183,6 +188,7 @@ def prepare_env():
     log.info('Not preparing remote environment since setup skipping was checked.')
     return
   log.info('Preparing remote environment ' + gui.remote + ' hop ' + gui.hop)
+  update_filter_file()
   g_UserProcess = Popen('./prepare.sh %s %s %s' % (gui.remote, gui.data, gui.hop), shell=True)
   # TODO this hangs the GUI, not ideal...
   i = 0
@@ -225,7 +231,11 @@ def do_vcall():
   if check_userp_running():
     log.info('Not calling variants since another process is already running.')
     return
-  call_cmd = ' /DATA/variant_call.sh /DATA /DATA/cramlist_local'
+  call_cmd = ' /DATA/variant_call.sh /DATA/cramlist_local'
+  if gui.vcffilter != '' and gui.vcffilter != c_defaultFilter:
+    call_cmd += ' -f /DATA/samgui.filter'
+  if gui.keep.isChecked():
+    call_cmd += ' -i'
   set_status('Variant calling', 0)
   g_UserProcess = Popen([g_dockerCmd + call_cmd], shell=True)
 
