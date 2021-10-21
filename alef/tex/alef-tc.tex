@@ -949,7 +949,9 @@ As otimizações e a paralelização reduziram drasticamente o tempo total de
 execução da análise. Na tabela \ref{tbl:SAMtools} encontram-se reproduzidos os
 tempos de execução utilizando o pipeline original e o otimizado. Os testes
 foram realizados na máquina Thor1, descrita na tabela \ref{tbl:thor1},
-utilizando todos núcleos de processamento disponíveis.
+utilizando todos núcleos de processamento disponíveis. Foram utilizados como
+entrada as amostras HGDP00715, HGDP00711, HGDP00519, HGDP00714, HGDP00712,
+HGDP00777, HGDP00525, e HGDP00719.
 
 \begin{table}[h]
     \caption{Tempos de execução do SAMtools}
@@ -968,14 +970,15 @@ utilizando todos núcleos de processamento disponíveis.
     \label{tbl:SAMtools}
 \end{table}
 
-Além disso, foram realizados testes de desempenho para a entrada de 58 GB
-utilizando um número diferente de núcleos de processamento, a fim de estimar o
-\textit{speedup} bem como a quantidade de tempo economizado pela paralelização,
-o resto sendo atribuído às otimizações no fluxo de análise. Os resultados
-encontram-se reproduzidos na tabela \ref{tbl:speedup}.
+Além disso, foram realizados testes de desempenho para entradas com 2 arquivos
+(58 GB) e 6 arquivos (161 GB) utilizando um número diferente de núcleos de
+processamento, a fim de estimar o \textit{speedup} bem como a quantidade de
+tempo economizado pela paralelização, o resto sendo atribuído às otimizações no
+fluxo de análise. Os resultados encontram-se reproduzidos nas tabelas
+\ref{tbl:speedup2} e \ref{tbl:speedup6}.
 
 \begin{table}[h]
-    \caption{Speedup da ferramenta}
+    \caption{Speedup da ferramenta com duas entradas}
     \centering
         \begin{tabular}{c|c|c}
           \hline
@@ -989,7 +992,25 @@ encontram-se reproduzidos na tabela \ref{tbl:speedup}.
           \hline
         \end{tabular}
       \legend{Fonte: Os autores}
-    \label{tbl:speedup}
+    \label{tbl:speedup2}
+\end{table}
+
+\begin{table}[h]
+    \caption{Speedup da ferramenta com seis entradas}
+    \centering
+        \begin{tabular}{c|c|c}
+          \hline
+          \textit{Número de núcleos}  &   \textit{Tempo de execução}  & \textit{Speedup} \\
+          \hline
+          \hline
+          1 núcleo & TODO & TODO \\
+          2 núcleos & TODO & TODO \\
+          4 núcleos & TODO & TODO \\
+          6 núcleos & TODO & TODO \\
+          \hline
+        \end{tabular}
+      \legend{Fonte: Os autores}
+    \label{tbl:speedup6}
 \end{table}
 
 Observa-se que uma alternativa à paralelizar somente os \textit{jobs} sob cada
@@ -1036,7 +1057,8 @@ pela ferramenta sambamba, comparando com os comandos equivalentes da ferramenta
 samtools. O comando de indexação foi consideravelmente mais lento na ferramenta
 sambamba, apesar de usar múltiplos núcleos enquanto o samtools roda
 sequencialmente. Enquanto o samtools levou 39s para indexar um CRAM de 26 GB, o
-sambamba levou 2m9s para indexar o BAM convertido a partir dele, de 53 GB.
+sambamba levou 2m9s para indexar o BAM convertido a partir dele, de 53 GB. A
+amostra utilizada foi a HGDP00519.
 
 Já para a rotina de visualização de uma região ou cromossomo o sambamba foi
 consideravelmente mais rápido. Enquanto o samtools levou 4m5s para visualizar
