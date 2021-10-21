@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "$(basename $0): Started with params: $@"
+#echo "$(basename $0): Started with params: $@"
 
 # preapre_docker.sh image_name
 
@@ -10,7 +10,7 @@ then
   exit 1
 fi
 
-docker run hello-world
+docker run hello-world 1>/dev/null
 if test $? -ne 0
 then
   echo "Failed to launch docker hello-world with error code $?. Try checking the following things:" >&2

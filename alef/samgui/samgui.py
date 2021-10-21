@@ -11,7 +11,7 @@ from pathlib import Path
 import signal
 import sys
 
-logging.basicConfig(level=os.environ.get("LOGLEVEL", "DEBUG"), format='SAMGUI: %(asctime)s %(levelname)s %(name)s %(message)s')
+logging.basicConfig(level=os.environ.get("LOGLEVEL", "INFO"), format='SAMGUI: %(asctime)s %(levelname)s %(name)s %(message)s')
 log = logging.getLogger(__name__)
 
 class SamGUIException(Exception):
@@ -22,7 +22,6 @@ g_dockerCmd = ''
 g_remoteCmd = ''
 g_UserProcess = None
 g_StatusProcess = None
-g_StatusProcess_gb = False
 c_defaultFilter = '--max-missing 0.5 --minDP 5 --min-alleles 2 --max-alleles 2 --minQ 20' 
 
 gui = Gui(
@@ -151,15 +150,10 @@ def check_userp_running():
 
 def check_statusp_running():
   global g_StatusProcess
-  global g_StatusProcess_gb
   if g_StatusProcess != None:
     if g_StatusProcess.poll() is not None:
       log.debug('Status process terminated with return code: %s' % g_StatusProcess.returncode) 
       if g_StatusProcess.returncode != 0:
-        if g_UserProcess is not None and not g_StatusProcess_gb:
-          g_StatusProcess_gb = True
-          log.debug('gb')
-          return
         stdout, stderr = g_StatusProcess.communicate()
         log.debug('Non-zero rc. stdout, stderr: %s %s' % (stdout, stderr))
         set_status('Idle', 0)
@@ -338,7 +332,7 @@ with gui.status:
     log.info('Status check requested.')
     validate_input_status()
     build_cmds()
-    check_status(None)
+    #check_status(None)
 
 with gui.abort:
   if gui.is_running:
@@ -346,7 +340,7 @@ with gui.abort:
     validate_input_abort()
     build_cmds()
     abort_all()
-    check_status(None)
+    #check_status(None)
 
 with gui.skip:
   if gui.is_running:
@@ -366,5 +360,5 @@ with gui.keep:
 signal.signal(signal.SIGINT, handle_sigint)
 set_defaults()
 load_state()
-gui.timer_start(check_status, 5)
+gui.timer_start(check_status, 1)
 gui.run()

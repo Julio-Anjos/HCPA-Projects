@@ -15,7 +15,7 @@
 #     Copy this local CRAM list to the remote path at the remote address.
 #
 
-echo "$(basename $0): Started with params: $@"
+#echo "$(basename $0): Started with params: $@"
 
 #
 # Options parsing
@@ -80,14 +80,14 @@ fi
 # Copy necessary files to remote host:remote path
 #
 
-"$copy_cmd" prepare_docker.sh "$remote_host:$remote_path"
-"$copy_cmd" download_data.sh "$remote_host:$remote_path"
-"$copy_cmd" variant_call.sh "$remote_host:$remote_path"
+"$copy_cmd" prepare_docker.sh "$remote_host:$remote_path" 1>/dev/null
+"$copy_cmd" download_data.sh "$remote_host:$remote_path" 1>/dev/null
+"$copy_cmd" variant_call.sh "$remote_host:$remote_path" 1>/dev/null
 if test -f samgui.filter
 then
-  "$copy_cmd" samgui.filter "$remote_host:$remote_path"
+  "$copy_cmd" samgui.filter "$remote_host:$remote_path" 1>/dev/null
 fi
 if test -n "$local_list"
 then
-  "$copy_cmd" "$local_list" "$remote_host:$remote_path"
+  "$copy_cmd" "$local_list" "$remote_host:$remote_path" 1>/dev/null
 fi

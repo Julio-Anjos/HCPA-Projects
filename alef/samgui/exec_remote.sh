@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "$(basename $0): Started with params: $@"
+#echo "$(basename $0): Started with params: $@"
 
 set -e
 set -o pipefail

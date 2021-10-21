@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "$(basename $0): Started with params: $@"
+#echo "$(basename $0): Started with params: $@"
 
 # Synopsis
 #   exec_docker start_container image_name data_source script [params]
@@ -44,7 +44,7 @@ then
   then
     docker run --name samgui --mount type=bind,source="$data_source",target=/DATA -it -d "$image_name"
   else
-    echo "Docker not running and requested not to run. 1=$1" >&2
+    #echo "Docker not running and requested not to run. 1=$1" >&2
     exit 1
   fi
 fi
