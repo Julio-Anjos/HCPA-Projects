@@ -1,0 +1,70 @@
+:z: Found other 2 screen instances already running.
+LMAP package (mmap.pl)
+Copyright (C) 2015 Emanuel Maldonado
+This program comes with ABSOLUTELY NO WARRANTY; for details see `LICENSE_GPL.txt' file.
+This is free software, and you are welcome to redistribute it
+under certain conditions; see `LICENSE_GPL.txt' file for details.
+
+:: Adding Subdirectory results/SiteModels
+:: No more content on current directory
+:: Going into directory results/SiteModels...
+:: Adding Subdirectory results/SiteModels/0.2
+:: Adding Subdirectory results/SiteModels/2
+:: Adding Subdirectory results/SiteModels/5
+:: No more content on current directory
+:: Going into directory results/SiteModels/0.2...
+:: Adding Subdirectory results/SiteModels/0.2/M012378
+:: Adding Subdirectory results/SiteModels/0.2/M8a
+:: No more content on current directory
+:: Going into directory results/SiteModels/2...
+:: Adding Subdirectory results/SiteModels/2/M012378
+:: Adding Subdirectory results/SiteModels/2/M8a
+:: No more content on current directory
+:: Going into directory results/SiteModels/5...
+:: Adding Subdirectory results/SiteModels/5/M012378
+:: Adding Subdirectory results/SiteModels/5/M8a
+:: No more content on current directory
+:: Going into directory results/SiteModels/0.2/M012378...
+:: Adding Subdirectory results/SiteModels/0.2/M012378/GJB3
+:: No more content on current directory
+:: Going into directory results/SiteModels/0.2/M8a...
+:: Adding Subdirectory results/SiteModels/0.2/M8a/GJB3
+:: No more content on current directory
+:: Going into directory results/SiteModels/2/M012378...
+:: Adding Subdirectory results/SiteModels/2/M012378/GJB3
+:: No more content on current directory
+:: Going into directory results/SiteModels/2/M8a...
+:: Adding Subdirectory results/SiteModels/2/M8a/GJB3
+:: No more content on current directory
+:: Going into directory results/SiteModels/5/M012378...
+:: Adding Subdirectory results/SiteModels/5/M012378/GJB3
+:: No more content on current directory
+:: Going into directory results/SiteModels/5/M8a...
+:: Adding Subdirectory results/SiteModels/5/M8a/GJB3
+:: No more content on current directory
+:: Going into directory results/SiteModels/0.2/M012378/GJB3...
+:: Gathering file: results/SiteModels/0.2/M012378/GJB3/codeml.ctl ; codeml.ctl
+:: No more content on current directory
+:: Going into directory results/SiteModels/0.2/M8a/GJB3...
+:: Gathering file: results/SiteModels/0.2/M8a/GJB3/codeml.ctl ; codeml.ctl
+:: No more content on current directory
+:: Going into directory results/SiteModels/2/M012378/GJB3...
+:: Gathering file: results/SiteModels/2/M012378/GJB3/codeml.ctl ; codeml.ctl
+:: No more content on current directory
+:: Going into directory results/SiteModels/2/M8a/GJB3...
+:: Gathering file: results/SiteModels/2/M8a/GJB3/codeml.ctl ; codeml.ctl
+:: No more content on current directory
+:: Going into directory results/SiteModels/5/M012378/GJB3...
+:: Gathering file: results/SiteModels/5/M012378/GJB3/codeml.ctl ; codeml.ctl
+:: No more content on current directory
+:: Going into directory results/SiteModels/5/M8a/GJB3...
+:: Gathering file: results/SiteModels/5/M8a/GJB3/codeml.ctl ; codeml.ctl
+:: No more content on current directory
+
+:z: 6 files scheduled to run in specified program.
+:: Starting execution for file: results/SiteModels/0.2/M012378/GJB3/codeml.ctl
+:: Starting execution for file: results/SiteModels/0.2/M8a/GJB3/codeml.ctl
+:: Starting execution for file: results/SiteModels/2/M012378/GJB3/codeml.ctl
+:: Starting execution for file: results/SiteModels/2/M8a/GJB3/codeml.ctl
+:: Starting execution for file: results/SiteModels/5/M012378/GJB3/codeml.ctl
+:: Starting execution for file: results/SiteModels/5/M8a/GJB3/codeml.ctl
