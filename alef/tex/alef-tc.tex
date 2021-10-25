@@ -417,7 +417,7 @@ por ser a que melhor atendia aos requisitos dos pesquisadores do HCPA.
 A primeira aplicação a ser testada foi o
 slimcodeml.\cite{schabauer2012slimcodeml} Utilizando os dados de entrada
 fornecidos por pesquisadores do grupo, obteve-se uma redução no tempo total de
-execução de 16h38m para 5h24m, ou 67,53\%, em relação ao codeml original. Os
+execução de 16h 38m para 5h 24m, ou 67,53\%, em relação ao codeml original. Os
 testes foram realizados em um ambiente controlado, de uso exclusivo dos
 autores, em uma máquina com o hardware descrito na tabela \ref{tbl:thor1},
 doravante ``Thor1''.
@@ -443,7 +443,7 @@ doravante ``Thor1''.
 \end{table}
 
 Em um segundo momento foi testado a aplicação LMAP, que apresentou tempo de
-execução de 10h15m. Isto é, o slimcodeml foi significativamente mais rápido que
+execução de 10h 15m. Isto é, o slimcodeml foi significativamente mais rápido que
 a execução paralela utilizando o LMAP. Todavia, conforme observador
 previamente, o slimcodeml recebe a mesma entrada e produz a mesma saída do
 codeml original. Dessa forma, foi substituído o executável do codeml por aquele
@@ -453,6 +453,7 @@ tabela \ref{tbl:paml} apresenta uma comparação dos tempos de execução de cad
 uma das ferramentas estudadas para os arquivos de entrada fornecidos pelos
 pesquisadores do HCPA, no ambiente de execução descrito na tabela
 \ref{tbl:thor1}, bem como da combinação das ferramentas feita nesse trabalho.
+Os modelos (NSSites) utilizados são o 1, 2, 7, 8, e 8a.
 
 \begin{table}[h]
     \caption{Tempos de execução das ferramentas de análise filogenética}
@@ -472,36 +473,9 @@ pesquisadores do HCPA, no ambiente de execução descrito na tabela
     \label{tbl:paml}
 \end{table}
 
-Conforme observado na tabela \ref{tbl:paml}, utilizando uma combinação das
-ferramentas slimcodeml e LMAP obteve-se uma melhor muito significativa no tempo
-de execução, X\% menor que o tempo de execução com o codeml original, Y\% menor
-que o tempo utilizando somente o slimcodeml (sem o LMAP), e Z\% menor que
-utilizando o LMAP com o codeml original. Até onde vai nosso conhecimento, esse
-é o primeiro trabalho que experimenta a combinação dessas ferramentas para
-análise filogenética. 
-
-% TODO esperar os resultados...
-
-%\begin{abstract}
-%  Neste trabalho foi realizado um estudo e otimização dos problemas de
-%  desempenho presentes em alguns dos softwares de bioinformática utilizados
-%  pelo grupo de pesquisa em genética do Hospital de Clínicas de Porto Alegre
-%  (HCPA), empregando para isso técnicas de processamento paralelo. O trabalho
-%  focou no software de análise filogenética codeml, do pacote PAML, amplamente
-%  utilizado na literatura, e no software SAMtools, usado para chamada de
-%  variantes, igualmente popular. Foi desenvolvida uma ferramenta de
-%  paralelização de \textit{jobs} do SAMtools, reduzido de vários dias para
-%  poucas horas o tempo de análise do grupo de pesquisa e superando deficiências
-%  de soluções presentes na literatura. No caso do codeml foi desenvolvida uma
-%  ferramenta que combina, pela primeira vez, duas aplicações encontradas na
-%  literatura: slimcodeml, uma implementação sequencial mais eficiente do codeml
-%  original, e LMAP, que paraleliza \textit{jobs} do codeml. Isso reduziu em
-%  X\% o tempo de execução em relação ao codeml original, em Y\% em relação ao
-%  slimcodeml, e Z\% ao LMAP com o codeml original.  
-% \end{abstract}
-
-%\begin{englishabstract}{Study and optimization of the bioinformatics software used by Hospital de Clínicas de Porto Alegre}{Bioinformatics, parallelism, codeml, PAML, SAMtools} In this paper we studied and optimized the performance bottlenecks found in some of the bioinformatics software used by the genetics research group from Hospital de Clínicas de Porto Alegre (HCPA), employing parallel programming techniques to achieve these goals. The focus of our work was in the phylogenetic analysis software called codeml, from the PAML package, which is widely used in the literature, as well on the SAMtools software, used for variant calling, also popular. We developed a tool for the parallel execution of SAMtools jobs, reducing total execution time for the group's input from various days to a few hours and overcoming some defficiencies present in other solutions found in the literature. In the case of codeml we developed a tool that combines, for the first time, two applications found on the literature: slimcodeml, a sequential yet more efficent implementation of codeml, and LMAP, a codeml job parallelization tool. This resulted in a X\% reduction in the execution time compared to using the original codeml implementation, Y\% compared to using slimcodeml alone, and Z\% to using LMAP with the original codeml.
-%\end{englishabstract}
+(EM ANDAMENTO) Conforme observado na tabela \ref{tbl:paml}, utilizando uma combinação das
+ferramentas slimcodeml e LMAP obteve-se TODO re-fazer os testes, não deveria
+ser pior o tempo com o LMAP.
 
 \subsection{Perfil de execução e estudo de implementação paralela}
 \label{subsec:codemlpar}
@@ -808,8 +782,8 @@ denominada elPrep, visa substituir o SAMtools e alternativas, realizando o
 processamento inteiramente em memória volátil. Os autores observam que isso
 incorre em alto uso de RAM quando a chamada de variantes é realizada por
 cromossomo, caso de uso dos pesquisadores do HCPA. Para uma amostra (NA12878)
-com 15GB, consideravelmente menor que as entradas utilizadas pelos
-pesquisadores do HCPA, o software dos autores utilizou 216GB de RAM. No caso de
+com 15 GB, consideravelmente menor que as entradas utilizadas pelos
+pesquisadores do HCPA, o software dos autores utilizou 216 GB de RAM. No caso de
 ambientes com restrição de memória, os autores recomendam o uso de outras
 ferramentas para compor o pipeline, incluindo a ferramenta sambamda, descrita
 acima, e o próprio SAMtools. Outro fator limitante é que a ferramenta trabalha
@@ -1086,6 +1060,13 @@ fluxo de análise. Os resultados encontram-se reproduzidos nas tabelas
     \label{tbl:stages}
 \end{table}
 
+O speedup para duas entradas é menor do que o ideal, tão menor quanto maior o
+número de núcleos utilizados. Isso é esperado, uma vez que não estamos
+utilizando todos núcleos disponíveis na etapa 1 quando há somente duas
+entradas. Para seis entradas o mesmo é observado, mas o speedup fica mais
+próximo do ideal. Isso é esperado, visto que utilizamos todos núcleos
+disponíveis em todas etapas, exceto a última.
+
 Conforme pode ser observado na tabela \ref{tbl:stages}, que discrimina os
 resultados por etapa, o maior ganho com o paralelismo está na etapa 2, em que é
 lançado um \textit{job} para cada um dos 22 cromossomos, limitado ao número de
@@ -1095,13 +1076,6 @@ tem ganho de desempenho até o número de \textit{jobs} ser igual ao número de
 entradas. Por fim, conforme esperado, a etapa 3 tem tempo constante, uma vez
 que executa em uma única thread -- mas possui ganho de desempenho em relação ao
 pipeline original em que havia uma etapa de indexação desnecessária.
-
-O speedup para duas entradas é menor do que o ideal, tão menor quanto maior o
-número de núcleos utilizados. Isso é esperado, uma vez que não estamos
-utilizando todos núcleos disponíveis na etapa 1 quando há somente duas
-entradas. Para seis entradas o mesmo é observado, mas o speedup fica mais
-próximo do ideal. Isso é esperado, visto que utilizamos todos núcleos
-disponíveis em todas etapas, exceto a última. 
 
 Observa-se que uma alternativa à paralelizar somente os \textit{jobs} sob cada
 entrada seria utilizar um pipeline dos comandos, dado que, para alguns
@@ -1147,11 +1121,11 @@ pela ferramenta sambamba, comparando com os comandos equivalentes da ferramenta
 samtools. O comando de indexação foi consideravelmente mais lento na ferramenta
 sambamba, apesar de usar múltiplos núcleos enquanto o samtools roda
 sequencialmente. Enquanto o samtools levou 39s para indexar um CRAM de 26 GB, o
-sambamba levou 2m9s para indexar o BAM convertido a partir dele, de 53 GB. A
+sambamba levou 2m 9s para indexar o BAM convertido a partir dele, de 53 GB. A
 amostra utilizada foi a HGDP00519.
 
 Já para a rotina de visualização de uma região ou cromossomo o sambamba foi
-consideravelmente mais rápido. Enquanto o samtools levou 4m5s para visualizar
+consideravelmente mais rápido. Enquanto o samtools levou 4m 5s para visualizar
 uma região do arquivo supracitado, o sambamba levou apenas 19s. Já os comandos
 de \textit{merge} e \textit{mpileup} não puderam ser executados com o sambamba
 -- para o mesmo arquivo em que os comandos mencionados anteriormente rodaram
@@ -1340,7 +1314,19 @@ consideração a literatura a respeito dessas ferramentas.
 
 Outra linha de trabalho futuro é a adição de suporte a arquivos CRAM às
 ferramentas sambamba e elPrep, a fim de adequá-las aos arquivos atualmente
-disponibilizados pelo projeto 1000 Genomes. 
+disponibilizados pelo projeto 1000 Genomes. Uma abordagem seria utilizar a
+htslib para isso, levando em consideração que essas ferramentas dividem os
+arquivos de entrada para processamento -- não bastaria simplesmente utilizar a
+API para leitura do arquivo CRAM completo para memória.
+
+Por fim, outro trabalho futuro seria o estudo de uma abordagem para cluster e
+comparação com as presentes na literatura, como aquelas mencionadas no início
+dessa seção. Um desafio em tal abordagem seria a transferência dos dados entre
+os nodos de execução, uma vez que cada etapa intermediária produz saídas de
+vários gigabytes para cada entrada. Uma possibilidade é o uso de frameworks
+Apache Flink, especificamente projetado para processamento paralelo e com
+tolerância a falhas de pipelines (isto é, fluxos de execução em que a entrada
+de uma etapa é a saída da anterior).\cite{carbone2015apache}
 
 \bibliographystyle{abntex2-alf}
 \bibliography{biblio}
