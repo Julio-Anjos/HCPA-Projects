@@ -409,6 +409,12 @@ function do_stage3 {
   # Unzip
   echo "Convert final VCF at $(date). Used $(du -hs)"
   "$bcftools" view finalrsID.vcf.gz -Ov -o finalrsID.vcf
+
+  # Garbage collection
+  echo "Removing excess files at $(date)"
+  rm -f final.vcf.gz.csi
+  rm -f finalrsID.vcf.gz
+  rm -f region_list.txt
 }
 
 # More setup

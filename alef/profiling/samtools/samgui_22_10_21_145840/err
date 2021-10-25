@@ -1,136 +1,7 @@
-[mpileup] 2 samples in 1 input files
+[main_samview] retrieval of region "chr16" failed due to truncated file or corrupt BAM index file
+[mpileup] 6 samples in 1 input files
 [mpileup] maximum number of reads per input file set to -d 250
-Note: The maximum per-sample depth with -d 250 is 125.0x
-Note: none of --samples-file, --ploidy or --ploidy-file given, assuming all sites are diploid
-
-VCFtools - 0.1.17
-(C) Adam Auton and Anthony Marcketta 2009
-
-Parameters as interpreted:
-	--vcf region1_noindels.recode.vcf
-	--recode-INFO-all
-	--max-alleles 2
-	--min-alleles 2
-	--minDP 5
-	--minQ 20
-	--max-missing 0.5
-	--out region1_filtered
-	--recode
-
-Warning: Expected at least 2 parts in INFO entry: ID=AC,Number=A,Type=Integer,Description="Allele count in genotypes for each ALT allele, in the same order as listed">
-Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
-Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
-After filtering, kept 2 out of 2 Individuals
-Outputting VCF file...
-After filtering, kept 432910 out of a possible 455694 Sites
-Run Time = 3.00 seconds
-[mpileup] 2 samples in 1 input files
-[mpileup] maximum number of reads per input file set to -d 250
-Note: The maximum per-sample depth with -d 250 is 125.0x
-Note: none of --samples-file, --ploidy or --ploidy-file given, assuming all sites are diploid
-
-VCFtools - 0.1.17
-(C) Adam Auton and Anthony Marcketta 2009
-
-Parameters as interpreted:
-	--vcf region2_noindels.recode.vcf
-	--recode-INFO-all
-	--max-alleles 2
-	--min-alleles 2
-	--minDP 5
-	--minQ 20
-	--max-missing 0.5
-	--out region2_filtered
-	--recode
-
-Warning: Expected at least 2 parts in INFO entry: ID=AC,Number=A,Type=Integer,Description="Allele count in genotypes for each ALT allele, in the same order as listed">
-Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
-Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
-After filtering, kept 2 out of 2 Individuals
-Outputting VCF file...
-After filtering, kept 456843 out of a possible 479445 Sites
-Run Time = 3.00 seconds
-[mpileup] 2 samples in 1 input files
-[mpileup] maximum number of reads per input file set to -d 250
-Note: The maximum per-sample depth with -d 250 is 125.0x
-Note: none of --samples-file, --ploidy or --ploidy-file given, assuming all sites are diploid
-
-VCFtools - 0.1.17
-(C) Adam Auton and Anthony Marcketta 2009
-
-Parameters as interpreted:
-	--vcf region3_noindels.recode.vcf
-	--recode-INFO-all
-	--max-alleles 2
-	--min-alleles 2
-	--minDP 5
-	--minQ 20
-	--max-missing 0.5
-	--out region3_filtered
-	--recode
-
-Warning: Expected at least 2 parts in INFO entry: ID=AC,Number=A,Type=Integer,Description="Allele count in genotypes for each ALT allele, in the same order as listed">
-Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
-Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
-After filtering, kept 2 out of 2 Individuals
-Outputting VCF file...
-After filtering, kept 387762 out of a possible 406099 Sites
-Run Time = 3.00 seconds
-[mpileup] 2 samples in 1 input files
-[mpileup] maximum number of reads per input file set to -d 250
-Note: The maximum per-sample depth with -d 250 is 125.0x
-Note: none of --samples-file, --ploidy or --ploidy-file given, assuming all sites are diploid
-
-VCFtools - 0.1.17
-(C) Adam Auton and Anthony Marcketta 2009
-
-Parameters as interpreted:
-	--vcf region4_noindels.recode.vcf
-	--recode-INFO-all
-	--max-alleles 2
-	--min-alleles 2
-	--minDP 5
-	--minQ 20
-	--max-missing 0.5
-	--out region4_filtered
-	--recode
-
-Warning: Expected at least 2 parts in INFO entry: ID=AC,Number=A,Type=Integer,Description="Allele count in genotypes for each ALT allele, in the same order as listed">
-Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
-Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
-After filtering, kept 2 out of 2 Individuals
-Outputting VCF file...
-After filtering, kept 406830 out of a possible 424978 Sites
-Run Time = 3.00 seconds
-[mpileup] 2 samples in 1 input files
-[mpileup] maximum number of reads per input file set to -d 250
-Note: The maximum per-sample depth with -d 250 is 125.0x
-Note: none of --samples-file, --ploidy or --ploidy-file given, assuming all sites are diploid
-
-VCFtools - 0.1.17
-(C) Adam Auton and Anthony Marcketta 2009
-
-Parameters as interpreted:
-	--vcf region5_noindels.recode.vcf
-	--recode-INFO-all
-	--max-alleles 2
-	--min-alleles 2
-	--minDP 5
-	--minQ 20
-	--max-missing 0.5
-	--out region5_filtered
-	--recode
-
-Warning: Expected at least 2 parts in INFO entry: ID=AC,Number=A,Type=Integer,Description="Allele count in genotypes for each ALT allele, in the same order as listed">
-Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
-Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
-After filtering, kept 2 out of 2 Individuals
-Outputting VCF file...
-After filtering, kept 344516 out of a possible 361079 Sites
-Run Time = 3.00 seconds
-[mpileup] 2 samples in 1 input files
-[mpileup] maximum number of reads per input file set to -d 250
-Note: The maximum per-sample depth with -d 250 is 125.0x
+Note: The maximum per-sample depth with -d 250 is 41.7x
 Note: none of --samples-file, --ploidy or --ploidy-file given, assuming all sites are diploid
 
 VCFtools - 0.1.17
@@ -150,65 +21,143 @@ Parameters as interpreted:
 Warning: Expected at least 2 parts in INFO entry: ID=AC,Number=A,Type=Integer,Description="Allele count in genotypes for each ALT allele, in the same order as listed">
 Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
 Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
-After filtering, kept 2 out of 2 Individuals
+After filtering, kept 6 out of 6 Individuals
 Outputting VCF file...
-After filtering, kept 356121 out of a possible 372795 Sites
-Run Time = 3.00 seconds
-[mpileup] 2 samples in 1 input files
+After filtering, kept 517982 out of a possible 544028 Sites
+Run Time = 6.00 seconds
+[mpileup] 6 samples in 1 input files
 [mpileup] maximum number of reads per input file set to -d 250
-Note: The maximum per-sample depth with -d 250 is 125.0x
+Note: The maximum per-sample depth with -d 250 is 41.7x
 Note: none of --samples-file, --ploidy or --ploidy-file given, assuming all sites are diploid
 
 VCFtools - 0.1.17
 (C) Adam Auton and Anthony Marcketta 2009
 
 Parameters as interpreted:
-	--vcf region7_noindels.recode.vcf
+	--vcf region5_noindels.recode.vcf
 	--recode-INFO-all
 	--max-alleles 2
 	--min-alleles 2
 	--minDP 5
 	--minQ 20
 	--max-missing 0.5
-	--out region7_filtered
+	--out region5_filtered
 	--recode
 
 Warning: Expected at least 2 parts in INFO entry: ID=AC,Number=A,Type=Integer,Description="Allele count in genotypes for each ALT allele, in the same order as listed">
 Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
 Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
-After filtering, kept 2 out of 2 Individuals
+After filtering, kept 6 out of 6 Individuals
 Outputting VCF file...
-After filtering, kept 326299 out of a possible 343108 Sites
-Run Time = 3.00 seconds
-[mpileup] 2 samples in 1 input files
+After filtering, kept 492604 out of a possible 518007 Sites
+Run Time = 5.00 seconds
+[mpileup] 6 samples in 1 input files
 [mpileup] maximum number of reads per input file set to -d 250
-Note: The maximum per-sample depth with -d 250 is 125.0x
+Note: The maximum per-sample depth with -d 250 is 41.7x
 Note: none of --samples-file, --ploidy or --ploidy-file given, assuming all sites are diploid
 
 VCFtools - 0.1.17
 (C) Adam Auton and Anthony Marcketta 2009
 
 Parameters as interpreted:
-	--vcf region8_noindels.recode.vcf
+	--vcf region4_noindels.recode.vcf
 	--recode-INFO-all
 	--max-alleles 2
 	--min-alleles 2
 	--minDP 5
 	--minQ 20
 	--max-missing 0.5
-	--out region8_filtered
+	--out region4_filtered
 	--recode
 
 Warning: Expected at least 2 parts in INFO entry: ID=AC,Number=A,Type=Integer,Description="Allele count in genotypes for each ALT allele, in the same order as listed">
 Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
 Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
-After filtering, kept 2 out of 2 Individuals
+After filtering, kept 6 out of 6 Individuals
 Outputting VCF file...
-After filtering, kept 295943 out of a possible 309357 Sites
-Run Time = 3.00 seconds
-[mpileup] 2 samples in 1 input files
+After filtering, kept 576496 out of a possible 604572 Sites
+Run Time = 6.00 seconds
+[mpileup] 6 samples in 1 input files
 [mpileup] maximum number of reads per input file set to -d 250
-Note: The maximum per-sample depth with -d 250 is 125.0x
+Note: The maximum per-sample depth with -d 250 is 41.7x
+Note: none of --samples-file, --ploidy or --ploidy-file given, assuming all sites are diploid
+
+VCFtools - 0.1.17
+(C) Adam Auton and Anthony Marcketta 2009
+
+Parameters as interpreted:
+	--vcf region3_noindels.recode.vcf
+	--recode-INFO-all
+	--max-alleles 2
+	--min-alleles 2
+	--minDP 5
+	--minQ 20
+	--max-missing 0.5
+	--out region3_filtered
+	--recode
+
+Warning: Expected at least 2 parts in INFO entry: ID=AC,Number=A,Type=Integer,Description="Allele count in genotypes for each ALT allele, in the same order as listed">
+Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
+Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
+After filtering, kept 6 out of 6 Individuals
+Outputting VCF file...
+After filtering, kept 561462 out of a possible 590194 Sites
+Run Time = 6.00 seconds
+[mpileup] 6 samples in 1 input files
+[mpileup] maximum number of reads per input file set to -d 250
+Note: The maximum per-sample depth with -d 250 is 41.7x
+Note: none of --samples-file, --ploidy or --ploidy-file given, assuming all sites are diploid
+
+VCFtools - 0.1.17
+(C) Adam Auton and Anthony Marcketta 2009
+
+Parameters as interpreted:
+	--vcf region1_noindels.recode.vcf
+	--recode-INFO-all
+	--max-alleles 2
+	--min-alleles 2
+	--minDP 5
+	--minQ 20
+	--max-missing 0.5
+	--out region1_filtered
+	--recode
+
+Warning: Expected at least 2 parts in INFO entry: ID=AC,Number=A,Type=Integer,Description="Allele count in genotypes for each ALT allele, in the same order as listed">
+Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
+Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
+After filtering, kept 6 out of 6 Individuals
+Outputting VCF file...
+After filtering, kept 622613 out of a possible 658573 Sites
+Run Time = 7.00 seconds
+[mpileup] 6 samples in 1 input files
+[mpileup] maximum number of reads per input file set to -d 250
+Note: The maximum per-sample depth with -d 250 is 41.7x
+Note: none of --samples-file, --ploidy or --ploidy-file given, assuming all sites are diploid
+
+VCFtools - 0.1.17
+(C) Adam Auton and Anthony Marcketta 2009
+
+Parameters as interpreted:
+	--vcf region2_noindels.recode.vcf
+	--recode-INFO-all
+	--max-alleles 2
+	--min-alleles 2
+	--minDP 5
+	--minQ 20
+	--max-missing 0.5
+	--out region2_filtered
+	--recode
+
+Warning: Expected at least 2 parts in INFO entry: ID=AC,Number=A,Type=Integer,Description="Allele count in genotypes for each ALT allele, in the same order as listed">
+Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
+Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
+After filtering, kept 6 out of 6 Individuals
+Outputting VCF file...
+After filtering, kept 653711 out of a possible 688767 Sites
+Run Time = 7.00 seconds
+[mpileup] 6 samples in 1 input files
+[mpileup] maximum number of reads per input file set to -d 250
+Note: The maximum per-sample depth with -d 250 is 41.7x
 Note: none of --samples-file, --ploidy or --ploidy-file given, assuming all sites are diploid
 
 VCFtools - 0.1.17
@@ -228,13 +177,65 @@ Parameters as interpreted:
 Warning: Expected at least 2 parts in INFO entry: ID=AC,Number=A,Type=Integer,Description="Allele count in genotypes for each ALT allele, in the same order as listed">
 Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
 Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
-After filtering, kept 2 out of 2 Individuals
+After filtering, kept 6 out of 6 Individuals
 Outputting VCF file...
-After filtering, kept 247294 out of a possible 261516 Sites
-Run Time = 2.00 seconds
-[mpileup] 2 samples in 1 input files
+After filtering, kept 364461 out of a possible 385695 Sites
+Run Time = 4.00 seconds
+[mpileup] 6 samples in 1 input files
 [mpileup] maximum number of reads per input file set to -d 250
-Note: The maximum per-sample depth with -d 250 is 125.0x
+Note: The maximum per-sample depth with -d 250 is 41.7x
+Note: none of --samples-file, --ploidy or --ploidy-file given, assuming all sites are diploid
+
+VCFtools - 0.1.17
+(C) Adam Auton and Anthony Marcketta 2009
+
+Parameters as interpreted:
+	--vcf region8_noindels.recode.vcf
+	--recode-INFO-all
+	--max-alleles 2
+	--min-alleles 2
+	--minDP 5
+	--minQ 20
+	--max-missing 0.5
+	--out region8_filtered
+	--recode
+
+Warning: Expected at least 2 parts in INFO entry: ID=AC,Number=A,Type=Integer,Description="Allele count in genotypes for each ALT allele, in the same order as listed">
+Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
+Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
+After filtering, kept 6 out of 6 Individuals
+Outputting VCF file...
+After filtering, kept 421303 out of a possible 441799 Sites
+Run Time = 4.00 seconds
+[mpileup] 6 samples in 1 input files
+[mpileup] maximum number of reads per input file set to -d 250
+Note: The maximum per-sample depth with -d 250 is 41.7x
+Note: none of --samples-file, --ploidy or --ploidy-file given, assuming all sites are diploid
+
+VCFtools - 0.1.17
+(C) Adam Auton and Anthony Marcketta 2009
+
+Parameters as interpreted:
+	--vcf region7_noindels.recode.vcf
+	--recode-INFO-all
+	--max-alleles 2
+	--min-alleles 2
+	--minDP 5
+	--minQ 20
+	--max-missing 0.5
+	--out region7_filtered
+	--recode
+
+Warning: Expected at least 2 parts in INFO entry: ID=AC,Number=A,Type=Integer,Description="Allele count in genotypes for each ALT allele, in the same order as listed">
+Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
+Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
+After filtering, kept 6 out of 6 Individuals
+Outputting VCF file...
+After filtering, kept 470946 out of a possible 497014 Sites
+Run Time = 5.00 seconds
+[mpileup] 6 samples in 1 input files
+[mpileup] maximum number of reads per input file set to -d 250
+Note: The maximum per-sample depth with -d 250 is 41.7x
 Note: none of --samples-file, --ploidy or --ploidy-file given, assuming all sites are diploid
 
 VCFtools - 0.1.17
@@ -254,13 +255,13 @@ Parameters as interpreted:
 Warning: Expected at least 2 parts in INFO entry: ID=AC,Number=A,Type=Integer,Description="Allele count in genotypes for each ALT allele, in the same order as listed">
 Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
 Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
-After filtering, kept 2 out of 2 Individuals
+After filtering, kept 6 out of 6 Individuals
 Outputting VCF file...
-After filtering, kept 284132 out of a possible 299091 Sites
-Run Time = 2.00 seconds
-[mpileup] 2 samples in 1 input files
+After filtering, kept 413689 out of a possible 436948 Sites
+Run Time = 5.00 seconds
+[mpileup] 6 samples in 1 input files
 [mpileup] maximum number of reads per input file set to -d 250
-Note: The maximum per-sample depth with -d 250 is 125.0x
+Note: The maximum per-sample depth with -d 250 is 41.7x
 Note: none of --samples-file, --ploidy or --ploidy-file given, assuming all sites are diploid
 
 VCFtools - 0.1.17
@@ -280,13 +281,13 @@ Parameters as interpreted:
 Warning: Expected at least 2 parts in INFO entry: ID=AC,Number=A,Type=Integer,Description="Allele count in genotypes for each ALT allele, in the same order as listed">
 Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
 Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
-After filtering, kept 2 out of 2 Individuals
+After filtering, kept 6 out of 6 Individuals
 Outputting VCF file...
-After filtering, kept 276194 out of a possible 288591 Sites
-Run Time = 2.00 seconds
-[mpileup] 2 samples in 1 input files
+After filtering, kept 393212 out of a possible 412720 Sites
+Run Time = 4.00 seconds
+[mpileup] 6 samples in 1 input files
 [mpileup] maximum number of reads per input file set to -d 250
-Note: The maximum per-sample depth with -d 250 is 125.0x
+Note: The maximum per-sample depth with -d 250 is 41.7x
 Note: none of --samples-file, --ploidy or --ploidy-file given, assuming all sites are diploid
 
 VCFtools - 0.1.17
@@ -306,13 +307,14 @@ Parameters as interpreted:
 Warning: Expected at least 2 parts in INFO entry: ID=AC,Number=A,Type=Integer,Description="Allele count in genotypes for each ALT allele, in the same order as listed">
 Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
 Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
-After filtering, kept 2 out of 2 Individuals
+After filtering, kept 6 out of 6 Individuals
 Outputting VCF file...
-After filtering, kept 264526 out of a possible 277941 Sites
-Run Time = 2.00 seconds
-[mpileup] 2 samples in 1 input files
+After filtering, kept 381599 out of a possible 403327 Sites
+Run Time = 4.00 seconds
+[mpileup] 6 samples in 1 input files
 [mpileup] maximum number of reads per input file set to -d 250
-Note: The maximum per-sample depth with -d 250 is 125.0x
+Note: The maximum per-sample depth with -d 250 is 41.7x
+[bcf_cgp_find_types] excessive INDEL alleles at position 113357040. Skip the position.
 Note: none of --samples-file, --ploidy or --ploidy-file given, assuming all sites are diploid
 
 VCFtools - 0.1.17
@@ -332,13 +334,13 @@ Parameters as interpreted:
 Warning: Expected at least 2 parts in INFO entry: ID=AC,Number=A,Type=Integer,Description="Allele count in genotypes for each ALT allele, in the same order as listed">
 Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
 Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
-After filtering, kept 2 out of 2 Individuals
+After filtering, kept 6 out of 6 Individuals
 Outputting VCF file...
-After filtering, kept 213375 out of a possible 224159 Sites
-Run Time = 2.00 seconds
-[mpileup] 2 samples in 1 input files
+After filtering, kept 301036 out of a possible 317448 Sites
+Run Time = 4.00 seconds
+[mpileup] 6 samples in 1 input files
 [mpileup] maximum number of reads per input file set to -d 250
-Note: The maximum per-sample depth with -d 250 is 125.0x
+Note: The maximum per-sample depth with -d 250 is 41.7x
 Note: none of --samples-file, --ploidy or --ploidy-file given, assuming all sites are diploid
 
 VCFtools - 0.1.17
@@ -358,39 +360,13 @@ Parameters as interpreted:
 Warning: Expected at least 2 parts in INFO entry: ID=AC,Number=A,Type=Integer,Description="Allele count in genotypes for each ALT allele, in the same order as listed">
 Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
 Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
-After filtering, kept 2 out of 2 Individuals
+After filtering, kept 6 out of 6 Individuals
 Outputting VCF file...
-After filtering, kept 178009 out of a possible 186883 Sites
-Run Time = 1.00 seconds
-[mpileup] 2 samples in 1 input files
+After filtering, kept 256921 out of a possible 271074 Sites
+Run Time = 3.00 seconds
+[mpileup] 6 samples in 1 input files
 [mpileup] maximum number of reads per input file set to -d 250
-Note: The maximum per-sample depth with -d 250 is 125.0x
-Note: none of --samples-file, --ploidy or --ploidy-file given, assuming all sites are diploid
-
-VCFtools - 0.1.17
-(C) Adam Auton and Anthony Marcketta 2009
-
-Parameters as interpreted:
-	--vcf region15_noindels.recode.vcf
-	--recode-INFO-all
-	--max-alleles 2
-	--min-alleles 2
-	--minDP 5
-	--minQ 20
-	--max-missing 0.5
-	--out region15_filtered
-	--recode
-
-Warning: Expected at least 2 parts in INFO entry: ID=AC,Number=A,Type=Integer,Description="Allele count in genotypes for each ALT allele, in the same order as listed">
-Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
-Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
-After filtering, kept 2 out of 2 Individuals
-Outputting VCF file...
-After filtering, kept 162034 out of a possible 170816 Sites
-Run Time = 1.00 seconds
-[mpileup] 2 samples in 1 input files
-[mpileup] maximum number of reads per input file set to -d 250
-Note: The maximum per-sample depth with -d 250 is 125.0x
+Note: The maximum per-sample depth with -d 250 is 41.7x
 Note: none of --samples-file, --ploidy or --ploidy-file given, assuming all sites are diploid
 
 VCFtools - 0.1.17
@@ -410,39 +386,39 @@ Parameters as interpreted:
 Warning: Expected at least 2 parts in INFO entry: ID=AC,Number=A,Type=Integer,Description="Allele count in genotypes for each ALT allele, in the same order as listed">
 Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
 Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
-After filtering, kept 2 out of 2 Individuals
+After filtering, kept 6 out of 6 Individuals
 Outputting VCF file...
-After filtering, kept 165421 out of a possible 174691 Sites
-Run Time = 1.00 seconds
-[mpileup] 2 samples in 1 input files
+After filtering, kept 239739 out of a possible 254373 Sites
+Run Time = 3.00 seconds
+[mpileup] 6 samples in 1 input files
 [mpileup] maximum number of reads per input file set to -d 250
-Note: The maximum per-sample depth with -d 250 is 125.0x
+Note: The maximum per-sample depth with -d 250 is 41.7x
 Note: none of --samples-file, --ploidy or --ploidy-file given, assuming all sites are diploid
 
 VCFtools - 0.1.17
 (C) Adam Auton and Anthony Marcketta 2009
 
 Parameters as interpreted:
-	--vcf region17_noindels.recode.vcf
+	--vcf region15_noindels.recode.vcf
 	--recode-INFO-all
 	--max-alleles 2
 	--min-alleles 2
 	--minDP 5
 	--minQ 20
 	--max-missing 0.5
-	--out region17_filtered
+	--out region15_filtered
 	--recode
 
 Warning: Expected at least 2 parts in INFO entry: ID=AC,Number=A,Type=Integer,Description="Allele count in genotypes for each ALT allele, in the same order as listed">
 Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
 Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
-After filtering, kept 2 out of 2 Individuals
+After filtering, kept 6 out of 6 Individuals
 Outputting VCF file...
-After filtering, kept 156749 out of a possible 166639 Sites
-Run Time = 1.00 seconds
-[mpileup] 2 samples in 1 input files
+After filtering, kept 235012 out of a possible 248578 Sites
+Run Time = 3.00 seconds
+[mpileup] 6 samples in 1 input files
 [mpileup] maximum number of reads per input file set to -d 250
-Note: The maximum per-sample depth with -d 250 is 125.0x
+Note: The maximum per-sample depth with -d 250 is 41.7x
 Note: none of --samples-file, --ploidy or --ploidy-file given, assuming all sites are diploid
 
 VCFtools - 0.1.17
@@ -462,65 +438,40 @@ Parameters as interpreted:
 Warning: Expected at least 2 parts in INFO entry: ID=AC,Number=A,Type=Integer,Description="Allele count in genotypes for each ALT allele, in the same order as listed">
 Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
 Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
-After filtering, kept 2 out of 2 Individuals
+After filtering, kept 6 out of 6 Individuals
 Outputting VCF file...
-After filtering, kept 158685 out of a possible 166498 Sites
-Run Time = 1.00 seconds
-[mpileup] 2 samples in 1 input files
+After filtering, kept 217072 out of a possible 228343 Sites
+Run Time = 2.00 seconds
+[mpileup] 6 samples in 1 input files
 [mpileup] maximum number of reads per input file set to -d 250
-Note: The maximum per-sample depth with -d 250 is 125.0x
+Note: The maximum per-sample depth with -d 250 is 41.7x
+[bcf_cgp_find_types] excessive INDEL alleles at position 75298386. Skip the position.
 Note: none of --samples-file, --ploidy or --ploidy-file given, assuming all sites are diploid
 
 VCFtools - 0.1.17
 (C) Adam Auton and Anthony Marcketta 2009
 
 Parameters as interpreted:
-	--vcf region19_noindels.recode.vcf
+	--vcf region17_noindels.recode.vcf
 	--recode-INFO-all
 	--max-alleles 2
 	--min-alleles 2
 	--minDP 5
 	--minQ 20
 	--max-missing 0.5
-	--out region19_filtered
+	--out region17_filtered
 	--recode
 
 Warning: Expected at least 2 parts in INFO entry: ID=AC,Number=A,Type=Integer,Description="Allele count in genotypes for each ALT allele, in the same order as listed">
 Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
 Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
-After filtering, kept 2 out of 2 Individuals
+After filtering, kept 6 out of 6 Individuals
 Outputting VCF file...
-After filtering, kept 129970 out of a possible 138491 Sites
-Run Time = 1.00 seconds
-[mpileup] 2 samples in 1 input files
+After filtering, kept 215992 out of a possible 231385 Sites
+Run Time = 2.00 seconds
+[mpileup] 6 samples in 1 input files
 [mpileup] maximum number of reads per input file set to -d 250
-Note: The maximum per-sample depth with -d 250 is 125.0x
-Note: none of --samples-file, --ploidy or --ploidy-file given, assuming all sites are diploid
-
-VCFtools - 0.1.17
-(C) Adam Auton and Anthony Marcketta 2009
-
-Parameters as interpreted:
-	--vcf region20_noindels.recode.vcf
-	--recode-INFO-all
-	--max-alleles 2
-	--min-alleles 2
-	--minDP 5
-	--minQ 20
-	--max-missing 0.5
-	--out region20_filtered
-	--recode
-
-Warning: Expected at least 2 parts in INFO entry: ID=AC,Number=A,Type=Integer,Description="Allele count in genotypes for each ALT allele, in the same order as listed">
-Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
-Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
-After filtering, kept 2 out of 2 Individuals
-Outputting VCF file...
-After filtering, kept 137382 out of a possible 145758 Sites
-Run Time = 1.00 seconds
-[mpileup] 2 samples in 1 input files
-[mpileup] maximum number of reads per input file set to -d 250
-Note: The maximum per-sample depth with -d 250 is 125.0x
+Note: The maximum per-sample depth with -d 250 is 41.7x
 Note: none of --samples-file, --ploidy or --ploidy-file given, assuming all sites are diploid
 
 VCFtools - 0.1.17
@@ -540,13 +491,13 @@ Parameters as interpreted:
 Warning: Expected at least 2 parts in INFO entry: ID=AC,Number=A,Type=Integer,Description="Allele count in genotypes for each ALT allele, in the same order as listed">
 Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
 Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
-After filtering, kept 2 out of 2 Individuals
+After filtering, kept 6 out of 6 Individuals
 Outputting VCF file...
-After filtering, kept 87235 out of a possible 92752 Sites
-Run Time = 0.00 seconds
-[mpileup] 2 samples in 1 input files
+After filtering, kept 125538 out of a possible 133585 Sites
+Run Time = 1.00 seconds
+[mpileup] 6 samples in 1 input files
 [mpileup] maximum number of reads per input file set to -d 250
-Note: The maximum per-sample depth with -d 250 is 125.0x
+Note: The maximum per-sample depth with -d 250 is 41.7x
 Note: none of --samples-file, --ploidy or --ploidy-file given, assuming all sites are diploid
 
 VCFtools - 0.1.17
@@ -566,7 +517,63 @@ Parameters as interpreted:
 Warning: Expected at least 2 parts in INFO entry: ID=AC,Number=A,Type=Integer,Description="Allele count in genotypes for each ALT allele, in the same order as listed">
 Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
 Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
-After filtering, kept 2 out of 2 Individuals
+After filtering, kept 6 out of 6 Individuals
 Outputting VCF file...
-After filtering, kept 87975 out of a possible 94602 Sites
+After filtering, kept 124449 out of a possible 133434 Sites
 Run Time = 1.00 seconds
+[mpileup] 6 samples in 1 input files
+[mpileup] maximum number of reads per input file set to -d 250
+Note: The maximum per-sample depth with -d 250 is 41.7x
+Note: none of --samples-file, --ploidy or --ploidy-file given, assuming all sites are diploid
+
+VCFtools - 0.1.17
+(C) Adam Auton and Anthony Marcketta 2009
+
+Parameters as interpreted:
+	--vcf region19_noindels.recode.vcf
+	--recode-INFO-all
+	--max-alleles 2
+	--min-alleles 2
+	--minDP 5
+	--minQ 20
+	--max-missing 0.5
+	--out region19_filtered
+	--recode
+
+Warning: Expected at least 2 parts in INFO entry: ID=AC,Number=A,Type=Integer,Description="Allele count in genotypes for each ALT allele, in the same order as listed">
+Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
+Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
+After filtering, kept 6 out of 6 Individuals
+Outputting VCF file...
+After filtering, kept 177782 out of a possible 190313 Sites
+Run Time = 2.00 seconds
+[mpileup] 6 samples in 1 input files
+[mpileup] maximum number of reads per input file set to -d 250
+Note: The maximum per-sample depth with -d 250 is 41.7x
+Note: none of --samples-file, --ploidy or --ploidy-file given, assuming all sites are diploid
+
+VCFtools - 0.1.17
+(C) Adam Auton and Anthony Marcketta 2009
+
+Parameters as interpreted:
+	--vcf region20_noindels.recode.vcf
+	--recode-INFO-all
+	--max-alleles 2
+	--min-alleles 2
+	--minDP 5
+	--minQ 20
+	--max-missing 0.5
+	--out region20_filtered
+	--recode
+
+Warning: Expected at least 2 parts in INFO entry: ID=AC,Number=A,Type=Integer,Description="Allele count in genotypes for each ALT allele, in the same order as listed">
+Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
+Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
+After filtering, kept 6 out of 6 Individuals
+Outputting VCF file...
+After filtering, kept 191745 out of a possible 203551 Sites
+Run Time = 2.00 seconds
+The columns ordered differently in [/DATA/alef/data/samgui_22_10_21_145840/region2_filtered.recode.vcf]. Use vcf-shuffle-cols to reorder.
+ at /usr/local/bin/vcf-concat line 32, <__ANONIO__> line 3396.
+	main::error("The columns ordered differently in [/DATA/alef/data/samgui_22"...) called at /usr/local/bin/vcf-concat line 180
+	main::concat(HASH(0x55eaf05f3dd0)) called at /usr/local/bin/vcf-concat line 12

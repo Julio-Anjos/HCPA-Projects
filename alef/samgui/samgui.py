@@ -25,24 +25,28 @@ g_StatusProcess = None
 c_defaultFilter = '--max-missing 0.5 --minDP 5 --min-alleles 2 --max-alleles 2 --minQ 20' 
 
 gui = Gui(
+  [ '<b>Remote environment configuration</b>', ___, _, _, _, _],
   [ 'Remote host*', '__remote__', (['Help'], 'help_remote'), 'Hop host', '__hop__', (['Help'], 'help_hop') ],
-  [ 'Download CRAM list', '__ftp__', (['Help'], 'help_ftp'), 'Local CRAM list', '__local__', (['Help'], 'help_local')],
   [ 'Docker image name*','__docker__', (['Help'], 'help_docker'), 'Data path*', '__data__', (['Help'], 'help_data') ],
+  [ '<b>Input list configuration</b>', ___, _, _, _, _],
+  [ 'Download CRAM list', '__ftp__', (['Help'], 'help_ftp'), 'Local CRAM list', '__local__', (['Help'], 'help_local')],
+  [ '<b>Variant calling configuration</b>', ___, _, _, _, _],
   [ 'VCF filter params*','__vcffilter__', ___ , ___, (C('Keep indels'), 'keep'), (['Help'], 'help_filter')],
-  [ (['Run all'], 'runall'), (['Run download'], 'download'), (['Run variant call'], 'vcall'), (['Check status'], 'status'), (['Abort all'], 'abort'), (C('Skip setup'), 'skip')],
- [ 'state', P('progress'), ___, ___, ___, ___]
+  [ '<b>Commands</b>', ___, _, _, _, _],
+  [ (['Check status'], 'status'), (['Run variant call'], 'vcall'), (['Run download'], 'download'), _, _, _],
+  [ (['Abort all'], 'abort'), (['Run all'], 'runall'), ___, (C('Skip setup'), 'skip'), _, _],
+  [ '<b>Status</b>', ___, _, _, _, _],
+  [ 'state', P('progress'), ___, ___, ___, ___],
+  title='SAMGUI'
 )
 
 def set_defaults():
-  #gui.remote = 'gppd1@143.54.48.77'
-  #gui.hop = 'afarah@portal.inf.ufrgs.br'
-  gui.remote = 'root@afarah.info'
-  gui.hop = ''
+  gui.remote = 'user@host'
+  gui.hop = 'user@hophost'
   gui.ftp = ''
   gui.local = 'cramlist_local'
   gui.docker = 'afarah1/ubuntu-samtools'
-  #gui.data = '/DATA'
-  gui.data = '/mnt/volume_nyc3_01'
+  gui.data = '/DATA'
   gui.vcffilter = c_defaultFilter
   gui.progress = 0
   gui.state = 'Idle'

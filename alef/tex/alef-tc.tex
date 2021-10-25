@@ -442,10 +442,17 @@ doravante ``Thor1''.
     \label{tbl:thor1}
 \end{table}
 
-Em um segundo momento foi testado a aplicação LMAP. A tabela \ref{tbl:paml}
-apresenta uma comparação dos tempos de execução de cada uma das ferramentas
-estudadas para os arquivos de entrada fornecidos pelos pesquisadores do HCPA,
-no ambiente de execução descrito na tabela \ref{tbl:thor1}.
+Em um segundo momento foi testado a aplicação LMAP, que apresentou tempo de
+execução de 10h15m. Isto é, o slimcodeml foi significativamente mais rápido que
+a execução paralela utilizando o LMAP. Todavia, conforme observador
+previamente, o slimcodeml recebe a mesma entrada e produz a mesma saída do
+codeml original. Dessa forma, foi substituído o executável do codeml por aquele
+do slimcodeml e rodado o LMAP novamente, dessa forma se beneficiando tanto da
+implementação mais eficiente do slimcodeml como do paralelismo do LMAP. A
+tabela \ref{tbl:paml} apresenta uma comparação dos tempos de execução de cada
+uma das ferramentas estudadas para os arquivos de entrada fornecidos pelos
+pesquisadores do HCPA, no ambiente de execução descrito na tabela
+\ref{tbl:thor1}, bem como da combinação das ferramentas feita nesse trabalho.
 
 \begin{table}[h]
     \caption{Tempos de execução das ferramentas de análise filogenética}
@@ -455,14 +462,46 @@ no ambiente de execução descrito na tabela \ref{tbl:thor1}.
           \textit{Ferramenta}  &   \textit{Tempo de execução} \\
           \hline
           \hline
-          codeml (PAML) & 16h38m \\
-          slimcodeml & 5h24m \\
-          codeml (LMAP) & TODO \\
+          codeml & 16h 38m \\
+          slimcodeml & 5h 24m \\
+          LMAP (codeml) & 10h 15m \\
+          LMAP (slimcodeml) & 12h 33m \\
           \hline
         \end{tabular}
       \legend{Fonte: Os autores}
     \label{tbl:paml}
 \end{table}
+
+Conforme observado na tabela \ref{tbl:paml}, utilizando uma combinação das
+ferramentas slimcodeml e LMAP obteve-se uma melhor muito significativa no tempo
+de execução, X\% menor que o tempo de execução com o codeml original, Y\% menor
+que o tempo utilizando somente o slimcodeml (sem o LMAP), e Z\% menor que
+utilizando o LMAP com o codeml original. Até onde vai nosso conhecimento, esse
+é o primeiro trabalho que experimenta a combinação dessas ferramentas para
+análise filogenética. 
+
+% TODO esperar os resultados...
+
+%\begin{abstract}
+%  Neste trabalho foi realizado um estudo e otimização dos problemas de
+%  desempenho presentes em alguns dos softwares de bioinformática utilizados
+%  pelo grupo de pesquisa em genética do Hospital de Clínicas de Porto Alegre
+%  (HCPA), empregando para isso técnicas de processamento paralelo. O trabalho
+%  focou no software de análise filogenética codeml, do pacote PAML, amplamente
+%  utilizado na literatura, e no software SAMtools, usado para chamada de
+%  variantes, igualmente popular. Foi desenvolvida uma ferramenta de
+%  paralelização de \textit{jobs} do SAMtools, reduzido de vários dias para
+%  poucas horas o tempo de análise do grupo de pesquisa e superando deficiências
+%  de soluções presentes na literatura. No caso do codeml foi desenvolvida uma
+%  ferramenta que combina, pela primeira vez, duas aplicações encontradas na
+%  literatura: slimcodeml, uma implementação sequencial mais eficiente do codeml
+%  original, e LMAP, que paraleliza \textit{jobs} do codeml. Isso reduziu em
+%  X\% o tempo de execução em relação ao codeml original, em Y\% em relação ao
+%  slimcodeml, e Z\% ao LMAP com o codeml original.  
+% \end{abstract}
+
+%\begin{englishabstract}{Study and optimization of the bioinformatics software used by Hospital de Clínicas de Porto Alegre}{Bioinformatics, parallelism, codeml, PAML, SAMtools} In this paper we studied and optimized the performance bottlenecks found in some of the bioinformatics software used by the genetics research group from Hospital de Clínicas de Porto Alegre (HCPA), employing parallel programming techniques to achieve these goals. The focus of our work was in the phylogenetic analysis software called codeml, from the PAML package, which is widely used in the literature, as well on the SAMtools software, used for variant calling, also popular. We developed a tool for the parallel execution of SAMtools jobs, reducing total execution time for the group's input from various days to a few hours and overcoming some defficiencies present in other solutions found in the literature. In the case of codeml we developed a tool that combines, for the first time, two applications found on the literature: slimcodeml, a sequential yet more efficent implementation of codeml, and LMAP, a codeml job parallelization tool. This resulted in a X\% reduction in the execution time compared to using the original codeml implementation, Y\% compared to using slimcodeml alone, and Z\% to using LMAP with the original codeml.
+%\end{englishabstract}
 
 \subsection{Perfil de execução e estudo de implementação paralela}
 \label{subsec:codemlpar}
@@ -973,9 +1012,9 @@ HGDP00777, HGDP00525, e HGDP00719.
           \textit{Tamanho da entrada}  &   \textit{Tempo original}  & \textit{Tempo otimizado} \\
           \hline
           \hline
-          58 GB (2 CRAMs) & 1d 4h 55m & 4h59m \\
-          124 GB (4 CRAMs) & 2d 9h 50m & 7h39m \\
-          232 GB (8 CRAMs) & 4d 14h 35m & 12h8m \\
+          58 GB (2 CRAMs) & 1d 4h 55m & 4h 59m \\
+          124 GB (4 CRAMs) & 2d 9h 50m & 7h 39m \\
+          232 GB (8 CRAMs) & 4d 14h 35m & 12h 8m \\
           \hline
         \end{tabular}
       \legend{Fonte: Os autores}
@@ -997,10 +1036,10 @@ fluxo de análise. Os resultados encontram-se reproduzidos nas tabelas
           \textit{Número de núcleos}  &   \textit{Tempo de execução}  & \textit{Speedup} \\
           \hline
           \hline
-          1 núcleo & TODO & TODO \\
-          2 núcleos & 11h14m & TODO \\
-          4 núcleos & 6h12m & TODO \\
-          6 núcleos & 4h59m & TODO \\
+          1 núcleo & 20h 26m & N/A \\
+          2 núcleos & 10h 46m & 1.90x \\
+          4 núcleos & 6h 12m & 3.29x \\
+          6 núcleos & 4h 59m & 4.10x \\
           \hline
         \end{tabular}
       \legend{Fonte: Os autores}
@@ -1015,15 +1054,54 @@ fluxo de análise. Os resultados encontram-se reproduzidos nas tabelas
           \textit{Número de núcleos}  &   \textit{Tempo de execução}  & \textit{Speedup} \\
           \hline
           \hline
-          1 núcleo & TODO & TODO \\
-          2 núcleos & TODO & TODO \\
-          4 núcleos & TODO & TODO \\
-          6 núcleos & TODO & TODO \\
+          1 núcleo & 2d 1h 33m & N/A \\
+          2 núcleos & 1d 58m & 1.98x \\
+          4 núcleos & 13h 16m & 3.73x \\
+          6 núcleos & 9h 30m & 5.22x \\
           \hline
         \end{tabular}
       \legend{Fonte: Os autores}
     \label{tbl:speedup6}
 \end{table}
+
+\begin{table}[h]
+    \caption{Tempos de execução da ferramenta por etapa}
+    \centering
+        \begin{tabular}{c|c|c|c|c}
+          \hline
+          \textit{Entradas}  & \textit{Núcleos} & \textit{Etapa 1}  & \textit{Etapa 2} & \textit{Etapa 3} \\
+          \hline
+          \hline
+          2 CRAMs & 1 núcleo  & 1h 44m &    18h 21m & 21m \\
+          2 CRAMs & 2 núcleos &    59m &     9h 26m & 21m \\
+          2 CRAMs & 4 núcleos & 1h     &     4h 52m & 20m \\
+          2 CRAMs & 6 núcleos & 1h     &     3h 38m & 21m \\
+          6 CRAMs & 1 núcleo  & 4h 12m & 1d 21h  2m & 20m \\
+          6 CRAMs & 2 núcleos & 2h 41m &    21h 55m & 22m \\
+          6 CRAMs & 4 núcleos & 1h 40m &    11h 15m & 21m \\
+          6 CRAMs & 6 núcleos & 1h 04m &     8h  6m & 20m \\
+          \hline
+        \end{tabular}
+      \legend{Fonte: Os autores}
+    \label{tbl:stages}
+\end{table}
+
+Conforme pode ser observado na tabela \ref{tbl:stages}, que discrimina os
+resultados por etapa, o maior ganho com o paralelismo está na etapa 2, em que é
+lançado um \textit{job} para cada um dos 22 cromossomos, limitado ao número de
+CPUs disponíveis. Conforme esperado, a etapa 1, em que é lançado um
+\textit{job} para cada entrada, limitado pelo número de CPUs disponíveis, só
+tem ganho de desempenho até o número de \textit{jobs} ser igual ao número de
+entradas. Por fim, conforme esperado, a etapa 3 tem tempo constante, uma vez
+que executa em uma única thread -- mas possui ganho de desempenho em relação ao
+pipeline original em que havia uma etapa de indexação desnecessária.
+
+O speedup para duas entradas é menor do que o ideal, tão menor quanto maior o
+número de núcleos utilizados. Isso é esperado, uma vez que não estamos
+utilizando todos núcleos disponíveis na etapa 1 quando há somente duas
+entradas. Para seis entradas o mesmo é observado, mas o speedup fica mais
+próximo do ideal. Isso é esperado, visto que utilizamos todos núcleos
+disponíveis em todas etapas, exceto a última. 
 
 Observa-se que uma alternativa à paralelizar somente os \textit{jobs} sob cada
 entrada seria utilizar um pipeline dos comandos, dado que, para alguns
@@ -1089,11 +1167,11 @@ na versão mais atual do sambamba como em versões anteriores. A tabela
           \textit{Comando}  &   \textit{Tempo samtools}  & \textit{Tempo sambamba} \\
           \hline
           \hline
-          view (convert) & 2h41m & N/A \\
-          index & 39s & 2m9s \\
-          view region & 4m5s & 19s \\
+          view (convert) & 2h 41m & N/A \\
+          index & 39s & 2m 9s \\
+          view region & 4m 5s & 19s \\
           merge & 8m & N/A \\
-          pileup & 1h3m & N/A \\
+          pileup & 1h 3m & N/A \\
           \hline
         \end{tabular}
       \legend{Fonte: Os autores}
@@ -1150,16 +1228,36 @@ Foi utilizada a biblioteca \textit{guietta} para criação da interface
 gráfica,\cite{guietta} um \textit{wrapper} em cima da biblioteca
 \textit{PySide2}, um \textit{binding} para Python da biblioteca multiplataforma
 Qt.\cite{loganathan2013pyside} A escolha da biblioteca vem pela sua facilidade
-de uso e pela disponibilidade multiplataforma. A figura \ref{fig:samgui}
-apresenta uma captura de tela da interface gráfica desenvolvida.
+de uso e pela disponibilidade multiplataforma. As figuras
+\ref{fig:samgui_linux}, \ref{fig:samgui_mac}, e \ref{fig:samgui_windows}
+apresentam uma captura de tela da interface gráfica desenvolvida nas
+plataformas Linux, Mac, e Windows, respectivamente.
 
 \begin{figure}
-  \caption{Captura de tela da interface gráfica ``SAMGUI''}
+  \caption{Captura de tela da interface gráfica ``SAMGUI'' em ambiente Linux}
     \begin{center}
-      \includegraphics[width=0.85\linewidth]{img/samgui.png}
+      \includegraphics[width=0.85\linewidth]{img/samgui_linux.png}
     \end{center}
     \legend{Fonte: Os Autores}
-    \label{fig:samgui}
+    \label{fig:samgui_linux}
+\end{figure}
+
+\begin{figure}
+  \caption{Captura de tela da interface gráfica ``SAMGUI'' em ambiente Mac}
+    \begin{center}
+      \includegraphics[width=0.85\linewidth]{img/samgui_mac.png}
+    \end{center}
+    \legend{Fonte: Os Autores}
+    \label{fig:samgui_mac}
+\end{figure}
+
+\begin{figure}
+  \caption{Captura de tela da interface gráfica ``SAMGUI'' em ambiente Windows}
+    \begin{center}
+      \includegraphics[width=0.85\linewidth]{img/samgui_windows.png}
+    \end{center}
+    \legend{Fonte: Os Autores}
+    \label{fig:samgui_windows}
 \end{figure}
 
 \chapter{Conclusão}
@@ -1239,6 +1337,10 @@ pesquisadores do grupo de pesquisa em genética, com avaliação tanto de seu
 desempenho como da aplicabilidade desse ferramental considerando os resultados
 potencialmente diferentes entre si, para o caso de uso do HCPA, levando em
 consideração a literatura a respeito dessas ferramentas.
+
+Outra linha de trabalho futuro é a adição de suporte a arquivos CRAM às
+ferramentas sambamba e elPrep, a fim de adequá-las aos arquivos atualmente
+disponibilizados pelo projeto 1000 Genomes. 
 
 \bibliographystyle{abntex2-alf}
 \bibliography{biblio}

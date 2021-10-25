@@ -1,285 +1,285 @@
-Starting at Thu Oct 21 10:23:29 -03 2021... Space used by our pipeline: 4.0K	.
-Starting stage 1 at Thu Oct 21 10:23:29 -03 2021.
-Viewing regions for /DATA/alef/data/HGDP00519.alt_bwamem_GRCh38DH.20181023.French.cram at Thu Oct 21 10:23:29 -03 2021
-Finished viewing regions for /DATA/alef/data/HGDP00519.alt_bwamem_GRCh38DH.20181023.French.cram at Thu Oct 21 11:10:11 -03 2021
-Viewing regions for /DATA/alef/data/HGDP00525.alt_bwamem_GRCh38DH.20181023.French.cram at Thu Oct 21 10:23:29 -03 2021
-Finished viewing regions for /DATA/alef/data/HGDP00525.alt_bwamem_GRCh38DH.20181023.French.cram at Thu Oct 21 11:23:22 -03 2021
-Ended stage 1 at Thu Oct 21 11:23:22 -03 2021. Used 50G	.
-Starting stage 2 at Thu Oct 21 11:23:22 -03 2021.
-Merging region 4 at Thu Oct 21 11:23:22 -03 2021
-Indexing region 4 at Thu Oct 21 11:31:35 -03 2021. Used 61G	.
-Removing unmerged CRAMs for region 4
-Mpileup region 4 at Thu Oct 21 11:31:36 -03 2021. Used 58G	.
-Removing CRAMs for region 4. Used 84G	.
-Call region 4 at Thu Oct 21 12:22:46 -03 2021. Used 81G	.
-Removing uncalled BCFs. Used 80G	.
-View region 4 at Thu Oct 21 12:37:50 -03 2021. Used 72G	.
-Removing VCFs with indels for region 4 at Thu Oct 21 12:41:28 -03 2021. Used 62G	.
-Filtering VCF for region 4 at Thu Oct 21 12:41:28 -03 2021. Used 62G	.
-Removing unfiltered VCFs for region 4 at Thu Oct 21 12:41:31 -03 2021. Used 62G	.
-Done region 4 at Thu Oct 21 12:41:31 -03 2021. Used 62G	.
-Merging region 3 at Thu Oct 21 11:23:22 -03 2021
-Indexing region 3 at Thu Oct 21 11:31:03 -03 2021. Used 64G	.
-Removing unmerged CRAMs for region 3
-Mpileup region 3 at Thu Oct 21 11:31:04 -03 2021. Used 61G	.
-Removing CRAMs for region 3. Used 82G	.
-Call region 3 at Thu Oct 21 12:24:12 -03 2021. Used 78G	.
-Removing uncalled BCFs. Used 73G	.
-View region 3 at Thu Oct 21 12:39:43 -03 2021. Used 64G	.
-Removing VCFs with indels for region 3 at Thu Oct 21 12:43:30 -03 2021. Used 60G	.
-Filtering VCF for region 3 at Thu Oct 21 12:43:30 -03 2021. Used 60G	.
-Removing unfiltered VCFs for region 3 at Thu Oct 21 12:43:34 -03 2021. Used 60G	.
-Done region 3 at Thu Oct 21 12:43:34 -03 2021. Used 60G	.
-Merging region 1 at Thu Oct 21 11:23:22 -03 2021
-Indexing region 1 at Thu Oct 21 11:33:29 -03 2021. Used 56G	.
+Starting at Thu Oct 21 18:23:20 -03 2021... Space used by our pipeline: 4.0K	.
+Starting stage 1 at Thu Oct 21 18:23:20 -03 2021.
+Viewing regions for /DATA/alef/data/HGDP00525.alt_bwamem_GRCh38DH.20181023.French.cram at Thu Oct 21 18:23:20 -03 2021
+Finished viewing regions for /DATA/alef/data/HGDP00525.alt_bwamem_GRCh38DH.20181023.French.cram at Thu Oct 21 19:21:46 -03 2021
+Viewing regions for /DATA/alef/data/HGDP00519.alt_bwamem_GRCh38DH.20181023.French.cram at Thu Oct 21 19:21:46 -03 2021
+Finished viewing regions for /DATA/alef/data/HGDP00519.alt_bwamem_GRCh38DH.20181023.French.cram at Thu Oct 21 20:07:06 -03 2021
+Ended stage 1 at Thu Oct 21 20:07:06 -03 2021. Used 50G	.
+Starting stage 2 at Thu Oct 21 20:07:06 -03 2021.
+Merging region 1 at Thu Oct 21 20:07:06 -03 2021
+Indexing region 1 at Thu Oct 21 20:16:38 -03 2021. Used 55G	.
 Removing unmerged CRAMs for region 1
-Mpileup region 1 at Thu Oct 21 11:33:30 -03 2021. Used 51G	.
-Removing CRAMs for region 1. Used 89G	.
-Call region 1 at Thu Oct 21 12:37:03 -03 2021. Used 84G	.
-Removing uncalled BCFs. Used 67G	.
-View region 1 at Thu Oct 21 12:55:42 -03 2021. Used 57G	.
-Removing VCFs with indels for region 1 at Thu Oct 21 13:00:06 -03 2021. Used 43G	.
-Filtering VCF for region 1 at Thu Oct 21 13:00:06 -03 2021. Used 43G	.
-Removing unfiltered VCFs for region 1 at Thu Oct 21 13:00:10 -03 2021. Used 43G	.
-Done region 1 at Thu Oct 21 13:00:10 -03 2021. Used 43G	.
-Merging region 2 at Thu Oct 21 11:23:22 -03 2021
-Indexing region 2 at Thu Oct 21 11:32:50 -03 2021. Used 59G	.
-Removing unmerged CRAMs for region 2
-Mpileup region 2 at Thu Oct 21 11:32:51 -03 2021. Used 55G	.
-Removing CRAMs for region 2. Used 85G	.
-Call region 2 at Thu Oct 21 12:37:46 -03 2021. Used 80G	.
-Removing uncalled BCFs. Used 57G	.
-View region 2 at Thu Oct 21 12:56:52 -03 2021. Used 46G	.
-Removing VCFs with indels for region 2 at Thu Oct 21 13:01:37 -03 2021. Used 40G	.
-Filtering VCF for region 2 at Thu Oct 21 13:01:37 -03 2021. Used 40G	.
-Removing unfiltered VCFs for region 2 at Thu Oct 21 13:01:41 -03 2021. Used 40G	.
-Done region 2 at Thu Oct 21 13:01:41 -03 2021. Used 40G	.
-Merging region 6 at Thu Oct 21 12:43:34 -03 2021
-Indexing region 6 at Thu Oct 21 12:50:06 -03 2021. Used 65G	.
-Removing unmerged CRAMs for region 6
-Mpileup region 6 at Thu Oct 21 12:50:06 -03 2021. Used 63G	.
-Removing CRAMs for region 6. Used 61G	.
-Call region 6 at Thu Oct 21 13:36:26 -03 2021. Used 58G	.
+Mpileup region 1 at Thu Oct 21 20:16:39 -03 2021. Used 50G	.
+Removing CRAMs for region 1. Used 61G	.
+Call region 1 at Thu Oct 21 21:18:23 -03 2021. Used 56G	.
 Removing uncalled BCFs. Used 61G	.
-View region 6 at Thu Oct 21 13:50:05 -03 2021. Used 53G	.
-Removing VCFs with indels for region 6 at Thu Oct 21 13:53:25 -03 2021. Used 44G	.
-Filtering VCF for region 6 at Thu Oct 21 13:53:25 -03 2021. Used 44G	.
-Removing unfiltered VCFs for region 6 at Thu Oct 21 13:53:28 -03 2021. Used 44G	.
-Done region 6 at Thu Oct 21 13:53:28 -03 2021. Used 44G	.
-Merging region 5 at Thu Oct 21 12:41:31 -03 2021
-Indexing region 5 at Thu Oct 21 12:48:39 -03 2021. Used 67G	.
+View region 1 at Thu Oct 21 21:36:08 -03 2021. Used 50G	.
+Removing VCFs with indels for region 1 at Thu Oct 21 21:40:19 -03 2021. Used 46G	.
+Filtering VCF for region 1 at Thu Oct 21 21:40:19 -03 2021. Used 46G	.
+Removing unfiltered VCFs for region 1 at Thu Oct 21 21:40:22 -03 2021. Used 46G	.
+Done region 1 at Thu Oct 21 21:40:22 -03 2021. Used 46G	.
+Merging region 2 at Thu Oct 21 21:40:22 -03 2021
+Indexing region 2 at Thu Oct 21 21:49:24 -03 2021. Used 50G	.
+Removing unmerged CRAMs for region 2
+Mpileup region 2 at Thu Oct 21 21:49:25 -03 2021. Used 46G	.
+Removing CRAMs for region 2. Used 57G	.
+Call region 2 at Thu Oct 21 22:52:28 -03 2021. Used 52G	.
+Removing uncalled BCFs. Used 57G	.
+View region 2 at Thu Oct 21 23:11:15 -03 2021. Used 46G	.
+Removing VCFs with indels for region 2 at Thu Oct 21 23:15:38 -03 2021. Used 42G	.
+Filtering VCF for region 2 at Thu Oct 21 23:15:38 -03 2021. Used 42G	.
+Removing unfiltered VCFs for region 2 at Thu Oct 21 23:15:41 -03 2021. Used 42G	.
+Done region 2 at Thu Oct 21 23:15:41 -03 2021. Used 42G	.
+Merging region 3 at Thu Oct 21 23:15:41 -03 2021
+Indexing region 3 at Thu Oct 21 23:22:53 -03 2021. Used 45G	.
+Removing unmerged CRAMs for region 3
+Mpileup region 3 at Thu Oct 21 23:22:54 -03 2021. Used 42G	.
+Removing CRAMs for region 3. Used 51G	.
+Call region 3 at Fri Oct 22 00:14:23 -03 2021. Used 47G	.
+Removing uncalled BCFs. Used 51G	.
+View region 3 at Fri Oct 22 00:30:16 -03 2021. Used 42G	.
+Removing VCFs with indels for region 3 at Fri Oct 22 00:33:54 -03 2021. Used 38G	.
+Filtering VCF for region 3 at Fri Oct 22 00:33:54 -03 2021. Used 38G	.
+Removing unfiltered VCFs for region 3 at Fri Oct 22 00:33:57 -03 2021. Used 38G	.
+Done region 3 at Fri Oct 22 00:33:57 -03 2021. Used 38G	.
+Merging region 4 at Fri Oct 22 00:33:57 -03 2021
+Indexing region 4 at Fri Oct 22 00:41:42 -03 2021. Used 42G	.
+Removing unmerged CRAMs for region 4
+Mpileup region 4 at Fri Oct 22 00:41:43 -03 2021. Used 38G	.
+Removing CRAMs for region 4. Used 47G	.
+Call region 4 at Fri Oct 22 01:31:05 -03 2021. Used 43G	.
+Removing uncalled BCFs. Used 47G	.
+View region 4 at Fri Oct 22 01:45:37 -03 2021. Used 38G	.
+Removing VCFs with indels for region 4 at Fri Oct 22 01:49:02 -03 2021. Used 35G	.
+Filtering VCF for region 4 at Fri Oct 22 01:49:02 -03 2021. Used 35G	.
+Removing unfiltered VCFs for region 4 at Fri Oct 22 01:49:05 -03 2021. Used 35G	.
+Done region 4 at Fri Oct 22 01:49:05 -03 2021. Used 35G	.
+Merging region 5 at Fri Oct 22 01:49:05 -03 2021
+Indexing region 5 at Fri Oct 22 01:55:53 -03 2021. Used 38G	.
 Removing unmerged CRAMs for region 5
-Mpileup region 5 at Thu Oct 21 12:48:40 -03 2021. Used 64G	.
-Removing CRAMs for region 5. Used 58G	.
-Call region 5 at Thu Oct 21 13:36:28 -03 2021. Used 55G	.
-Removing uncalled BCFs. Used 53G	.
-View region 5 at Thu Oct 21 13:50:29 -03 2021. Used 45G	.
-Removing VCFs with indels for region 5 at Thu Oct 21 13:53:59 -03 2021. Used 41G	.
-Filtering VCF for region 5 at Thu Oct 21 13:53:59 -03 2021. Used 41G	.
-Removing unfiltered VCFs for region 5 at Thu Oct 21 13:54:02 -03 2021. Used 41G	.
-Done region 5 at Thu Oct 21 13:54:02 -03 2021. Used 41G	.
-Merging region 8 at Thu Oct 21 13:01:41 -03 2021
-Indexing region 8 at Thu Oct 21 13:07:07 -03 2021. Used 43G	.
-Removing unmerged CRAMs for region 8
-Mpileup region 8 at Thu Oct 21 13:07:07 -03 2021. Used 41G	.
-Removing CRAMs for region 8. Used 62G	.
-Call region 8 at Thu Oct 21 13:45:55 -03 2021. Used 60G	.
-Removing uncalled BCFs. Used 45G	.
-View region 8 at Thu Oct 21 13:57:28 -03 2021. Used 39G	.
-Removing VCFs with indels for region 8 at Thu Oct 21 14:00:10 -03 2021. Used 34G	.
-Filtering VCF for region 8 at Thu Oct 21 14:00:10 -03 2021. Used 34G	.
-Removing unfiltered VCFs for region 8 at Thu Oct 21 14:00:12 -03 2021. Used 34G	.
-Done region 8 at Thu Oct 21 14:00:12 -03 2021. Used 34G	.
-Merging region 7 at Thu Oct 21 13:00:10 -03 2021
-Indexing region 7 at Thu Oct 21 13:06:19 -03 2021. Used 45G	.
+Mpileup region 5 at Fri Oct 22 01:55:54 -03 2021. Used 35G	.
+Removing CRAMs for region 5. Used 43G	.
+Call region 5 at Fri Oct 22 02:42:22 -03 2021. Used 40G	.
+Removing uncalled BCFs. Used 43G	.
+View region 5 at Fri Oct 22 02:55:59 -03 2021. Used 35G	.
+Removing VCFs with indels for region 5 at Fri Oct 22 02:59:14 -03 2021. Used 32G	.
+Filtering VCF for region 5 at Fri Oct 22 02:59:14 -03 2021. Used 32G	.
+Removing unfiltered VCFs for region 5 at Fri Oct 22 02:59:17 -03 2021. Used 32G	.
+Done region 5 at Fri Oct 22 02:59:17 -03 2021. Used 32G	.
+Merging region 6 at Fri Oct 22 02:59:17 -03 2021
+Indexing region 6 at Fri Oct 22 03:05:33 -03 2021. Used 35G	.
+Removing unmerged CRAMs for region 6
+Mpileup region 6 at Fri Oct 22 03:05:34 -03 2021. Used 32G	.
+Removing CRAMs for region 6. Used 39G	.
+Call region 6 at Fri Oct 22 03:50:28 -03 2021. Used 37G	.
+Removing uncalled BCFs. Used 40G	.
+View region 6 at Fri Oct 22 04:03:33 -03 2021. Used 32G	.
+Removing VCFs with indels for region 6 at Fri Oct 22 04:06:37 -03 2021. Used 29G	.
+Filtering VCF for region 6 at Fri Oct 22 04:06:37 -03 2021. Used 29G	.
+Removing unfiltered VCFs for region 6 at Fri Oct 22 04:06:40 -03 2021. Used 29G	.
+Done region 6 at Fri Oct 22 04:06:40 -03 2021. Used 29G	.
+Merging region 7 at Fri Oct 22 04:06:40 -03 2021
+Indexing region 7 at Fri Oct 22 04:12:32 -03 2021. Used 32G	.
 Removing unmerged CRAMs for region 7
-Mpileup region 7 at Thu Oct 21 13:06:20 -03 2021. Used 43G	.
-Removing CRAMs for region 7. Used 63G	.
-Call region 7 at Thu Oct 21 13:49:51 -03 2021. Used 61G	.
-Removing uncalled BCFs. Used 37G	.
-View region 7 at Thu Oct 21 14:02:41 -03 2021. Used 29G	.
-Removing VCFs with indels for region 7 at Thu Oct 21 14:05:38 -03 2021. Used 26G	.
-Filtering VCF for region 7 at Thu Oct 21 14:05:38 -03 2021. Used 26G	.
-Removing unfiltered VCFs for region 7 at Thu Oct 21 14:05:41 -03 2021. Used 26G	.
-Done region 7 at Thu Oct 21 14:05:41 -03 2021. Used 26G	.
-Merging region 9 at Thu Oct 21 13:53:28 -03 2021
-Indexing region 9 at Thu Oct 21 13:58:19 -03 2021. Used 40G	.
-Removing unmerged CRAMs for region 9
-Mpileup region 9 at Thu Oct 21 13:58:19 -03 2021. Used 38G	.
-Removing CRAMs for region 9. Used 43G	.
-Call region 9 at Thu Oct 21 14:32:11 -03 2021. Used 41G	.
-Removing uncalled BCFs. Used 44G	.
-View region 9 at Thu Oct 21 14:41:53 -03 2021. Used 38G	.
-Removing VCFs with indels for region 9 at Thu Oct 21 14:44:10 -03 2021. Used 37G	.
-Filtering VCF for region 9 at Thu Oct 21 14:44:10 -03 2021. Used 37G	.
-Removing unfiltered VCFs for region 9 at Thu Oct 21 14:44:12 -03 2021. Used 37G	.
-Done region 9 at Thu Oct 21 14:44:12 -03 2021. Used 37G	.
-Merging region 10 at Thu Oct 21 13:54:02 -03 2021
-Indexing region 10 at Thu Oct 21 13:59:42 -03 2021. Used 39G	.
-Removing unmerged CRAMs for region 10
-Mpileup region 10 at Thu Oct 21 13:59:42 -03 2021. Used 36G	.
-Removing CRAMs for region 10. Used 44G	.
-Call region 10 at Thu Oct 21 14:36:40 -03 2021. Used 42G	.
-Removing uncalled BCFs. Used 41G	.
-View region 10 at Thu Oct 21 14:47:15 -03 2021. Used 34G	.
-Removing VCFs with indels for region 10 at Thu Oct 21 14:49:43 -03 2021. Used 30G	.
-Filtering VCF for region 10 at Thu Oct 21 14:49:43 -03 2021. Used 30G	.
-Removing unfiltered VCFs for region 10 at Thu Oct 21 14:49:46 -03 2021. Used 30G	.
-Done region 10 at Thu Oct 21 14:49:46 -03 2021. Used 30G	.
-Merging region 11 at Thu Oct 21 14:00:12 -03 2021
-Indexing region 11 at Thu Oct 21 14:05:18 -03 2021. Used 31G	.
-Removing unmerged CRAMs for region 11
-Mpileup region 11 at Thu Oct 21 14:05:18 -03 2021. Used 29G	.
-Removing CRAMs for region 11. Used 46G	.
-Call region 11 at Thu Oct 21 14:41:48 -03 2021. Used 44G	.
+Mpileup region 7 at Fri Oct 22 04:12:33 -03 2021. Used 29G	.
+Removing CRAMs for region 7. Used 36G	.
+Call region 7 at Fri Oct 22 04:54:54 -03 2021. Used 33G	.
+Removing uncalled BCFs. Used 36G	.
+View region 7 at Fri Oct 22 05:07:26 -03 2021. Used 29G	.
+Removing VCFs with indels for region 7 at Fri Oct 22 05:10:18 -03 2021. Used 26G	.
+Filtering VCF for region 7 at Fri Oct 22 05:10:18 -03 2021. Used 26G	.
+Removing unfiltered VCFs for region 7 at Fri Oct 22 05:10:21 -03 2021. Used 26G	.
+Done region 7 at Fri Oct 22 05:10:21 -03 2021. Used 26G	.
+Merging region 8 at Fri Oct 22 05:10:21 -03 2021
+Indexing region 8 at Fri Oct 22 05:15:31 -03 2021. Used 29G	.
+Removing unmerged CRAMs for region 8
+Mpileup region 8 at Fri Oct 22 05:15:32 -03 2021. Used 26G	.
+Removing CRAMs for region 8. Used 33G	.
+Call region 8 at Fri Oct 22 05:53:02 -03 2021. Used 30G	.
 Removing uncalled BCFs. Used 33G	.
-View region 11 at Thu Oct 21 14:52:32 -03 2021. Used 27G	.
-Removing VCFs with indels for region 11 at Thu Oct 21 14:55:05 -03 2021. Used 24G	.
-Filtering VCF for region 11 at Thu Oct 21 14:55:05 -03 2021. Used 24G	.
-Removing unfiltered VCFs for region 11 at Thu Oct 21 14:55:07 -03 2021. Used 24G	.
-Done region 11 at Thu Oct 21 14:55:07 -03 2021. Used 24G	.
-Merging region 12 at Thu Oct 21 14:05:41 -03 2021
-Indexing region 12 at Thu Oct 21 14:10:44 -03 2021. Used 31G	.
-Removing unmerged CRAMs for region 12
-Mpileup region 12 at Thu Oct 21 14:10:45 -03 2021. Used 29G	.
-Removing CRAMs for region 12. Used 35G	.
-Call region 12 at Thu Oct 21 14:47:25 -03 2021. Used 32G	.
-Removing uncalled BCFs. Used 27G	.
-View region 12 at Thu Oct 21 14:58:06 -03 2021. Used 21G	.
-Removing VCFs with indels for region 12 at Thu Oct 21 15:00:35 -03 2021. Used 18G	.
-Filtering VCF for region 12 at Thu Oct 21 15:00:35 -03 2021. Used 18G	.
-Removing unfiltered VCFs for region 12 at Thu Oct 21 15:00:37 -03 2021. Used 18G	.
-Done region 12 at Thu Oct 21 15:00:37 -03 2021. Used 18G	.
-Merging region 13 at Thu Oct 21 14:44:12 -03 2021
-Indexing region 13 at Thu Oct 21 14:47:59 -03 2021. Used 33G	.
-Removing unmerged CRAMs for region 13
-Mpileup region 13 at Thu Oct 21 14:47:59 -03 2021. Used 31G	.
-Removing CRAMs for region 13. Used 27G	.
-Call region 13 at Thu Oct 21 15:15:04 -03 2021. Used 26G	.
-Removing uncalled BCFs. Used 29G	.
-View region 13 at Thu Oct 21 15:22:57 -03 2021. Used 25G	.
-Removing VCFs with indels for region 13 at Thu Oct 21 15:24:47 -03 2021. Used 20G	.
-Filtering VCF for region 13 at Thu Oct 21 15:24:47 -03 2021. Used 20G	.
-Removing unfiltered VCFs for region 13 at Thu Oct 21 15:24:49 -03 2021. Used 20G	.
-Done region 13 at Thu Oct 21 15:24:49 -03 2021. Used 20G	.
-Merging region 14 at Thu Oct 21 14:49:46 -03 2021
-Indexing region 14 at Thu Oct 21 14:53:07 -03 2021. Used 27G	.
-Removing unmerged CRAMs for region 14
-Mpileup region 14 at Thu Oct 21 14:53:08 -03 2021. Used 26G	.
-Removing CRAMs for region 14. Used 27G	.
-Call region 14 at Thu Oct 21 15:17:23 -03 2021. Used 26G	.
+View region 8 at Fri Oct 22 06:04:14 -03 2021. Used 27G	.
+Removing VCFs with indels for region 8 at Fri Oct 22 06:06:52 -03 2021. Used 24G	.
+Filtering VCF for region 8 at Fri Oct 22 06:06:52 -03 2021. Used 24G	.
+Removing unfiltered VCFs for region 8 at Fri Oct 22 06:06:55 -03 2021. Used 24G	.
+Done region 8 at Fri Oct 22 06:06:55 -03 2021. Used 24G	.
+Merging region 9 at Fri Oct 22 06:06:55 -03 2021
+Indexing region 9 at Fri Oct 22 06:11:31 -03 2021. Used 26G	.
+Removing unmerged CRAMs for region 9
+Mpileup region 9 at Fri Oct 22 06:11:31 -03 2021. Used 24G	.
+Removing CRAMs for region 9. Used 29G	.
+Call region 9 at Fri Oct 22 06:44:29 -03 2021. Used 27G	.
+Removing uncalled BCFs. Used 30G	.
+View region 9 at Fri Oct 22 06:53:55 -03 2021. Used 24G	.
+Removing VCFs with indels for region 9 at Fri Oct 22 06:56:08 -03 2021. Used 22G	.
+Filtering VCF for region 9 at Fri Oct 22 06:56:08 -03 2021. Used 22G	.
+Removing unfiltered VCFs for region 9 at Fri Oct 22 06:56:10 -03 2021. Used 22G	.
+Done region 9 at Fri Oct 22 06:56:10 -03 2021. Used 22G	.
+Merging region 10 at Fri Oct 22 06:56:10 -03 2021
+Indexing region 10 at Fri Oct 22 07:01:32 -03 2021. Used 24G	.
+Removing unmerged CRAMs for region 10
+Mpileup region 10 at Fri Oct 22 07:01:33 -03 2021. Used 22G	.
+Removing CRAMs for region 10. Used 28G	.
+Call region 10 at Fri Oct 22 07:37:28 -03 2021. Used 25G	.
+Removing uncalled BCFs. Used 28G	.
+View region 10 at Fri Oct 22 07:47:59 -03 2021. Used 22G	.
+Removing VCFs with indels for region 10 at Fri Oct 22 07:50:24 -03 2021. Used 19G	.
+Filtering VCF for region 10 at Fri Oct 22 07:50:24 -03 2021. Used 19G	.
+Removing unfiltered VCFs for region 10 at Fri Oct 22 07:50:26 -03 2021. Used 19G	.
+Done region 10 at Fri Oct 22 07:50:26 -03 2021. Used 19G	.
+Merging region 11 at Fri Oct 22 07:50:26 -03 2021
+Indexing region 11 at Fri Oct 22 07:55:18 -03 2021. Used 22G	.
+Removing unmerged CRAMs for region 11
+Mpileup region 11 at Fri Oct 22 07:55:19 -03 2021. Used 19G	.
+Removing CRAMs for region 11. Used 25G	.
+Call region 11 at Fri Oct 22 08:30:50 -03 2021. Used 23G	.
 Removing uncalled BCFs. Used 26G	.
-View region 14 at Thu Oct 21 15:24:41 -03 2021. Used 22G	.
-Removing VCFs with indels for region 14 at Thu Oct 21 15:26:20 -03 2021. Used 19G	.
-Filtering VCF for region 14 at Thu Oct 21 15:26:20 -03 2021. Used 19G	.
-Removing unfiltered VCFs for region 14 at Thu Oct 21 15:26:21 -03 2021. Used 19G	.
-Done region 14 at Thu Oct 21 15:26:21 -03 2021. Used 19G	.
-Merging region 15 at Thu Oct 21 14:55:07 -03 2021
-Indexing region 15 at Thu Oct 21 14:58:29 -03 2021. Used 21G	.
+View region 11 at Fri Oct 22 08:41:21 -03 2021. Used 20G	.
+Removing VCFs with indels for region 11 at Fri Oct 22 08:43:49 -03 2021. Used 17G	.
+Filtering VCF for region 11 at Fri Oct 22 08:43:49 -03 2021. Used 17G	.
+Removing unfiltered VCFs for region 11 at Fri Oct 22 08:43:51 -03 2021. Used 17G	.
+Done region 11 at Fri Oct 22 08:43:51 -03 2021. Used 17G	.
+Merging region 12 at Fri Oct 22 08:43:51 -03 2021
+Indexing region 12 at Fri Oct 22 08:48:45 -03 2021. Used 19G	.
+Removing unmerged CRAMs for region 12
+Mpileup region 12 at Fri Oct 22 08:48:45 -03 2021. Used 17G	.
+Removing CRAMs for region 12. Used 23G	.
+Call region 12 at Fri Oct 22 09:24:15 -03 2021. Used 21G	.
+Removing uncalled BCFs. Used 23G	.
+View region 12 at Fri Oct 22 09:34:31 -03 2021. Used 17G	.
+Removing VCFs with indels for region 12 at Fri Oct 22 09:36:57 -03 2021. Used 15G	.
+Filtering VCF for region 12 at Fri Oct 22 09:36:57 -03 2021. Used 15G	.
+Removing unfiltered VCFs for region 12 at Fri Oct 22 09:36:59 -03 2021. Used 15G	.
+Done region 12 at Fri Oct 22 09:36:59 -03 2021. Used 15G	.
+Merging region 13 at Fri Oct 22 09:36:59 -03 2021
+Indexing region 13 at Fri Oct 22 09:40:37 -03 2021. Used 17G	.
+Removing unmerged CRAMs for region 13
+Mpileup region 13 at Fri Oct 22 09:40:37 -03 2021. Used 15G	.
+Removing CRAMs for region 13. Used 19G	.
+Call region 13 at Fri Oct 22 10:06:45 -03 2021. Used 18G	.
+Removing uncalled BCFs. Used 19G	.
+View region 13 at Fri Oct 22 10:14:31 -03 2021. Used 15G	.
+Removing VCFs with indels for region 13 at Fri Oct 22 10:16:18 -03 2021. Used 13G	.
+Filtering VCF for region 13 at Fri Oct 22 10:16:18 -03 2021. Used 13G	.
+Removing unfiltered VCFs for region 13 at Fri Oct 22 10:16:20 -03 2021. Used 13G	.
+Done region 13 at Fri Oct 22 10:16:20 -03 2021. Used 13G	.
+Merging region 14 at Fri Oct 22 10:16:20 -03 2021
+Indexing region 14 at Fri Oct 22 10:19:35 -03 2021. Used 15G	.
+Removing unmerged CRAMs for region 14
+Mpileup region 14 at Fri Oct 22 10:19:35 -03 2021. Used 13G	.
+Removing CRAMs for region 14. Used 17G	.
+Call region 14 at Fri Oct 22 10:43:05 -03 2021. Used 16G	.
+Removing uncalled BCFs. Used 17G	.
+View region 14 at Fri Oct 22 10:49:54 -03 2021. Used 13G	.
+Removing VCFs with indels for region 14 at Fri Oct 22 10:51:30 -03 2021. Used 12G	.
+Filtering VCF for region 14 at Fri Oct 22 10:51:30 -03 2021. Used 12G	.
+Removing unfiltered VCFs for region 14 at Fri Oct 22 10:51:31 -03 2021. Used 12G	.
+Done region 14 at Fri Oct 22 10:51:31 -03 2021. Used 12G	.
+Merging region 15 at Fri Oct 22 10:51:31 -03 2021
+Indexing region 15 at Fri Oct 22 10:54:46 -03 2021. Used 13G	.
 Removing unmerged CRAMs for region 15
-Mpileup region 15 at Thu Oct 21 14:58:30 -03 2021. Used 20G	.
-Removing CRAMs for region 15. Used 29G	.
-Call region 15 at Thu Oct 21 15:21:46 -03 2021. Used 28G	.
-Removing uncalled BCFs. Used 19G	.
-View region 15 at Thu Oct 21 15:28:34 -03 2021. Used 15G	.
-Removing VCFs with indels for region 15 at Thu Oct 21 15:30:10 -03 2021. Used 13G	.
-Filtering VCF for region 15 at Thu Oct 21 15:30:10 -03 2021. Used 13G	.
-Removing unfiltered VCFs for region 15 at Thu Oct 21 15:30:11 -03 2021. Used 13G	.
-Done region 15 at Thu Oct 21 15:30:11 -03 2021. Used 13G	.
-Merging region 16 at Thu Oct 21 15:00:37 -03 2021
-Indexing region 16 at Thu Oct 21 15:04:29 -03 2021. Used 22G	.
-Removing unmerged CRAMs for region 16
-Mpileup region 16 at Thu Oct 21 15:04:29 -03 2021. Used 20G	.
-Removing CRAMs for region 16. Used 21G	.
-Call region 16 at Thu Oct 21 15:27:51 -03 2021. Used 20G	.
+Mpileup region 15 at Fri Oct 22 10:54:47 -03 2021. Used 12G	.
+Removing CRAMs for region 15. Used 16G	.
+Call region 15 at Fri Oct 22 11:17:29 -03 2021. Used 14G	.
 Removing uncalled BCFs. Used 16G	.
-View region 16 at Thu Oct 21 15:34:26 -03 2021. Used 12G	.
-Removing VCFs with indels for region 16 at Thu Oct 21 15:35:58 -03 2021. Used 11G	.
-Filtering VCF for region 16 at Thu Oct 21 15:35:58 -03 2021. Used 11G	.
-Removing unfiltered VCFs for region 16 at Thu Oct 21 15:36:00 -03 2021. Used 11G	.
-Done region 16 at Thu Oct 21 15:36:00 -03 2021. Used 11G	.
-Merging region 19 at Thu Oct 21 15:30:11 -03 2021
-Indexing region 19 at Thu Oct 21 15:32:32 -03 2021. Used 16G	.
-Removing unmerged CRAMs for region 19
-Mpileup region 19 at Thu Oct 21 15:32:32 -03 2021. Used 15G	.
-Removing CRAMs for region 19. Used 20G	.
-Call region 19 at Thu Oct 21 15:49:32 -03 2021. Used 19G	.
-Removing uncalled BCFs. Used 19G	.
-View region 19 at Thu Oct 21 15:54:10 -03 2021. Used 17G	.
-Removing VCFs with indels for region 19 at Thu Oct 21 15:55:13 -03 2021. Used 16G	.
-Filtering VCF for region 19 at Thu Oct 21 15:55:13 -03 2021. Used 16G	.
-Removing unfiltered VCFs for region 19 at Thu Oct 21 15:55:14 -03 2021. Used 16G	.
-Done region 19 at Thu Oct 21 15:55:14 -03 2021. Used 16G	.
-Merging region 18 at Thu Oct 21 15:26:21 -03 2021
-Indexing region 18 at Thu Oct 21 15:29:28 -03 2021. Used 16G	.
-Removing unmerged CRAMs for region 18
-Mpileup region 18 at Thu Oct 21 15:29:28 -03 2021. Used 14G	.
-Removing CRAMs for region 18. Used 19G	.
-Call region 18 at Thu Oct 21 15:50:36 -03 2021. Used 18G	.
-Removing uncalled BCFs. Used 18G	.
-View region 18 at Thu Oct 21 15:56:51 -03 2021. Used 14G	.
-Removing VCFs with indels for region 18 at Thu Oct 21 15:58:20 -03 2021. Used 12G	.
-Filtering VCF for region 18 at Thu Oct 21 15:58:20 -03 2021. Used 12G	.
-Removing unfiltered VCFs for region 18 at Thu Oct 21 15:58:22 -03 2021. Used 12G	.
-Done region 18 at Thu Oct 21 15:58:22 -03 2021. Used 12G	.
-Merging region 17 at Thu Oct 21 15:24:49 -03 2021
-Indexing region 17 at Thu Oct 21 15:28:24 -03 2021. Used 20G	.
+View region 15 at Fri Oct 22 11:23:58 -03 2021. Used 12G	.
+Removing VCFs with indels for region 15 at Fri Oct 22 11:25:31 -03 2021. Used 9.8G	.
+Filtering VCF for region 15 at Fri Oct 22 11:25:31 -03 2021. Used 9.8G	.
+Removing unfiltered VCFs for region 15 at Fri Oct 22 11:25:32 -03 2021. Used 9.8G	.
+Done region 15 at Fri Oct 22 11:25:32 -03 2021. Used 9.8G	.
+Merging region 16 at Fri Oct 22 11:25:33 -03 2021
+Indexing region 16 at Fri Oct 22 11:29:17 -03 2021. Used 12G	.
+Removing unmerged CRAMs for region 16
+Mpileup region 16 at Fri Oct 22 11:29:18 -03 2021. Used 9.8G	.
+Removing CRAMs for region 16. Used 14G	.
+Call region 16 at Fri Oct 22 11:52:00 -03 2021. Used 12G	.
+Removing uncalled BCFs. Used 14G	.
+View region 16 at Fri Oct 22 11:58:25 -03 2021. Used 9.6G	.
+Removing VCFs with indels for region 16 at Fri Oct 22 11:59:55 -03 2021. Used 8.0G	.
+Filtering VCF for region 16 at Fri Oct 22 11:59:55 -03 2021. Used 8.0G	.
+Removing unfiltered VCFs for region 16 at Fri Oct 22 11:59:56 -03 2021. Used 8.1G	.
+Done region 16 at Fri Oct 22 11:59:56 -03 2021. Used 8.0G	.
+Merging region 17 at Fri Oct 22 11:59:56 -03 2021
+Indexing region 17 at Fri Oct 22 12:03:22 -03 2021. Used 9.7G	.
 Removing unmerged CRAMs for region 17
-Mpileup region 17 at Thu Oct 21 15:28:24 -03 2021. Used 19G	.
-Removing CRAMs for region 17. Used 19G	.
-Call region 17 at Thu Oct 21 15:52:00 -03 2021. Used 17G	.
+Mpileup region 17 at Fri Oct 22 12:03:23 -03 2021. Used 8.1G	.
+Removing CRAMs for region 17. Used 12G	.
+Call region 17 at Fri Oct 22 12:26:00 -03 2021. Used 11G	.
 Removing uncalled BCFs. Used 12G	.
-View region 17 at Thu Oct 21 15:58:40 -03 2021. Used 7.8G	.
-Removing VCFs with indels for region 17 at Thu Oct 21 16:00:12 -03 2021. Used 6.7G	.
-Filtering VCF for region 17 at Thu Oct 21 16:00:12 -03 2021. Used 6.7G	.
-Removing unfiltered VCFs for region 17 at Thu Oct 21 16:00:13 -03 2021. Used 6.7G	.
-Done region 17 at Thu Oct 21 16:00:13 -03 2021. Used 6.7G	.
-Merging region 20 at Thu Oct 21 15:36:00 -03 2021
-Indexing region 20 at Thu Oct 21 15:38:52 -03 2021. Used 14G	.
+View region 17 at Fri Oct 22 12:32:22 -03 2021. Used 8.0G	.
+Removing VCFs with indels for region 17 at Fri Oct 22 12:33:51 -03 2021. Used 6.4G	.
+Filtering VCF for region 17 at Fri Oct 22 12:33:51 -03 2021. Used 6.4G	.
+Removing unfiltered VCFs for region 17 at Fri Oct 22 12:33:52 -03 2021. Used 6.5G	.
+Done region 17 at Fri Oct 22 12:33:52 -03 2021. Used 6.4G	.
+Merging region 18 at Fri Oct 22 12:33:52 -03 2021
+Indexing region 18 at Fri Oct 22 12:36:50 -03 2021. Used 7.8G	.
+Removing unmerged CRAMs for region 18
+Mpileup region 18 at Fri Oct 22 12:36:51 -03 2021. Used 6.4G	.
+Removing CRAMs for region 18. Used 10G	.
+Call region 18 at Fri Oct 22 12:57:24 -03 2021. Used 8.6G	.
+Removing uncalled BCFs. Used 11G	.
+View region 18 at Fri Oct 22 13:03:25 -03 2021. Used 6.5G	.
+Removing VCFs with indels for region 18 at Fri Oct 22 13:04:52 -03 2021. Used 5.1G	.
+Filtering VCF for region 18 at Fri Oct 22 13:04:52 -03 2021. Used 5.1G	.
+Removing unfiltered VCFs for region 18 at Fri Oct 22 13:04:53 -03 2021. Used 5.1G	.
+Done region 18 at Fri Oct 22 13:04:53 -03 2021. Used 5.1G	.
+Merging region 19 at Fri Oct 22 13:04:53 -03 2021
+Indexing region 19 at Fri Oct 22 13:07:09 -03 2021. Used 6.2G	.
+Removing unmerged CRAMs for region 19
+Mpileup region 19 at Fri Oct 22 13:07:10 -03 2021. Used 5.1G	.
+Removing CRAMs for region 19. Used 7.8G	.
+Call region 19 at Fri Oct 22 13:23:42 -03 2021. Used 6.7G	.
+Removing uncalled BCFs. Used 7.8G	.
+View region 19 at Fri Oct 22 13:28:10 -03 2021. Used 5.1G	.
+Removing VCFs with indels for region 19 at Fri Oct 22 13:29:12 -03 2021. Used 4.0G	.
+Filtering VCF for region 19 at Fri Oct 22 13:29:12 -03 2021. Used 4.0G	.
+Removing unfiltered VCFs for region 19 at Fri Oct 22 13:29:13 -03 2021. Used 4.0G	.
+Done region 19 at Fri Oct 22 13:29:13 -03 2021. Used 4.0G	.
+Merging region 20 at Fri Oct 22 13:29:13 -03 2021
+Indexing region 20 at Fri Oct 22 13:31:59 -03 2021. Used 5.3G	.
 Removing unmerged CRAMs for region 20
-Mpileup region 20 at Thu Oct 21 15:38:53 -03 2021. Used 13G	.
-Removing CRAMs for region 20. Used 14G	.
-Call region 20 at Thu Oct 21 15:57:33 -03 2021. Used 13G	.
-Removing uncalled BCFs. Used 8.0G	.
-View region 20 at Thu Oct 21 16:02:43 -03 2021. Used 5.1G	.
-Removing VCFs with indels for region 20 at Thu Oct 21 16:03:54 -03 2021. Used 4.2G	.
-Filtering VCF for region 20 at Thu Oct 21 16:03:54 -03 2021. Used 4.2G	.
-Removing unfiltered VCFs for region 20 at Thu Oct 21 16:03:55 -03 2021. Used 4.2G	.
-Done region 20 at Thu Oct 21 16:03:55 -03 2021. Used 4.2G	.
-Merging region 21 at Thu Oct 21 15:55:15 -03 2021
-Indexing region 21 at Thu Oct 21 15:57:09 -03 2021. Used 15G	.
+Mpileup region 20 at Fri Oct 22 13:32:00 -03 2021. Used 4.0G	.
+Removing CRAMs for region 20. Used 7.0G	.
+Call region 20 at Fri Oct 22 13:49:59 -03 2021. Used 5.7G	.
+Removing uncalled BCFs. Used 6.9G	.
+View region 20 at Fri Oct 22 13:54:58 -03 2021. Used 3.9G	.
+Removing VCFs with indels for region 20 at Fri Oct 22 13:56:09 -03 2021. Used 2.7G	.
+Filtering VCF for region 20 at Fri Oct 22 13:56:09 -03 2021. Used 2.7G	.
+Removing unfiltered VCFs for region 20 at Fri Oct 22 13:56:10 -03 2021. Used 2.7G	.
+Done region 20 at Fri Oct 22 13:56:10 -03 2021. Used 2.7G	.
+Merging region 21 at Fri Oct 22 13:56:10 -03 2021
+Indexing region 21 at Fri Oct 22 13:58:00 -03 2021. Used 3.6G	.
 Removing unmerged CRAMs for region 21
-Mpileup region 21 at Thu Oct 21 15:57:09 -03 2021. Used 14G	.
-Removing CRAMs for region 21. Used 5.8G	.
-Call region 21 at Thu Oct 21 16:08:32 -03 2021. Used 4.9G	.
-Removing uncalled BCFs. Used 5.4G	.
-View region 21 at Thu Oct 21 16:11:37 -03 2021. Used 3.7G	.
-Removing VCFs with indels for region 21 at Thu Oct 21 16:12:19 -03 2021. Used 3.1G	.
-Filtering VCF for region 21 at Thu Oct 21 16:12:19 -03 2021. Used 3.1G	.
-Removing unfiltered VCFs for region 21 at Thu Oct 21 16:12:19 -03 2021. Used 3.1G	.
-Done region 21 at Thu Oct 21 16:12:19 -03 2021. Used 3.1G	.
-Merging region 22 at Thu Oct 21 15:58:22 -03 2021
-Indexing region 22 at Thu Oct 21 16:00:06 -03 2021. Used 9.0G	.
+Mpileup region 21 at Fri Oct 22 13:58:00 -03 2021. Used 2.7G	.
+Removing CRAMs for region 21. Used 4.4G	.
+Call region 21 at Fri Oct 22 14:09:00 -03 2021. Used 3.6G	.
+Removing uncalled BCFs. Used 4.3G	.
+View region 21 at Fri Oct 22 14:11:55 -03 2021. Used 2.6G	.
+Removing VCFs with indels for region 21 at Fri Oct 22 14:12:37 -03 2021. Used 1.9G	.
+Filtering VCF for region 21 at Fri Oct 22 14:12:37 -03 2021. Used 1.9G	.
+Removing unfiltered VCFs for region 21 at Fri Oct 22 14:12:37 -03 2021. Used 1.9G	.
+Done region 21 at Fri Oct 22 14:12:37 -03 2021. Used 1.9G	.
+Merging region 22 at Fri Oct 22 14:12:37 -03 2021
+Indexing region 22 at Fri Oct 22 14:14:16 -03 2021. Used 2.6G	.
 Removing unmerged CRAMs for region 22
-Mpileup region 22 at Thu Oct 21 16:00:06 -03 2021. Used 8.2G	.
-Removing CRAMs for region 22. Used 6.0G	.
-Call region 22 at Thu Oct 21 16:11:21 -03 2021. Used 5.3G	.
+Mpileup region 22 at Fri Oct 22 14:14:16 -03 2021. Used 1.9G	.
+Removing CRAMs for region 22. Used 3.6G	.
+Call region 22 at Fri Oct 22 14:25:16 -03 2021. Used 2.9G	.
 Removing uncalled BCFs. Used 3.6G	.
-View region 22 at Thu Oct 21 16:14:19 -03 2021. Used 1.9G	.
-Removing VCFs with indels for region 22 at Thu Oct 21 16:15:00 -03 2021. Used 1.1G	.
-Filtering VCF for region 22 at Thu Oct 21 16:15:00 -03 2021. Used 1.1G	.
-Removing unfiltered VCFs for region 22 at Thu Oct 21 16:15:01 -03 2021. Used 1.1G	.
-Done region 22 at Thu Oct 21 16:15:01 -03 2021. Used 1.1G	.
-Ended stage 2 at Thu Oct 21 16:15:01 -03 2021. Used 1.1G	.
-Starting stage 3 at Thu Oct 21 16:15:01 -03 2021.
-Cat regions at Thu Oct 21 16:15:01 -03 2021. Used 1.1G	.
-Rm uncat regions at Thu Oct 21 16:15:05 -03 2021. Used 2.2G	.
-Zip final VCF at Thu Oct 21 16:15:06 -03 2021. Used 1.1G	.
-Rm unzipped vcf at Thu Oct 21 16:15:55 -03 2021. Used 1.4G	.
-Index final VCF at Thu Oct 21 16:15:56 -03 2021. Used 321M	.
-Annotate final VCF at Thu Oct 21 16:16:02 -03 2021. Used 322M	.
-Remove un-annotated VCF at Thu Oct 21 16:35:24 -03 2021. Used 1.4G	.
-Convert final VCF at Thu Oct 21 16:35:24 -03 2021. Used 1.1G	.
-Ended stage 3 at Thu Oct 21 16:35:40 -03 2021. Used 2.2G	.
-total_time=22330246
-Ending at Thu Oct 21 16:35:40 -03 2021... Space used by our pipeline: 2.2G	.
+View region 22 at Fri Oct 22 14:28:13 -03 2021. Used 1.9G	.
+Removing VCFs with indels for region 22 at Fri Oct 22 14:28:54 -03 2021. Used 1.1G	.
+Filtering VCF for region 22 at Fri Oct 22 14:28:54 -03 2021. Used 1.1G	.
+Removing unfiltered VCFs for region 22 at Fri Oct 22 14:28:55 -03 2021. Used 1.1G	.
+Done region 22 at Fri Oct 22 14:28:55 -03 2021. Used 1.1G	.
+Ended stage 2 at Fri Oct 22 14:28:55 -03 2021. Used 1.1G	.
+Starting stage 3 at Fri Oct 22 14:28:55 -03 2021.
+Cat regions at Fri Oct 22 14:28:55 -03 2021. Used 1.1G	.
+Rm uncat regions at Fri Oct 22 14:28:59 -03 2021. Used 2.2G	.
+Zip final VCF at Fri Oct 22 14:28:59 -03 2021. Used 1.1G	.
+Rm unzipped vcf at Fri Oct 22 14:29:49 -03 2021. Used 1.4G	.
+Index final VCF at Fri Oct 22 14:29:49 -03 2021. Used 321M	.
+Annotate final VCF at Fri Oct 22 14:29:56 -03 2021. Used 322M	.
+Remove un-annotated VCF at Fri Oct 22 14:49:12 -03 2021. Used 1.4G	.
+Convert final VCF at Fri Oct 22 14:49:12 -03 2021. Used 1.1G	.
+Ended stage 3 at Fri Oct 22 14:49:28 -03 2021. Used 2.2G	.
+total_time=73568286
+Ending at Fri Oct 22 14:49:28 -03 2021... Space used by our pipeline: 2.2G	.
