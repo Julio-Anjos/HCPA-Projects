@@ -7,7 +7,7 @@
 \usepackage{amsmath}
 % \usepackage{palatino}
 % \usepackage{mathptmx}       % p/ usar fonte Adobe Times nas fórmulas
-\usepackage[alf,abnt-emphasize=bf]{abntex2cite}	% pacote para usar citações abnt
+\usepackage[alf,abnt-emphasize=bf]{abntex2cite}	% pacote para usar citações ABNT
 
 %
 % Informações gerais
@@ -17,38 +17,24 @@ Clínicas de Porto Alegre}
 
 \author{Farah}{Alef}
 
-% orientador e co-orientador são opcionais (não diga isso pra eles :))
+% orientador e coorientador são opcionais (não diga isso pra eles :))
 \advisor[Prof.~Dr.]{Geyer}{Claudio Fernando Resin}
 \coadvisor[Prof.~Dr.]{Anjos}{Julio Cesar Santos}
 
-% a data deve ser a da defesa; se nao especificada, são gerados
-% mes e ano correntes
 \date{novembro}{2021}
 
-% o local de realização do trabalho pode ser especificado (ex. para TCs)
-% com o comando \location:
 \location{Porto Alegre}{RS}
 
-% itens individuais da nominata podem ser redefinidos com os comandos
-%
 % palavras-chave
 % iniciar todas com letras minúsculas, exceto no caso de abreviaturas
-%
 \keyword{bioinformática}
 \keyword{paralelismo}
 \keyword{codeml}
 \keyword{PAML}
 \keyword{SAMtools}
-%\keyword{}
-
-%\settowidth{\seclen}{1.10~}
 
 \begin{document}
 
-% folha de rosto
-% às vezes é necessário redefinir algum comando logo antes de produzir
-% a folha de rosto:
-% \renewcommand{\coordname}{Coordenadora do Curso}
 \maketitle
 
 % dedicatoria
@@ -191,7 +177,7 @@ desenvolvimento de novas ferramentas que os eliminem, potencialmente através da
 execução paralela dos algoritmos empregados.
 
 %
-% Contribuções
+% Contribuições
 %
 \section{Contribuições}
 
@@ -232,7 +218,7 @@ utilizados pelos pesquisadores do HCPA.
 \section{Estrutura do texto}
 
 O resto do texto está organizado da seguinte maneira: no capítulo
-\ref{chap:background} é apresentado um background de bioinformática relevante à
+\ref{chap:bg} é apresentado um \textit{background} de bioinformática relevante à
 compreensão desse trabalho, detalhando as áreas de estudo do grupo de pesquisa
 em genética, os softwares empregados no HCPA, e os formatos de arquivo
 envolvidos. No capítulo \ref{chap:anteriores} é apresentado o estado da arte
@@ -248,8 +234,8 @@ seguida das referências.
 %
 %
 
-\chapter{Background}
-\label{chap:background}
+\chapter{\textit{Background}}
+\label{chap:bg}
 
 Neste capítulo são introduzidos conceitos de bioinformática necessários à
 compreensão dos softwares que foram objeto de estudo desse trabalho.
@@ -467,16 +453,16 @@ do codeml serem independentes, o que torna a aplicação embaraçosamente
 paralela para múltiplas entradas. Nesse trabalho os autores visam atender às
 necessidades do grupo de pesquisa que mantém o banco de dados Selectome, em
 que múltiplas instâncias do codeml precisam ser executadas, uma para cada
-arquivo de entrada mantido pelo banco de dados. Para isso, os autores obtam
+arquivo de entrada mantido pelo banco de dados. Para isso, os autores optam
 por um paralelismo de \textit{jobs}, desenvolvendo uma ferramenta voltada
-para execução em cluster, mais especificamente visando ambientes com o
-\textit{middleware} Advanced Resource Connector (ARC), utilizado no grid aos
+para execução em \textit{cluster}, mais especificamente visando ambientes com o
+\textit{middleware} Advanced Resource Connector (ARC), utilizado no \textit{grid} aos
 quais os autores possuíam acesso. A ferramenta, chamada gcodeml, é desenvolvida
 na linguagem de programação Python, utilizando a biblioteca GC3Pie, que
 providencia \textit{bindings} para controle e execução de \textit{jobs} ARC. O
 caso de uso dos pesquisadores do HCPA envolve um arquivo de entrada único, e
 o ambiente de execução aos quais os pesquisadores possuem acesso não é de um
-cluster ARC, portanto essa solução não foi estudada mais a fundo nesse trabalho.
+\textit{cluster} ARC, portanto essa solução não foi estudada mais a fundo nesse trabalho.
 
 Em \cite{maldonado2016lmap} é implementado uma
 ferramenta, chamada LMAP, para execução paralela de múltiplos \textit{jobs} do
@@ -552,7 +538,7 @@ aplicação, chamada cljam, não compartilha base de código com o pacote SAMtoo
 mas visa implementar o subconjunto de suas funcionalidades relevantes à
 chamada de variantes. Os autores testam o desempenho de sua implementação
 contra o SAMtools em um ambiente multiprocessado, observando que o SAMtools
-possui uma performance melhor mesmo rodando com uma única thread, mas defendem
+possui uma performance melhor mesmo rodando com uma única \textit{thread}, mas defendem
 sua aplicação pela simplicidade do código comparada com o SAMtools e
 possibilidade de paralelização. Como o tempo de execução é maior que a
 implementação original, não foi realizado um estudo mais aprofundado dessa
@@ -608,7 +594,7 @@ cromossomo, caso de uso dos pesquisadores do HCPA. Para uma amostra (NA12878)
 com 15 GB, consideravelmente menor que as entradas utilizadas pelos
 pesquisadores do HCPA, o software dos autores utilizou 216 GB de RAM. No caso de
 ambientes com restrição de memória, os autores recomendam o uso de outras
-ferramentas para compor o pipeline, incluindo a ferramenta sambamda, descrita
+ferramentas para compor o pipeline, incluindo a ferramenta sambamba, descrita
 acima, e o próprio SAMtools. Outro fator limitante é que a ferramenta trabalha
 apenas com arquivos nos formatos BAM e SAM, sem suporte a CRAM, da mesma forma
 que o sambamba. Além disso, não há suporte para alguns dos comandos do
@@ -636,7 +622,7 @@ arte \cite{yao2020evaluation} \cite{poplin2018universal}. O modelo implementado
 por ela para chamada de variantes possui resultados diferentes, e porventura
 complementares, àqueles do
 SAMtools \cite{gezsi2015variantmetacaller} \cite{hwang2015systematic}. Em suma, o
-GATK é um framework destinado tanto à manipulação de sequências genéticas
+GATK é um \textit{framework} destinado tanto à manipulação de sequências genéticas
 alinhadas e à chamada de variantes em si como para o desenvolvimento de novas
 ferramentas para execução dessas e outras análises. GATK implementa para isso
 um modelo de MapReduce para paralelismo das tarefas, fornecendo inclusive a
@@ -666,11 +652,11 @@ tais deficiências. \cite{ahmad2021vc}
 Outra implementação de interesse, descrita em \cite{massie2013adam}, substitui
 os formatos de arquivo SAM, BAM, CRAM, VCF e BCF por uma implementação própria,
 visando superar algumas de suas deficiências, além de providenciar APIs para
-sua manipulação. A implementação é voltada para frameworks do projeto Apache
+sua manipulação. A implementação é voltada para \textit{frameworks} do projeto Apache
 como Hadoop e Spark, sendo construída em cima de Apache Parquet e Apache Avro.
 Outros trabalhos como \cite{boufea2017managing} apresentam abordagens
 semelhantes, enquanto que em \cite{decap2015halvade} os autores desenvolvem um
-framework para pipelines de análise genética incluindo chamada de variantes
+\textit{framework} para pipelines de análise genética incluindo chamada de variantes
 baseado no GATK utilizando o modelo de programação MapReduce e o software
 Apache Hadoop.
 
@@ -713,11 +699,11 @@ avaliações mais detalhadas. Neste trabalho, cada software sob estudo é
 apresentado, e o modo de uso particular aos pesquisadores do HCPA é esmiuçado
 antes de qualquer análise posterior.
 
-\subsection{Benchmark}
+\subsection{\textit{Benchmark}
 
 % O quê
 Uma vez compreendido o uso do software e de alternativas mapeadas da literatura
-(quando existentes), a primeira avaliação consiste de um benchmark do tempo de
+(quando existentes), a primeira avaliação consiste de um \textit{benchmark} do tempo de
 execução, comparando as ferramentas atualmente empregadas com as selecionadas
 para análise.
 % Por quê
@@ -760,7 +746,7 @@ público \cite{dockerme}, enquanto que a máquina utilizada -- doravante ``Thor1
 \end{table}
 
 Uma vez construído um ambiente adequado à avaliação de desempenho das
-ferramentas em estudo, propõe-se um benchmark de tempo total de execução de
+ferramentas em estudo, propõe-se um \textit{benchmark} de tempo total de execução de
 cada ferramenta e, quando aplicável, cada etapa das análises, para entradas de
 tamanho compatível com o caso de uso dos pesquisadores. Feito isso, propõe-se o
 traço de um perfil de execução das ferramentas que apresentam gargalos de
@@ -781,15 +767,15 @@ traçado a nível de etapas do pipeline (doravante ``alto nível''), isto é,
 medindo o custo das chamadas a cada comando de cada ferramenta.
 
 Para o traço do perfil de execução de baixo nível, no que tange processamento
-foram selecionadas as ferramentas callgrind (um plugin padrão da ferramenta
+foram selecionadas as ferramentas callgrind (um \textit{plugin} padrão da ferramenta
 valgrind) e kcachegrind, respectivamente para gerar o perfil e analisar os
 resultados, além da ferramenta gprof, outro software para realizar perfis de
 execução. No que tange uso de memória, foi selecionado a ferramenta massif,
-outro plugin padrão do valgrind. O funcionamento dessas ferramentas é
+outro \textit{plugin} padrão do valgrind. O funcionamento dessas ferramentas é
 brevemente explicado abaixo, a fim de elucidar a motivação da sua escolha.
 
 Em suma, o valgrind funciona gerando uma representação intermediária do código
-original através de um processo de tradução dinâmica (JIT), enquanto plugins
+original através de um processo de tradução dinâmica (JIT), enquanto \textit{plugins}
 como o callgrind instrumentam esse código intermediário coletando dados de
 interesse. O valgrind então traduz novamente para código de máquina a
 representação intermediária agora instrumentada, que executa gerando um perfil
@@ -851,7 +837,7 @@ testes de corretude da mesma. Para isso propõe-se testes unitários comparando
 os resultados da implementação própria com aquela de referência (original).
 Além disso, faz-se necessário novos testes de desempenho, a serem executados
 conforme já descrito acima. No caso de implementações que façam uso de técnicas
-de paralelismo, propõe-se também a realização de testes de speedup (desempenho
+de paralelismo, propõe-se também a realização de testes de \textit{speedup} (desempenho
 relativo à implementação sequencial).
 
 Quanto à adoção de técnicas de processamento paralelo, foram favorecidas
@@ -890,9 +876,9 @@ configurados pelos pesquisadores são o M1a, M2a, M7, M8, e M8a. A descrição d
 especificidades de cada modelo foge ao escopo desse trabalho, podendo ser
 encontrada em \cite{yang2000codon} e \cite{zhang2005evaluation}.
 
-\subsection{Benchmark}
+\subsection{\textit{Benchmark}}
 
-Foi realizado um benchmark da aplicação original (codeml do pacote PAML) contra
+Foi realizado um \textit{benchmark} da aplicação original (codeml do pacote PAML) contra
 as soluções encontradas na literatura, sempre utilizando os dados de entrada
 fornecidos por pesquisadores do grupo. Na comparação com o slimcodeml,
 obteve-se uma redução no tempo total de execução de 16h 38m para 5h 24m, ou
@@ -983,13 +969,13 @@ para paralelização de laços, e pela disponibilidade nos ambientes utilizados.
 O cálculo do gradiente é aproximado utilizando diferenças finitas para obter as
 derivadas parciais de primeiro grau. O codeml permite utilizar diferenças
 finitas progressivas, centradas, ou regressivas. A paralelização se dá sob
-todas variáveis da função cujo gradiente está sendo obtido. O número de threads
+todas variáveis da função cujo gradiente está sendo obtido. O número de \textit{threads}
 foi definido pelo mínimo entre o número de núcleos de processamento disponíveis
 e o número de variáveis na função (iterações no laço). Foi utilizado um
 escalonador estático com tamanho do bloco igual ao número de variáveis sob o
-número de threads, uma vez que a carga de trabalho é homogênea (as variáveis
+número de \textit{threads}, uma vez que a carga de trabalho é homogênea (as variáveis
 são todas da mesma função). O algoritmo encontra-se reproduzido abaixo, onde
-$p$ é o número de processadores disponíveis, $t$ o número de threads a ser
+$p$ é o número de processadores disponíveis, $t$ o número de \textit{threads} a ser
 usado, $c$ o tamanho do bloco, e $n$ o número de variáveis.
 
 \begin{algorithmic}
@@ -1154,9 +1140,9 @@ são necessários somente à etapa posterior, arquivos esses na casa de gigabyte
 cada. Isso gerava a necessidade de uma limpeza manual dos arquivos depois de
 cada etapa.
 
-\subsection{Benchmark}
+\subsection{\textit{Benchmark}}
 
-Foi realizado um benchmark do tempo de execução de alguns dos comandos
+Foi realizado um \textit{benchmark} do tempo de execução de alguns dos comandos
 supracitados contra aqueles disponibilizados pela ferramenta sambamba, descrita
 em \ref{sec:SAMtools}, a fim avaliar seu uso como alternativa. Os resultados
 encontram-se descritos abaixo.
@@ -1263,7 +1249,7 @@ Foi observado ainda que as duas primeiras etapas do fluxo original eram
 embaraçosamente paralelas, consistindo de passos independentes para cada
 arquivo de entrada.  Como os pesquisadores do HCPA possuem acesso a máquinas
 multiprocessadas, foi realizada uma paralelização de ambas etapas utilizado GNU
-Paralle \cite{tange_ole_2021_5233953}l. A escolha dessa ferramenta se deu pela
+Parallel \cite{tange_ole_2021_5233953}l. A escolha dessa ferramenta se deu pela
 facilidade de uso, disponibilidade nos ambientes usados pelos pesquisadores, e
 suporte a ajuste automático do número de \textit{jobs} paralelos ao número de
 núcleos de processamento disponíveis. Foi desenvolvida uma ferramenta para
@@ -1301,7 +1287,7 @@ A validação da corretude das ferramentas se deu através da comparação das
 saídas do pipeline original e otimizado, validando tais resultados junto aos
 pesquisadores do HCPA.
 
-Validada a corretude da implementação, foram realizados novos benchmarks de seu
+Validada a corretude da implementação, foram realizados novos \textit{benchmarks} de seu
 tempo de execução. As otimizações e a paralelização reduziram drasticamente o
 tempo de análise. Na tabela \ref{tbl:SAMtools} encontram-se reproduzidos os
 tempos de execução utilizando o pipeline original e o otimizado. Os testes
@@ -1329,13 +1315,13 @@ HGDP00777, HGDP00525, e HGDP00719.
 
 Além disso, foram realizados testes de desempenho para entradas com 2 arquivos
 (58 GB) e 6 arquivos (161 GB) utilizando um número diferente de núcleos de
-processamento, a fim de estimar o speedup bem como a quantidade de
+processamento, a fim de estimar o \textit{speedup} bem como a quantidade de
 tempo economizado pela paralelização, o resto sendo atribuído às otimizações no
 fluxo de análise. Os resultados encontram-se reproduzidos nas tabelas
 \ref{tbl:speedup2} e \ref{tbl:speedup6}.
 
 \begin{table}[h]
-    \caption{Speedup da ferramenta com duas entradas}
+    \caption{\textit{Speedup} da ferramenta com duas entradas}
     \centering
         \begin{tabular}{c|c|c}
           \hline
@@ -1353,7 +1339,7 @@ fluxo de análise. Os resultados encontram-se reproduzidos nas tabelas
 \end{table}
 
 \begin{table}[h]
-    \caption{Speedup da ferramenta com seis entradas}
+    \caption{\textit{Speedup} da ferramenta com seis entradas}
     \centering
         \begin{tabular}{c|c|c}
           \hline
@@ -1392,10 +1378,10 @@ fluxo de análise. Os resultados encontram-se reproduzidos nas tabelas
     \label{tbl:stages}
 \end{table}
 
-O speedup para duas entradas é menor do que o ideal, tão menor quanto maior o
+O \textit{speedup} para duas entradas é menor do que o ideal, tão menor quanto maior o
 número de núcleos utilizados. Isso é esperado, uma vez que não estamos
 utilizando todos núcleos disponíveis na etapa 1 quando há somente duas
-entradas. Para seis entradas o mesmo é observado, mas o speedup fica mais
+entradas. Para seis entradas o mesmo é observado, mas o \textit{speedup} fica mais
 próximo do ideal. Isso é esperado, visto que utilizamos todos núcleos
 disponíveis em todas etapas, exceto a última.
 
@@ -1406,7 +1392,7 @@ CPUs disponíveis. Conforme esperado, a etapa 1, em que é lançado um
 \textit{job} para cada entrada, limitado pelo número de CPUs disponíveis, só
 tem ganho de desempenho até o número de \textit{jobs} ser igual ao número de
 entradas. Por fim, conforme esperado, a etapa 3 tem tempo constante, uma vez
-que executa em uma única thread -- mas possui ganho de desempenho em relação ao
+que executa em uma única \textit{thread} -- mas possui ganho de desempenho em relação ao
 pipeline original em que havia uma etapa de indexação desnecessária.
 
 Observa-se que uma alternativa à paralelizar somente os \textit{jobs} sob cada
@@ -1417,7 +1403,7 @@ gerada. Esse IO poderia ser feito ainda em memória volátil, reduzindo as
 escritas e leituras em disco. Um mecanismo para realizar essa tarefa de
 comunicação entre processos (IPC) seria pipes POSIX, que fornecem uma interface
 simples para direcionar a saída de um programa à entrada do próximo, ambos
-rodando em paralelo, usando um buffer em memória volátil para
+rodando em paralelo, usando um \textit{buffer} em memória volátil para
 isso \cite{immich2003performance}. Num ambiente POSIX, pipes são também a
 escolha com melhor desempenho para IPC \cite{immich2003performance}.
 
@@ -1541,13 +1527,13 @@ Inicialmente realizou-se um estudo do utilitário realSFS, que apresentava o
 principal problema de desempenho. Através de um estudo do código fonte foi
 observado que o utilitário implementa dois otimizadores, um legado utilizando
 BFGS (o mesmo algoritmo usado no pacote PAML) e o padrão utilizando
-``Electromagnetism-like Mechanism'', um método estocástico de otimização
+``\textit{Electromagnetism-like Mechanism}'', um método estocástico de otimização
 não linear que utiliza mecanismos de atração e repulsão para mover
 ''partículas`` na direção ótima \cite{5636954}. Foi observado ainda que,
 independente do otimizador utilizado, a alocação de memória é a mesma. Fatores
-que influenciam no uso de memória incluem o número de threads e o número de
+que influenciam no uso de memória incluem o número de \textit{threads} e o número de
 sítios considerados. Em ambos os casos há um \textit{trade-off} - ao reduzir o
-número de threads o tempo de execução aumenta, e ao reduzir o número de sítios
+número de \textit{threads} o tempo de execução aumenta, e ao reduzir o número de sítios
 a confiabilidade dos resultados diminui \cite{popgen2016angsd}. A redução de
 ambos é indesejável, visto que o tempo de execução já é muito elevado e a
 confiabilidade dos resultados é fundamental.
@@ -1621,7 +1607,7 @@ referência, e a ausência de necessidade de conversão de CRAM para BAM torna-a
 superior em alguns aspectos às ferramentas sambamba e elPrep, sendo uma
 alternativa de paralelização de chamada de variantes. Por fim, a
 disponibilização de uma interface gráfica facilita o uso por profissionais não
-familiarizados com interfaces de linha de comando, e o uso de containers Docker
+familiarizados com interfaces de linha de comando, e o uso de \textit{containers} Docker
 facilita a reprodução dos resultados obtidos nesse trabalho.
 
 \section{Discussão e trabalho futuro}
@@ -1644,11 +1630,11 @@ htslib para isso, levando em consideração que essas ferramentas dividem os
 arquivos de entrada para processamento -- não bastaria simplesmente utilizar a
 API para leitura do arquivo CRAM completo para memória.
 
-Por fim, outro trabalho futuro consiste no estudo de uma abordagem para cluster
+Por fim, outro trabalho futuro consiste no estudo de uma abordagem para \textit{cluster}
 e comparação com as ferramentas presentes na literatura que adotam tal
 abordagem. Um desafio em tal abordagem é a transferência dos dados entre os
 nodos de execução, uma vez que cada etapa intermediária produz saídas de vários
-gigabytes para cada entrada. Uma possibilidade é o uso de frameworks Apache
+gigabytes para cada entrada. Uma possibilidade é o uso de \textit{frameworks} Apache
 Flink, especificamente projetado para processamento paralelo e com tolerância a
 falhas de pipelines (isto é, fluxos de execução em que a entrada de uma etapa é
 a saída da anterior) \cite{carbone2015apache}.
@@ -1662,4 +1648,4 @@ a saída da anterior) \cite{carbone2015apache}.
 \bibliographystyle{abntex2-alf}
 \bibliography{biblio}
 
-\end{document}
+end{document}
