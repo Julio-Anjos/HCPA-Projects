@@ -244,7 +244,11 @@ objeto de estudo dos usuários do pacote PAML; na seção \ref{sec:call} é expo
 o conceito chamada de variantes, para o qual os pacotes ANGSD e SAMtools
 são empregados, e na seção \ref{sec:formats} são descritos os formatos de
 arquivos utilizados para cada um desses processos, relevantes ao entendimento
-das soluções desenvolvidas.
+das soluções desenvolvidas. Por fim, na seção \ref{sec:par} são brevemente
+apresentados alguns conceitos de programação paralela relevantes a esse
+trabalho.
+%, e na seção \ref{sec:design} são abordados conceitos de modelagem de
+%experimentos.
 
 \section{Análise filogenética}
 \label{sec:filo}
@@ -418,6 +422,65 @@ por vírgula e utiliza parênteses para distinguir nodos internos de folhas.
 Originalmente introduzido na aplicação PHYLIP \cite{felsenstein1993phylip}, é
 amplamente utilizado para representação de árvores filogenéticas \cite{fredslund2006phy}.
 
+\section{Programação paralela}
+\label{sec:par}
+
+A forma mais comum de classificar arquiteturas de computadores no que tange
+paralelismo é a taxonomia de Flynn, introduzida em 1966. Ela descreve quatro
+categorias, reproduzidas na tabela \ref{tbl:flynn}. Em suma, em uma arquitetura
+MIMD com memória compartilhada há múltiplos núcleos de processamento
+independentes com acesso a uma memória global. Em particular, quando esse
+acesso é uniforme entre todos processadores, diz-se da arquitetura
+\textit{symmetric multiprocessor} (SMP) ou \textit{uniform memory access}
+(UMA). Esse é o modelo mais comum em computadores pessoais e servidores de
+propósito geral \cite{el2005advanced}.
+
+Arquiteturas MIMD também podem ser organizadas com memória distribuída, em que
+os nodos de processamento são interconectados através de uma rede e não há
+memória global compartilhada, os dados sendo trafegados pela rede através de
+mensagens. Por exemplo, um \textit{cluster} consiste de um conjunto de máquinas
+homogêneas, mas independentes, interconectadas através de uma rede local,
+enquanto em um \textit{grid} as máquinas podem ser heterogêneas e
+geograficamente apartadas, conectadas através de uma rede de longa distância
+\cite{el2005advanced}.
+
+\begin{table}[h]
+    \caption{Taxonomia de Flynn}
+    \centering
+        \begin{tabular}{c|c}
+          \hline
+          \textit{Categoria}  &   \textit{Descrição} \\
+          \hline
+          \hline
+          SISD & Fluxo único de instruções sobre um único dado
+          SIMD & Fluxo único de instruções sobre múltiplos dados
+          MISD & Fluxo múltiplo de instruções sobre um único dado
+          MIMD & Fluxo múltiplo de instruções sobre múltiplos dados
+          \hline
+        \end{tabular}
+      \legend{Fonte: \cite{el2005advanced}}
+    \label{tbl:flynn}
+\end{table}
+
+Quando uma tarefa pode ser dividida em subtarefas de mesmo tamanho para
+processamento paralelo, uma medida do desempenho obtido com o paralelismo
+empregado é o \textit{speedup}, calculado pelo tempo de execução sequencial da
+tarefa dividido pelo tempo da execução paralela. O \textit{speedup} teórico é
+linear -- igual ao número de processadores paralelos utilizados. Na prática, as
+aplicações paralelas frequentemente não atingem o valor ideal, por exemplo
+devido a \textit{overhead} de comunicação ou sincronização entre as tarefas
+paralelas, ou pela presença de operações cujo custo não é distribuído entre os
+núcleos de processamento, por exemplo IO em memória não volátil. É possível
+ainda que as aplicações possuam um \textit{speedup} maior que o linear (chamado
+\textit{super speedup}), por exemplo no caso de algoritmos cujo processamento
+global é interrompido se um dos nodos de processamento paralelo encontra a
+solução, ou se o maior uso de memória \textit{cache} (distribuída entre os
+núcleos de processamento) beneficie suficientemente a
+aplicação \cite{el2005advanced}.
+
+%\section{Modelagem de experimentos}
+%\label{sec:design}
+
 %
 %
 % Trabalhos relacionados / Estado da arte
@@ -455,14 +518,15 @@ necessidades do grupo de pesquisa que mantém o banco de dados Selectome, em
 que múltiplas instâncias do codeml precisam ser executadas, uma para cada
 arquivo de entrada mantido pelo banco de dados. Para isso, os autores optam
 por um paralelismo de \textit{jobs}, desenvolvendo uma ferramenta voltada
-para execução em \textit{cluster}, mais especificamente visando ambientes com o
-\textit{middleware} Advanced Resource Connector (ARC), utilizado no \textit{grid} aos
-quais os autores possuíam acesso. A ferramenta, chamada gcodeml, é desenvolvida
-na linguagem de programação Python, utilizando a biblioteca GC3Pie, que
-providencia \textit{bindings} para controle e execução de \textit{jobs} ARC. O
-caso de uso dos pesquisadores do HCPA envolve um arquivo de entrada único, e
-o ambiente de execução aos quais os pesquisadores possuem acesso não é de um
-\textit{cluster} ARC, portanto essa solução não foi estudada mais a fundo nesse trabalho.
+para execução em \textit{cluster} ou \textit{grid}, mais especificamente
+visando ambientes com o \textit{middleware} Advanced Resource Connector (ARC),
+utilizado no \textit{grid} aos quais os autores possuíam acesso. A ferramenta,
+chamada gcodeml, é desenvolvida na linguagem de programação Python, utilizando
+a biblioteca GC3Pie, que providencia \textit{bindings} para controle e execução
+de \textit{jobs} ARC. O caso de uso dos pesquisadores do HCPA envolve um
+arquivo de entrada único, e o ambiente de execução aos quais os pesquisadores
+possuem acesso não é de um \textit{cluster} ou \textit{grid} ARC, portanto essa
+solução não foi estudada mais a fundo nesse trabalho.
 
 Em \cite{maldonado2016lmap} é implementado uma
 ferramenta, chamada LMAP, para execução paralela de múltiplos \textit{jobs} do
@@ -673,11 +737,11 @@ e trabalhos relacionados a ele.
 
 %
 %
-% Modelo / Metodologia / Proposta de trabalho
+% Modelo / Metodologia 
 %
 %
 
-\chapter{Proposta}
+\chapter{Metodologia}
 \label{chap:mod}
 
 Com base no estudo da literatura descrito no capítulo anterior foi identificado
@@ -846,6 +910,13 @@ para as linguagens de programação C e C++ ou para ambientes POSIX no caso de
 paralelismo de \textit{jobs}. Essas escolhas se dão, respectivamente, pois os
 ambientes de uso pelos pesquisadores são esses e as aplicações em estudo são
 escritas nessas linguagens e para esse ambiente.
+
+%
+%
+% Avaliação (implementação) e Resultados
+%
+%
+\chapter{Implementação}
 
 %
 %
