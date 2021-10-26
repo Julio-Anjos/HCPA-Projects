@@ -151,19 +151,19 @@ ou impede suas análises.
 
 Nomeadamente, para a análise filogenética, que visa elucidar eventos evolutivos
 na linhagem dos seres vivos, o grupo emprega o software codeml, do pacote
-PAML.\cite{yang2007paml} Apesar de amplamente utilizado na literatura e
-considerado referência para análise filogenética,\cite{maldonado2016lmap} o
+PAML \cite{yang2007paml}. Apesar de amplamente utilizado na literatura e
+considerado referência para análise filogenética \cite{maldonado2016lmap}, o
 codeml possui implementação ingênua de métodos numéricos computacionalmente
-custosos.\cite{yang2020paml} Para uma única entrada dos pesquisadores, são
+custosos \cite{yang2020paml}. Para uma única entrada dos pesquisadores, são
 necessárias mais de 16 horas de processamento em hardware moderno.
 
 Já para a execução da chamada de variantes, processo que visa identificar
 variações entre sequências genéticas alinhadas, o grupo emprega os pacotes
 SAMtools \cite{li2009sequence} ou ANGSD \cite{korneliussen2014angsd}, aquele
 sendo considerado estado da
-arte.\cite{poplin2018universal}\cite{yao2020evaluation} O pacote SAMtools,
+arte \cite{poplin2018universal} \cite{yao2020evaluation}. O pacote SAMtools,
 amplamente utilizado na literatura para manipulação de arquivos de sequências
-genéticas alinhadas, \cite{danecek2021twelve} apresenta tempo de execução
+genéticas alinhadas \cite{danecek2021twelve}, apresenta tempo de execução
 demasiadamente elevado. Para uma entrada consistindo de apenas oito amostras,
 são necessários mais de quatro dias de processamento em um hardware moderno.
 Enquanto isso, o pacote ANGSD apresenta uso de memória proibitivamente elevado.
@@ -291,7 +291,7 @@ sinônimas ou silenciosas, enquanto as que modificam os aminoácidos gerados sã
 não sinônimas. Acredita-se que as substituições sinônimas sejam mais comuns e
 não sofram tanta pressão seletiva. A taxa de substituições sinônimas e não
 sinônimas $\omega = \frac{dN}{dS}$ é, assim, uma medida de seleção natural,
-conforme a tabela \ref{tbl:ex1}.\cite{yang2002codon}
+conforme a tabela \ref{tbl:ex1} \cite{yang2002codon}.
 
 \begin{table}[h]
     \caption{Taxas de substituição}
@@ -315,19 +315,19 @@ síntese, detectar eventos de seleção positiva nas diferentes linhagens da
 árvore filogenética de uma espécie. Para isso, o PAML utiliza modelos
 estatísticos de máxima verossimilhança para comparar a hipótese de ocorrência
 desses eventos contra a hipótese nula de seleção neutra ou
-negativa.\cite{moretti2012gcodeml}
+negativa \cite{moretti2012gcodeml}.
 
 \section{Chamada de variantes}
 \label{sec:call}
 
 A chamada de variantes consiste em uma série de métodos para identificação de
-variações entre sequências genéticas.\cite{nielsen2011genotype} Um dos
+variações entre sequências genéticas \cite{nielsen2011genotype}. Um dos
 objetivos dessa identificação é a compreensão das causas de variações
 fenotípicas observadas entre diferentes populações de uma espécie, através do
 estudo a nível molecular das variações genéticas entre indivíduos dessas
-populações.\cite{jiang2019population} Em particular, a chamada de variantes de
+populações \cite{jiang2019population}. Em particular, a chamada de variantes de
 nucleotídeo único (\textit{SNV calling}) identifica variações na estrutura
-genética a nível de um único nucleotídeo.\cite{khurana2016role}
+genética a nível de um único nucleotídeo \cite{khurana2016role}.
 
 Essas sequências genéticas sendo comparadas podem apresentar erros de leitura,
 provenientes de um processo complexo com múltiplas etapas propensas a falhas.
@@ -335,20 +335,21 @@ Por exemplo, os próprios instrumentos utilizados possuem propriedades físicas
 que geram leituras imperfeitas. A chamada de variantes emprega diferentes
 métodos para identificar não apenas as diferenças entre as sequências
 analisadas, mas também distinguir as diferenças reais daquelas causadas por
-erros de leitura.\cite{poplin2018universal} Dependendo dos métodos e
+erros de leitura \cite{poplin2018universal}. Dependendo dos métodos e
 ferramentas empregados para chamada de variantes, os resultados obtidos são
 diferentes e muitas vezes complementares entre
-si.\cite{hwang2015systematic}\cite{gezsi2015variantmetacaller}\cite{guo2015seqmule}
+si \cite{hwang2015systematic} \cite{gezsi2015variantmetacaller} \cite{guo2015seqmule}.
 
 Em particular, cada método de chamada de variantes possui resultados mais ou
 menos robustos dependendo do método de leitura das sequências analisadas, visto
 que o pipeline de filtragem empregado na chamada de variantes é muitas vezes
-afinado para tecnologias de leitura específicas.\cite{poplin2018universal} Um
+afinado para tecnologias de leitura específicas \cite{poplin2018universal}. Um
 dos pacotes utilizados para realizar a chamada de variantes é o
-SAMtools,\cite{pirooznia2014validation} sendo considerado robusto e estado da
+SAMtools \cite{pirooznia2014validation}, sendo considerado robusto e estado da
 arte junto ao software
-GATK,\cite{crysnanto2019accurate}\cite{hwang2015systematic}\cite{yao2020evaluation}\cite{poplin2018universal}
-que é descrito em mais detalhes na seção \ref{sec:alt}.
+GATK \cite{crysnanto2019accurate} \cite{hwang2015systematic}
+\cite{yao2020evaluation} \cite{poplin2018universal}, que é descrito em mais
+detalhes na seção \ref{sec:alt}.
 
 Uma vez identificadas as variantes, é necessário ainda uma análise da sua
 responsabilidade nas diferenças fenotípicas observadas entre os indivíduos sob
@@ -358,7 +359,7 @@ genética entre duas populações de uma espécie é o índice de fixação ou
 $F_{ST}$, baseado, em suma, na variança da frequência alélica das duas
 populações -- a frequência alélica sendo a frequência relativa com a qual um
 alelo (variante de um gene) ocorre. Genes com um $F_{ST}$ alto são potenciais
-alvos de seleção natural.\cite{yi2010sequencing}
+alvos de seleção natural \cite{yi2010sequencing}.
 
 Como o $F_{ST}$ é uma métrica de comparação de pares, ele não é capaz de
 identificar a direção das mudanças, nem pode ser utilizado como única métrica
@@ -366,7 +367,7 @@ para identificar eventos de seleção natural. O \textit{Population Branch
 Statistic} ou PBS consiste de um método estatístico que utiliza comparações em
 pares do $F_{ST}$ entre três populações distintas para quantificar as
 diferenças entre suas sequências genéticas. Genes com valor PBS alto indicam
-seleção positiva.\cite{jiang2019population} Uma descrição mais aprofundada do
+seleção positiva \cite{jiang2019population}. Uma descrição mais aprofundada do
 método foge ao escopo desse trabalho, e pode ser encontrada em
 \cite{yi2010sequencing}. O software ANGSD é um dos pacotes que podem ser
 empregados para execução do método PBS.
@@ -393,27 +394,27 @@ Os formatos SAM, BAM, e CRAM, representam sequências genéticas alinhadas a um
 genoma de referência. O formato SAM traz uma representação em texto plano, o
 BAM é seu equivalente binário, e o CRAM é uma versão binária com compressão.
 Tais arquivos podem ser manipulados com a ferramenta samtools, do pacote
-SAMtools.\cite{danecek2021twelve} Amostras de sequências genéticas de
+SAMtools \cite{danecek2021twelve}. Amostras de sequências genéticas de
 indivíduos da espécie humana são fornecidos no formato CRAM pelo projeto 1000
 Genomes, um esforço colaborativo internacional que visa sequenciar o genoma
-humano e disponibilizar a informação publicamente.\cite{via20101000}
+humano e disponibilizar a informação publicamente \cite{via20101000}.
 
 A chamada de variantes realiza comparações entre múltiplos arquivos nos
 formatos supracitados, produzindo arquivos que representam as variantes
 encontradas. Quando as informações de variantes são armazenadas em texto plano
 diz-se do arquivo VCF, seu equivalente binário sendo o formato BCF, ambos
 gerados e manipulados pela ferramenta bcftools, do pacote
-SAMtools.\cite{danecek2021twelve}
+SAMtools \cite{danecek2021twelve}.
 
 Já o formato FASTA é utilizado para representar sequências
 de nucleotídeos ou aminoácidos. Introduzido pela primeira vez em
 \cite{fasta}, é hoje ubíquo no campo da
-bioinformática.\cite{shen2016seqkit} Os genomas de referência aos quais as
+bioinformática \cite{shen2016seqkit}. Os genomas de referência aos quais as
 demais sequências genéticas são alinhadas são fornecidos nesse formato, e o
 pacote SAMtools providencia ferramental para manipulação desses arquivos. O
 genoma de referência é publicado pelo órgão \textit{Genome Reference
 Consortium} (GRC), e a publicação mais atual é nomeada GRCh38, de
-2013.\cite{GUO201783} Convém mencionar que o software PAML também recebe
+2013 \cite{GUO201783}. Convém mencionar que o software PAML também recebe
 arquivos nesse formato como entrada.
 
 O projeto 1000 Genomes fornece ainda sequências alinhadas ao genoma de
@@ -421,7 +422,7 @@ referência anterior, GRCh37, no formato BAM, consideravelmente maior que o
 CRAM. Esses arquivos, diferente dos mais recentes no formato CRAM e alinhados
 ao GRCh38, encontram-se disponíveis em \textit{mirrors} como do
 \textit{National Center for Biotechnology} (NCBI), providenciando maior largura
-de banda.\cite{clarke20121000}
+de banda \cite{clarke20121000}.
 
 Por fim, para o software PAML, além de arquivos FASTA contendo as sequências
 genéticas dos indivíduos da árvore filogenética, a árvore em si consiste de uma
@@ -429,7 +430,7 @@ das entradas do software. A árvore é fornecida no formato NWK ou Newick, um
 formato texto plano com representação flexível, que basicamente separa os nodos
 por vírgula e utiliza parênteses para distinguir nodos internos de folhas.
 Originalmente introduzido na aplicação PHYLIP \cite{felsenstein1993phylip}, é
-amplamente utilizado para representação de árvores filogenéticas.\cite{fredslund2006phy}
+amplamente utilizado para representação de árvores filogenéticas \cite{fredslund2006phy}.
 
 %
 %
@@ -447,17 +448,17 @@ pelos pesquisadores do HCPA -- codeml, do pacote PAML, ANGSD, e SAMtools.
 \section{Análise filogenética}
 
 A implementação de referência ou \textit{gold standard} na área de análise
-filogenética é a aplicação codeml, do pacote PAML.\cite{valle2014optimization}
+filogenética é a aplicação codeml, do pacote PAML \cite{valle2014optimization}.
 Em suma, o codeml detecta eventos de seleção utilizando diferentes modelos de
 variação das taxas de substituição $\omega$ ao longo da sequência genética
 (\textit{site models} ou modelos de sítio) e das linhagens da árvore
 filogenética (\textit{branch models} ou modelos de linhagem). Métodos
 estatísticos de máxima verossimilhança são então empregados para selecionar
-qual dos modelos tem o melhor ajuste (\textit{best fit}).\cite{yang2007paml}
+qual dos modelos tem o melhor ajuste (\textit{best fit}) \cite{yang2007paml}.
 
 Apesar de ser amplamente utilizado na literatura e estatisticamente
-robusto,\cite{maldonado2016lmap} o codeml possui implementação ingênua de
-métodos numéricos computacionalmente custosos.\cite{yang2020paml} Para o caso
+robusto \cite{maldonado2016lmap}, o codeml possui implementação ingênua de
+métodos numéricos computacionalmente custosos \cite{yang2020paml}. Para o caso
 de uso do grupo de pesquisa em genética do HCPA, o tempo de execução é de
 vários dias.
 
@@ -531,11 +532,11 @@ desse trabalho.
 
 \subsection{Pacotes SAMtools e ANGSD}
 
-O pacote SAMtools,\cite{li2009sequence} uma das aplicações utilizada pelos
+O pacote SAMtools \cite{li2009sequence}, uma das aplicações utilizada pelos
 pesquisadores para chamada de variantes, é amplamente utilizada na literatura
-\cite{danecek2021twelve} e considerada estado da arte.\cite{yao2020evaluation}
+\cite{danecek2021twelve} e considerada estado da arte \cite{yao2020evaluation}.
 O samtoools e a ferramenta bcftools que o acompanha são construídos em cima da
-biblioteca htslib,\cite{bonfield2021htslib} dos mesmos autores, que permite a
+biblioteca htslib \cite{bonfield2021htslib}, dos mesmos autores, que permite a
 leitura e manipulação de arquivos de arquivos em formatos diversos
 representando sequências genéticas alinhadas, descritos na seção
 \ref{sec:formats}.
@@ -592,7 +593,7 @@ arquivos BAM, consideravelmente maiores. Além disso, no manual da versão mais
 atual da ferramenta consta que a etapa de chamada de variantes ``não é mais
 recomendada'', enquanto é mencionado nas notas de lançamento de uma das versões
 da aplicação que um comando fundamental à chamada de variantes ``não foi
-fortemente testado''.\cite{manual2015sambamba} De qualquer forma, neste
+fortemente testado'' \cite{manual2015sambamba}. De qualquer forma, neste
 trabalho foram realizados testes de desempenho dessa aplicação, realizando uma
 conversão prévia da entrada de CRAM para BAM e considerando o tempo dessa
 conversão nos resultados.
@@ -620,7 +621,7 @@ pesquisadores, não foram realizados testes mais aprofundados dessa ferramenta
 nesse trabalho.
 
 Uma alternativa ao SAMtools é o pacote ANGSD, um software para análise genética
-de diferentes populações de uma espécie.\cite{korneliussen2014angsd} Até onde
+de diferentes populações de uma espécie \cite{korneliussen2014angsd}. Até onde
 vai o conhecimento dos autores desse trabalho, não existem artigos publicados
 que implementem alternativas ao ANGSD ou que realizem algum trabalho em cima do
 mesmo visando a melhoria de seu desempenho.
@@ -631,10 +632,10 @@ mesmo visando a melhoria de seu desempenho.
 Uma ferramenta para chamada de variantes com amplo uso na literatura
 \cite{de2017gatk} é a GATK, descrita em \cite{mckenna2010genome}, e considerada
 junto com o SAMtools como estado da
-arte.\cite{yao2020evaluation}\cite{poplin2018universal} O modelo implementado
+arte \cite{yao2020evaluation} \cite{poplin2018universal}. O modelo implementado
 por ela para chamada de variantes possui resultados diferentes, e porventura
 complementares, àqueles do
-SAMtools.\cite{gezsi2015variantmetacaller}\cite{hwang2015systematic} Em suma, o
+SAMtools \cite{gezsi2015variantmetacaller} \cite{hwang2015systematic}. Em suma, o
 GATK é um framework destinado tanto à manipulação de sequências genéticas
 alinhadas e à chamada de variantes em si como para o desenvolvimento de novas
 ferramentas para execução dessas e outras análises. GATK implementa para isso
@@ -733,9 +734,9 @@ com hardware conhecido e compatível com aquele disponível aos pesquisadores fo
 reservada para uso. Segundo, para garantir a reprodutibilidade dos resultados,
 optou-se por utilizar o software Docker, de virtualização a nível de sistema
 operacional, que fornece uma série de vantagens para pesquisa
-reprodutível.\cite{boettiger2015introduction} A imagem utilizada para todos
+reprodutível \cite{boettiger2015introduction}. A imagem utilizada para todos
 testes descritos neste trabalho está disponível em repositório
-público,\cite{dockerme} enquanto que a máquina utilizada -- doravante ``Thor1''
+público \cite{dockerme}, enquanto que a máquina utilizada -- doravante ``Thor1''
 -- encontra-se descrita na tabela \ref{tbl:thor1}.
 
 \begin{table}[h]
@@ -800,7 +801,7 @@ acessos a memória e simular acesso à cache. Dessa forma, o callgrind mede,
 através de instrumentação do código efetivamente executado e simulação de uso
 da cache, o uso de recursos (como instruções executadas e acesso à memória) de
 cada rotina, não o tempo efetivamente dispendido
-nelas.\cite{weidendorfer2008sequential}
+nelas \cite{weidendorfer2008sequential}.
 
 O gprof é a ferramenta padrão em ambientes GNU/Linux para realizar perfis de
 execução. Assim como o callgrind, o gprof monta uma pilha de chamadas, mas,
@@ -808,7 +809,7 @@ diferente do callgrind, o gprof reporta tempo efetivamente dispendido em cada
 rotina, e não uso de recursos como instruções executadas. Para isso, o gprof
 utiliza um modelo híbrido de amostragem e instrumentação em tempo de compilação
 (em contraste com a instrumentação dinâmica do valgrind, que não requer
-recompilação).\cite{graham1982gprof} Como o gprof utiliza amostragem, sua
+recompilação) \cite{graham1982gprof}. Como o gprof utiliza amostragem, sua
 intrusão (efeito no tempo de execução da aplicação) é consideravelmente menor
 que a do valgrind. Por outro lado, não é capturada a execução completa da
 aplicação, por definição.
@@ -818,7 +819,7 @@ aplicações analisadas são sequenciais. Como será elucidado no restante desse
 trabalho, as aplicações que foram perfiladas usando essas ferramentas são
 sequenciais, fato esse observado através do estudo da literatura relacionada.
 Para a análise de aplicações paralelas, métodos diferentes podem se fazer
-necessários.\cite{weidendorfer2008sequential} Dito isso, a escolha do callgrind
+necessários \cite{weidendorfer2008sequential}. Dito isso, a escolha do callgrind
 se dá pela riqueza e robustez dos resultados produzidos, enquanto o uso do
 gprof, cuja execução é consideravelmente mais rápida, vem para confirmação dos
 resultados obtidos pelo callgrind através de uma análise com um método de
@@ -974,7 +975,7 @@ questão.
 Foi considerada uma implementação paralela para todos os métodos numéricos
 supracitados. Em um primeiro momento o cálculo do gradiente foi paralelizado
 utilizando OpenMP, um modelo de programação paralela para sistemas com
-múltiplos processadores com memória compartilhada.\cite{chandra2001parallel} A
+múltiplos processadores com memória compartilhada \cite{chandra2001parallel}. A
 escolha de OpenMP se dá por três fatores: ser adequado ao ambiente de trabalho
 dos pesquisadores do HCPA (máquinas multiprocessadas), pela simplicidade de uso
 para paralelização de laços, e pela disponibilidade nos ambientes utilizados.
@@ -1130,7 +1131,7 @@ figura~\ref{fig:stage2_orig}.
 
 A última etapa consiste de concatenar todos arquivos gerados na etapa anterior
 utilizando o comando \textit{vcf-concat}, do pacote
-VCFtools,\cite{10.1093/bioinformatics/btr330} indexar o arquivo concatenado
+VCFtools \cite{10.1093/bioinformatics/btr330}, indexar o arquivo concatenado
 utilizando \textit{bcftools index}, e anotar as variantes com a informação
 presente no VCF de referência do genoma GRCh38, para isso realizando algumas
 conversões de formato via \textit{bcftools view}. Essa etapa recebe sempre 22
@@ -1223,7 +1224,7 @@ que o uso do comando \textit{samtools view -b}, para conversão de CRAM para
 BAM, apesar de frequentemente presente em guias na internet é normalmente
 desnecessário, uma vez que as ferramentas possuem suporte a CRAM. Isso ocorre
 por motivos históricos, pois originalmente o SAMtools não trabalhava com
-arquivos CRAM.\cite{danecek2021twelve}
+arquivos CRAM \cite{danecek2021twelve}.
 
 Foi medido o tempo de execução de cada um dos comandos que compõem o fluxo
 original de análise, expostos na tabela \ref{tbl:sambamba}, para uma entrada
@@ -1237,7 +1238,7 @@ Ainda em \cite{danecek2021twelve} os autores comentam que conversões de BCF
 para VCF são custosas e porventura desnecessárias. Na última etapa do fluxo de
 análise original é realizada tal conversão seguida de um filtro, para uso dos
 arquivos pela ferramenta VCFtools. Apesar do nome, essa ferramenta também
-trabalha com arquivos no formato BCF.\cite{man2015vcftools} Foi experimentada a
+trabalha com arquivos no formato BCF \cite{man2015vcftools}. Foi experimentada a
 remoção da etapa de conversão supracitada, substituindo o filtro com o
 utilitário \textit{vcfutils} do pacote SAMtools pela filtragem com o próprio
 bcftools utilizando o comando \textit{filter}. Com isso foi observado que a
@@ -1262,7 +1263,7 @@ Foi observado ainda que as duas primeiras etapas do fluxo original eram
 embaraçosamente paralelas, consistindo de passos independentes para cada
 arquivo de entrada.  Como os pesquisadores do HCPA possuem acesso a máquinas
 multiprocessadas, foi realizada uma paralelização de ambas etapas utilizado GNU
-Parallel\cite{tange_ole_2021_5233953}. A escolha dessa ferramenta se deu pela
+Paralle \cite{tange_ole_2021_5233953}l. A escolha dessa ferramenta se deu pela
 facilidade de uso, disponibilidade nos ambientes usados pelos pesquisadores, e
 suporte a ajuste automático do número de \textit{jobs} paralelos ao número de
 núcleos de processamento disponíveis. Foi desenvolvida uma ferramenta para
@@ -1417,8 +1418,8 @@ escritas e leituras em disco. Um mecanismo para realizar essa tarefa de
 comunicação entre processos (IPC) seria pipes POSIX, que fornecem uma interface
 simples para direcionar a saída de um programa à entrada do próximo, ambos
 rodando em paralelo, usando um buffer em memória volátil para
-isso.\cite{immich2003performance} Num ambiente POSIX, pipes são também a
-escolha com melhor desempenho para IPC.\cite{immich2003performance}
+isso \cite{immich2003performance}. Num ambiente POSIX, pipes são também a
+escolha com melhor desempenho para IPC \cite{immich2003performance}.
 
 Todavia, o fato do IO residir em memória volátil incorre em uso mais elevado
 desse recurso, justamente o que tentava-se evitar ao buscar uma alternativa a
@@ -1448,19 +1449,19 @@ progresso, e interrompê-las.
 
 Para desenvolvimento da interface optou-se por utilizar a linguagem de
 programação Python, amplamente utilizada para computação
-científica.\cite{oliphant2007python} A escolha da linguagem se deu
+científica \cite{oliphant2007python}. A escolha da linguagem se deu
 principalmente pelo sua disponibilidade em múltiplos sistemas operacionais,
 visto que os usuários (pesquisadores do HCPA) manifestaram interesse em
 utilizar a ferramenta nos sistemas operacionais Windows, Linux, e Mac, e há
 suporte tanto de interpretadores da linguagem como das bibliotecas utilizadas
-para todas essas plataformas.\cite{oliphant2007python} Outro fator que
+para todas essas plataformas \cite{oliphant2007python}. Outro fator que
 influenciou a escolha foi a agilidade no desenvolvimento que a linguagem
-proporciona.\cite{oliphant2007python}
+proporciona \cite{oliphant2007python}.
 
 Foi utilizada a biblioteca \textit{guietta} para criação da interface
-gráfica,\cite{guietta} um \textit{wrapper} em cima da biblioteca
+gráfica \cite{guietta}, um \textit{wrapper} em cima da biblioteca
 \textit{PySide2}, um \textit{binding} para Python da biblioteca multiplataforma
-Qt.\cite{loganathan2013pyside} A escolha da biblioteca vem pela sua facilidade
+Qt \cite{loganathan2013pyside}. A escolha da biblioteca vem pela sua facilidade
 de uso e pela disponibilidade multiplataforma. As figuras
 \ref{fig:samgui_linux}, \ref{fig:samgui_mac}, e \ref{fig:samgui_windows}
 apresentam uma captura de tela da interface gráfica desenvolvida nas
@@ -1500,12 +1501,12 @@ plataformas Linux, Mac, e Windows, respectivamente.
 
 Outra aplicação utilizada pelo grupo de pesquisa em genética é o pacote ANGSD,
 software para análise genética de diferentes populações de uma
-espécie.\cite{korneliussen2014angsd} Os pesquisadores utilizam esse software
+espécie \cite{korneliussen2014angsd}. Os pesquisadores utilizam esse software
 para determinar se a genética de uma população influencia em alguma
 característica específica de seus indivíduos, através de um teste chamado
 \textit{Population Branch Statistic} (PBS), caracterizado pela comparação da
 frequência de ocorrência de determinados alelos entre pares de
-indivíduos de diferentes populações.\cite{yi2010sequencing}
+indivíduos de diferentes populações \cite{yi2010sequencing}.
 
 A análise em questão consiste de duas etapas, a primeira utilizando o binário
 angsd, a aplicação principal do pacote ANGSD, e a segunda etapa utilizando a
@@ -1542,12 +1543,12 @@ observado que o utilitário implementa dois otimizadores, um legado utilizando
 BFGS (o mesmo algoritmo usado no pacote PAML) e o padrão utilizando
 ``Electromagnetism-like Mechanism'', um método estocástico de otimização
 não linear que utiliza mecanismos de atração e repulsão para mover
-''partículas`` na direção ótima.\cite{5636954} Foi observado ainda que,
+''partículas`` na direção ótima \cite{5636954}. Foi observado ainda que,
 independente do otimizador utilizado, a alocação de memória é a mesma. Fatores
 que influenciam no uso de memória incluem o número de threads e o número de
 sítios considerados. Em ambos os casos há um \textit{trade-off} - ao reduzir o
 número de threads o tempo de execução aumenta, e ao reduzir o número de sítios
-a confiabilidade dos resultados diminui.\cite{popgen2016angsd} A redução de
+a confiabilidade dos resultados diminui \cite{popgen2016angsd}. A redução de
 ambos é indesejável, visto que o tempo de execução já é muito elevado e a
 confiabilidade dos resultados é fundamental.
 
@@ -1650,7 +1651,7 @@ nodos de execução, uma vez que cada etapa intermediária produz saídas de vá
 gigabytes para cada entrada. Uma possibilidade é o uso de frameworks Apache
 Flink, especificamente projetado para processamento paralelo e com tolerância a
 falhas de pipelines (isto é, fluxos de execução em que a entrada de uma etapa é
-a saída da anterior).\cite{carbone2015apache}
+a saída da anterior) \cite{carbone2015apache}.
 
 %
 %
