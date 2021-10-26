@@ -179,8 +179,6 @@ execução paralela dos algoritmos empregados.
 %
 % Contribuições
 %
-\section{Contribuições}
-
 Neste trabalho foram mapeados e solucionados os problemas de uso de memória e
 tempo de execução proibitivamente altos enfrentados pelos pesquisadores do HCPA.
 Através de análises de desempenho e desenvolvimento de uma nova ferramenta que
@@ -654,21 +652,21 @@ posterior realização do processo de chamada de variantes. A ferramenta,
 denominada elPrep, visa substituir o SAMtools e alternativas, realizando o
 processamento inteiramente em memória volátil. Os autores observam que isso
 incorre em alto uso de RAM quando a chamada de variantes é realizada por
-cromossomo, caso de uso dos pesquisadores do HCPA. Para uma amostra (NA12878)
-com 15 GB, consideravelmente menor que as entradas utilizadas pelos
-pesquisadores do HCPA, o software dos autores utilizou 216 GB de RAM. No caso de
-ambientes com restrição de memória, os autores recomendam o uso de outras
-ferramentas para compor o pipeline, incluindo a ferramenta sambamba, descrita
-acima, e o próprio SAMtools. Outro fator limitante é que a ferramenta trabalha
-apenas com arquivos nos formatos BAM e SAM, sem suporte a CRAM, da mesma forma
-que o sambamba. Além disso, não há suporte para alguns dos comandos do
-SAMtools utilizados no pipeline de chamada de variantes dos pesquisadores do
-HCPA. Vale mencionar que, apesar de implementação própria, os resultados são
-idênticos àqueles das ferramentas que o elPrep visa substituir, segundo os
-autores. Devido à ausência de suporte a CRAM, uso de RAM proibitivamente
-elevado, e ausência de comandos fundamentais à execução do pipeline usado pelos
-pesquisadores, não foram realizados testes mais aprofundados dessa ferramenta
-nesse trabalho.
+cromossomo, caso de uso dos pesquisadores do HCPA. Para uma amostra do projeto
+1000 Genomes (NA12878) com 15 GB, consideravelmente menor que as entradas
+utilizadas pelos pesquisadores do HCPA, o software dos autores utilizou 216 GB
+de RAM. No caso de ambientes com restrição de memória, os autores recomendam o
+uso de outras ferramentas para compor o pipeline, incluindo a ferramenta
+sambamba, descrita acima, e o próprio SAMtools. Outro fator limitante é que a
+ferramenta trabalha apenas com arquivos nos formatos BAM e SAM, sem suporte a
+CRAM, da mesma forma que o sambamba. Além disso, não há suporte para alguns dos
+comandos do SAMtools utilizados no pipeline de chamada de variantes dos
+pesquisadores do HCPA. Vale mencionar que, apesar de implementação própria, os
+resultados são idênticos àqueles das ferramentas que o elPrep visa substituir,
+segundo os autores. Devido à ausência de suporte a CRAM, uso de RAM
+proibitivamente elevado, e ausência de comandos fundamentais à execução do
+pipeline usado pelos pesquisadores, não foram realizados testes mais
+aprofundados dessa ferramenta nesse trabalho.
 
 Uma alternativa ao SAMtools é o pacote ANGSD, um software para análise genética
 de diferentes populações de uma espécie \cite{korneliussen2014angsd}. Até onde
@@ -676,7 +674,7 @@ vai o conhecimento dos autores desse trabalho, não existem artigos publicados
 que implementem alternativas ao ANGSD ou que realizem algum trabalho em cima do
 mesmo visando a melhoria de seu desempenho.
 
-\subsection{Softwares alternativos}
+\subsection{Considerações finais}
 \label{sec:alt}
 
 Uma ferramenta para chamada de variantes com amplo uso na literatura
@@ -1232,7 +1230,7 @@ samtools. O comando de indexação foi consideravelmente mais lento na ferrament
 sambamba, apesar de usar múltiplos núcleos enquanto o samtools roda
 sequencialmente. Enquanto o samtools levou 39s para indexar um CRAM de 26 GB, o
 sambamba levou 2m 9s para indexar o BAM convertido a partir dele, de 53 GB. A
-amostra utilizada foi a HGDP00519.
+amostra utilizada foi a HGDP00519, do projeto 1000 Genomes \cite{via20101000}.
 
 Já para a rotina de visualização de uma região ou cromossomo o sambamba foi
 consideravelmente mais rápido. Enquanto o samtools levou 4m 5s para visualizar
@@ -1365,7 +1363,7 @@ tempos de execução utilizando o pipeline original e o otimizado. Os testes
 foram realizados na máquina Thor1, descrita na tabela \ref{tbl:thor1},
 utilizando todos núcleos de processamento disponíveis. Foram utilizados como
 entrada as amostras HGDP00715, HGDP00711, HGDP00519, HGDP00714, HGDP00712,
-HGDP00777, HGDP00525, e HGDP00719.
+HGDP00777, HGDP00525, e HGDP00719, do projeto 1000 Genomes \cite{via20101000}.
 
 \begin{table}[h]
     \caption{Tempos de execução do SAMtools}
@@ -1681,7 +1679,7 @@ disponibilização de uma interface gráfica facilita o uso por profissionais n�
 familiarizados com interfaces de linha de comando, e o uso de \textit{containers} Docker
 facilita a reprodução dos resultados obtidos nesse trabalho.
 
-\section{Discussão e trabalho futuro}
+\section{Discussão e trabalhos futuros}
 
 Além do pacote SAMtools e softwares alternativos a ele, existem diversas
 ferramentas utilizados para chamadas de variante utilizando modelos diferentes
