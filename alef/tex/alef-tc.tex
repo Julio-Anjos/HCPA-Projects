@@ -106,6 +106,7 @@ Clínicas de Porto Alegre}
     \item[JIT] \textit{Just-in-time}
     \item[HGP] \textit{Human Genome Project}
     \item[SMP] \textit{Symmetric multiprocessor} 
+    \item[MLE] \textit{Maximum likelihood estimatimation}
     \item[GHz] Giga hertz
     \item[GB] Giga byte
     \item[TB] Tera byte
@@ -113,12 +114,16 @@ Clínicas de Porto Alegre}
 \end{listofabbrv}
 
 % idem para a lista de símbolos
-\begin{listofsymbols}{$F_{ST}$}
+\begin{listofsymbols}{$L(w|y)$}
     \item[$\omega$] Taxa de substituição
     \item[$dN$] Substituições não-sinônimas
     \item[$dS$] Substituições sinônimas
     \item[$F_{ST}$] Índice de fixação
+    \item[$f(y|w)$] Função de densidade de probabilidade de $y$ com parâmetro $w$
+    \item[$L(w|y)$] Função de verossimilhança de $w$ com observação $y$
+    \item[$ln$] Logaritmo natural
     \item[$\frac{\partial f}{\partial x_i}$] Derivada parcial de $f$ com respeito a $x_i$
+%    \item[$\frac{\partial^2 f}{\partial x^2_i}$] Derivada parcial de segunda ordem de $f$ com respeito a $x^2_i$
     \item[$\nabla f$] Gradiente de $f$
     \item[$\nabla^2 f$] Hessiana de $f$
     \item[$\alpha$] Tamanho do passo da busca linear
@@ -301,8 +306,9 @@ conforme a tabela \ref{tbl:ex1} \cite{yang2002codon}.
 O propósito de \textit{softwares} de análise filogenética como o pacote PAML é, em
 síntese, detectar eventos de seleção positiva nas diferentes linhagens da
 árvore filogenética de uma espécie. Para isso, o PAML utiliza modelos
-estatísticos de máxima verossimilhança para comparar a hipótese de ocorrência
-desses eventos contra a hipótese nula \cite{moretti2012gcodeml}.
+estatísticos de máxima verossimilhança, descritos na seção \ref{sec:mle}, para
+comparar a hipótese de ocorrência desses eventos contra a hipótese nula
+\cite{moretti2012gcodeml}.
 
 \section{Chamada de variantes}
 \label{sec:call}
@@ -485,46 +491,79 @@ núcleos de processamento) beneficie suficientemente a aplicação.
 \label{sec:bfgs}
 
 Nesta seção, baseada em \cite{nocedal2006numerical}, são revistos alguns
-conceitos da área de otimização relevantes à compreensão do restante deste
-trabalho, com um foco em métodos de busca linear.
+conceitos da área de cálculo numérico e otimização relevantes à compreensão do
+restante deste trabalho, com um foco em métodos de busca linear.
 
-Dada uma função $f$, o problema de otimização consiste em encontrar um ponto
-$x*$ tal que $f(x*) \le f(x)$ para todo $x$ (otimização global) ou para todo
-$x$ próximo de $x*$ (otimização local). Nesse contexto, $f$ é chamada de função
-objetivo ou função de custo. A definição supracitada compreende a minimização,
-para problemas de maximização basta inverter o sinal de $f$, uma vez que o
-mínimo de $f$ será um máximo de $-f$.
+Um problema clássico em matemática consiste em encontrar a raiz $x^*$ de uma
+função contínua $f$, uma classe de métodos numéricos para sua aproximação sendo
+a pesquisa ou busca linear, também conhecidos como métodos de descida. Neles,
+uma aproximação $x_i$ é iterativamente calculada em direção a $x^*$. Um método
+simples é o da bisseção, em que, a partir de dois valores iniciais $x_0$ e
+$x_1$ com $f(x_0)$ e $f(x_1)$ com sinais opostos, a aproximação se dá avançando
+ao ponto médio $x_m$ e escolhendo como próximo intervalo aquele que contenha a
+raiz (pelo sinal de $f(x_m)$).
 
-Uma técnica clássica de otimização é a pesquisa ou buscar linear, também
-conhecida como método de descida. Nela, refina-se iterativamente uma
-aproximação $x_i$ de $x*$ movendo um passo de tamanho $\alpha_i$ em uma direção
-de descida $p_i$. Isto é, a cada iteração, $x_{i+1} \le x_i$, conforme
+O método da bisseção, apesar de robusto, é lento. Um método de convergência
+mais rápida é o de Newton, que aproxima $x^*$ de $f$ continuamente diferenciável
+pela equação de recorrência abaixo, onde $f'$ é a derivada. Sua interpretação
+geométrica é uma aproximação linear pela tangente, conforme reproduzido na
+figura \ref{fig:tan}, que mostra três passos da recorrência para uma função
+arbitrária. 
+
+$$ x_{i + 1} = x_i - \frac{f(x_i)}{f'(x_i)} $$
+
+\begin{figure} \caption{Interpretação geométrica do método de Newton} \begin{center}
+\includegraphics[width=0.8\linewidth]{img/tan.png} \end{center}
+\legend{Fonte: Os Autores} \label{fig:tan} \end{figure}
+
+Outro problema clássico consiste em encontrar o valor máximo ou mínimo de $f$,
+isto é, encontrar um $x^*$ tal que $f(x^*) \le f(x)$ para todo $x$ (mínimo
+global) ou para todo $x$ próximo de $x^*$ (mínimo local). Esse problema é
+chamado de otimização de $f$, que é chamada de função objetivo ou função de
+custo. 
+
+Uma forma de resolução desse problema parte da observação de que a derivada de
+uma função contínua é zero em seus pontos críticos -- a interpretação
+geométrica é que sua tangente é horizontal nos pontos em que a curva muda de
+côncava para convexa ou vice-versa. Logo, se existe algum mínimo (ou máximo)
+$x_i$ e $f$ é continuamente diferenciável, obrigatoriamente $f' = 0$. Segue que
+uma abordagem para problemas de otimização é a aproximação da raiz $x^*$ de
+$f'$, o que pode ser feito pelo método de Newton para funções duas vezes
+continuamente diferenciáveis, conforme a equação abaixo, onde $f''$ é a
+derivada de segunda ordem.
+
+$$ x_{i + 1} = x_i - \frac{f'(x_i)}{f''(x_i)} $$
+
+Essa equação de recorrência pode ser generalizada, iterativamente calculando
+uma aproximação $x_i$ de $x^*$ movendo um passo de tamanho $\alpha_i$ em uma
+direção de descida $p_i$. Isto é, a cada iteração, $x_{i+1} \le x_i$, conforme
 expressado na equação de recorrência abaixo.
 
 $$ x_{i + 1} = x_i + \alpha_i p_i $$
 
-Se $f$ é contínua e multivariável, a direção de descida de máximo declive é
-$p_i = -B_{i}^{-1} \nabla f_i$, onde $\nabla$ é o gradiente de $f$, i.e. o
-vetor de suas derivadas parciais de primeira ordem. Os métodos de busca linear
-são classificados pela escolha de $B_i$. Em métodos de primeira ordem como o do
+Mais do que isso, se $f$ for generalizada para uma função multivariável, a
+direção de descida $p_i$ pode ser generalizada como $p_i = -B_{i}^{-1} \nabla
+f_i$, onde $\nabla$ é o gradiente de $f$, o vetor de suas derivadas parciais de
+primeira ordem, i.e. sua taxa de mudança instantânea, que representa a direção
+de máximo declive sobre a função. Os métodos de busca linear são então
+classificados pela escolha de $B_i$. Em métodos de primeira ordem, como o do
 gradiente ou do máximo declive, $B_i$ é a matriz identidade. Em métodos de
-segunda ordem como o método de Newton, $B_i = \nabla^2 f(x_i)$. Como métodos de
-segunda ordem usam derivadas de segunda ordem, eles exigem que $f$ seja duas
-vezes continuamente diferenciável. Enquanto no método de Newton a Hessiana
-$\nabla^2$ é exata, em métodos quasi-Newton $\nabla^2$ é aproximado.  Abaixo a
-equação de recorrência encontra-se reproduzida na forma usual do método de
-Newton.
+segunda ordem como o de Newton, $B_i = \nabla^2 f(x_i)$, dando a equação de
+recorrência abaixo, equivalente à equação para funções de uma única variável já
+apresentada anteriormente.
 
 $$ x_{i + 1} = x_i - \alpha_i \frac{\nabla f_i}{\nabla^2 f_i} $$
 
-Dentro da categoria de métodos de segunda ordem, a forma de aproximação da
-Hessiana e a escolha do tamanho do passo definem o método. O passo $\alpha_i$
-ideal é dado por outro problema de minimização, $min_\alpha y(\alpha) = f(x_i +
-\alpha p_i)$. Métodos que calculam $\alpha_i$ ideal a cada passo são
-denominados métodos de busca linear exatos, enquanto aqueles que aproximam
-$\alpha_i$ são ditos inexatos. Uma forma de aproximar $\alpha$ de forma inexata
-é garantir que ele cumpra uma série de condições, conhecidas como condições de
-Wolfe, para um decréscimo suficiente na busca linear.
+Enquanto no método de Newton a Hessiana $\nabla^2$ é exata, em métodos
+quasi-Newton ela é aproximada. Dentro da categoria de métodos de segunda ordem,
+a forma de aproximação da Hessiana e a escolha do tamanho do passo definem o
+método. O passo $\alpha_i$ ideal é dado por outro problema de minimização,
+$min_\alpha y(\alpha) = f(x_i + \alpha p_i)$. Métodos que calculam $\alpha_i$
+ideal a cada passo são denominados métodos de busca linear exatos, enquanto
+aqueles que aproximam $\alpha_i$ são ditos inexatos. Uma forma de aproximar
+$\alpha$ de forma inexata é garantir que ele cumpra uma série de condições,
+conhecidas como condições de Wolfe, para um decréscimo suficiente na busca
+linear.
 
 O Broyden–Fletcher–Goldfarb–Shanno (BFGS) \cite{fletcher1980practical} é um
 algoritmo de otimização quasi-Newton inexato que satisfaz as condições de
@@ -532,8 +571,64 @@ Wolfe. O BFGS armazena a aproximação do inverso da Hessiana, uma matriz $n
 \times n$ densa, onde $n$ é o número de variáveis da função sendo otimizada.
 Uma versão com uso limitado de memória que não requer o armazenamento da
 Hessiana inteira é o L-BFGS \cite{liu1989limited}. O codeml utiliza o BFGS para
-maximização da função de probabilidade, também chamada função de
-verossimilhança.
+maximização da função de verossimilhança, num método chamado MLE, descrito na
+seção \ref{sec:mle}.
+
+\section{Estimativa por máxima verossimilhança}
+\label{sec:mle}
+
+Nesta seção é descrito, com base em \cite{myung2003tutorial}, o método de
+estimativa por máxima verossimilhança ou MLE (\textit{maximum likelihood
+estimatimation}), utilizado pelos softwares de análise filogenética.
+
+Em estatística, uma população pode ser descrita através de uma distribuição de
+probabilidade com determinado conjunto de valores para seus parâmetros.
+Por exemplo, em um jogo de cara ou coroa, a probabilidade de $k$ ocorrências de
+coroa em $n$ lançamentos de uma moeda é dada pela distribuição binomial
+$f(k|n,p)$ em que $p$ é a probabilidade de ocorrência de coroa em cada
+lançamento da moeda. Diferentes valores para $p$ definem populações distintas.
+Por exemplo, a população das moedas justas é aquela com $p = \frac{1}{2}$. A
+família de todas populações de moedas (todos valores possíveis para $p$) é
+chamada de modelo.
+
+De forma mais geral, uma distribuição pode ser descrita como $f(y|w)$, onde $y
+= (y_1, ..., y_m)$ representa um vetor de observações e $w = (w_1, ..., w_k)$
+um vetor de parâmetros, o modelo sendo a família de todos $w$ possíveis. Dada
+uma amostra $y$ observada a partir de uma população desconhecida, o MLE estima,
+para um determinado modelo, quais são os parâmetros que melhor caracterizam a
+população que gerou a amostra observada. Por exemplo, no caso supracitado
+onde $m = k = 1$, se tomarmos $n = 10, y = 2$, o valor $p = 0.2$ é o que melhor
+caracteriza a observação. Em outras palavras, a amostra de duas coroas em dez
+lançamentos é melhor caracterizada pela população de moedas com 20\% de chance
+de caírem em coroa.
+
+Para realizar essa estimativa, define-se a função de verossimilhança $L(w|y)$,
+que dá a probabilidade de uma população $w$ caracterizar a amostra $y$. O MLE
+busca, dentro do espaço dos parâmetros, aquele que maximiza $L(w|y)$.
+Normalmente trabalha-se com a maxização do logaritmo natural da função de
+verossimilhança (dito log-verossimilhança) pois permite otimizações baseadas no
+rearranjo de certas equações, além de evitar o trabalho com grandezas muito
+pequenas, cuja representação em ponto flutuante pode apresentar desafios. 
+
+Para realizar essa maximização, parte-se da observação de que a derivada de uma
+função contínua é zero em seus máximos e mínimos, conforme anteriormente
+descrito:
+
+$$ \frac{\partial ln L(w|y)}{\partial w_i} = 0 $$
+
+% $$ \frac{\partial^2 ln L(w|y)}{\partial w^2_i} < 0 $$
+
+Um método numérico empregado para realizar essa maximização é o BFGS, descrito
+na seção \ref{sec:bfgs}. Sendo $lnL$ a log-verossimilhança, tem-se a seguinte
+equação de recorrência:
+
+$$ w_{i+1} = w_i - \alpha_i \frac{\nabla lnL_i}{\nabla^2 lnL_i} $$
+
+O codeml emprega o BFGS para realizar o MLE a fim de caracterizar a população
+que melhor representa a amostra sob avaliação.
+
+%Observa-se que $L(w|y)$ não é uma função de densidade de probabilidade
+%dos parâmetros -- por definição, uma 
 
 \section{Método científico e o ciclo PDCA}
 \label{sec:pdca}
@@ -897,10 +992,10 @@ Em \cite{byrd1988parallel} os autores descrevem uma estratégia de paralelizaç�
 para o BFGS em arquiteturas MIMD, seja de memória compartilhada ou distribuída.
 Os autores observam que o BFGS possui dois componentes de custo principais: a
 avaliação da função na etapa de atualização do passo $\alpha$ e no cálculo do
-gradiente $\nabla$, e as operações de álgebra linear utilizadas na aproximação
-da Hessiana $\nabla^2$ e no cálculo de $\alpha$. Os autores observam que os
-custos de operações de álgebra linear são normalmente pequenos, o custo do BFGS
-sendo dominado pelo custo de avaliação da função. Os autores estimam que, para
+gradiente, e as operações de álgebra linear utilizadas na aproximação da
+Hessiana e no cálculo de $\alpha$. Os autores observam que os custos de
+operações de álgebra linear são normalmente pequenos, o custo do BFGS sendo
+dominado pelo custo de avaliação da função. Os autores estimam que, para
 funções que executem pelo menos $20n$ multiplicações ou adições e aproximação
 do gradiente por diferenças finitas, o custo de avaliação e diferenciação é de
 90\% ou mais. Os autores observam que o paralelismo mais óbvio é aquele da
@@ -1082,12 +1177,15 @@ Uma vez construído um ambiente adequado à avaliação de desempenho das
 ferramentas em estudo, propõe-se a avaliação do tempo total de execução de cada
 ferramenta e, quando aplicável, cada etapa das análises, para entradas de
 tamanho compatível com o caso de uso dos usuários. No caso de aplicações
-paralelas, será medido também seu \textit{speedup}. Feito isso, propõe-se o
-traço de um perfil de execução das ferramentas que apresentam gargalos de
-desempenho cujas causas não sejam evidentes, a fim de mapeá-las e avaliar a
-possibilidade de implementações alternativas àquelas encontradas na literatura
-que possam agregar alguma vantagem ou possibilitar ganhos maiores de
-desempenho.
+paralelas, será medido também seu \textit{speedup}. Para a mensuração do tempo
+referente às soluções definitivas, serão realizadas cinco execuções, das quais
+serão reportadas a média e desvio padrão.
+
+Feito isso, propõe-se o traço de um perfil de execução das ferramentas que
+apresentam gargalos de desempenho cujas causas não sejam evidentes, a fim de
+mapeá-las e avaliar a possibilidade de implementações alternativas àquelas
+encontradas na literatura que possam agregar alguma vantagem ou possibilitar
+ganhos maiores de desempenho.
 
 Para o traço do perfil de execução foram selecionadas duas abordagens
 distintas. No caso da análise filogenética, que consiste da execução de uma
@@ -1160,8 +1258,8 @@ implementações paralelizam \textit{jobs} do codeml, e não a aplicação em si
 
 Para a verificação de corretude foi comparada a saída da execução do slimcodeml
 e LMAP com o codeml original. Em particular foi comparado o valor da
-log-verossimilhança (logaritmo natural da função de verossimilhança) reportado
-por cada programa, que é o dado utilizado pelos pesquisadores.
+log-verossimilhança reportado por cada programa, que é o dado utilizado pelos
+pesquisadores.
 
 Os modelos de substituição de sítios do codeml utilizados foram o M1a, M2a, M7,
 M8, e M8a, e os resultados (log-verossimilhança) são apresentados na tabela
@@ -1278,8 +1376,8 @@ conforme será descrito abaixo.
 O perfil de execução obtido com o callgrind revela que a rotina \textit{ming2}
 é responsável por $97,28\%$ do custo de processamento do codeml. Através de um
 estudo da aplicação observou-se que essa rotina implementa o algoritmo BFGS,
-descrito na seção \ref{sec:bfgs}. O codeml utiliza ele para maximizar a função
-de probabilidade, no escopo da estimativa por máxima verossimilhança. 
+descrito na seção \ref{sec:bfgs}. O codeml utiliza ele para maximização no
+processo de MLE, descrita na seção \ref{sec:mle}.
 
 Tal método possui duas sub-rotinas responsáveis por quase a totalidade de seu
 custo: \textit{gradientB} e \textit{LineSearch2}. A rotina \textit{gradientB},
@@ -1291,12 +1389,11 @@ $\alpha_i$.
 
 Ambas rotinas, por sua vez, chamam a rotina \textit{lfundG}, responsável po
 94,98\% do custo total do programa. \textit{lfundG} é a função de
-verossimilhança (ou função de probabilidade) sendo constantemente avaliada
-(para atualização do $\alpha$) e diferenciada (para o cálculo do gradiente) no
-processo de otimização. Essa rotina, por sua vez, é modularizada em
-\textit{fx\_r}. A figura \ref{fig:kcachegrind}, uma captura de tela da
-ferramenta kcachegrind, mostra uma visualização da pilha de chamadas
-supracitada.
+verossimilhança sendo constantemente avaliada (para atualização do $\alpha$) e
+diferenciada (para o cálculo do gradiente) no processo de otimização. Essa
+rotina, por sua vez, é modularizada em \textit{fx\_r}. A figura
+\ref{fig:kcachegrind}, uma captura de tela da ferramenta kcachegrind, mostra
+uma visualização da pilha de chamadas supracitada.
 
 Em outras palavras, a avaliação e diferenciação da função objetivo constitui
 94,98\% do custo do BFGS no codeml, que implementa o cálculo do gradiente por
@@ -1377,23 +1474,10 @@ dependências pudessem ter sido removidas, possibilitando a implementação
 paralela do cálculo do gradiente. Todavia, apesar de melhor organizado, o
 slimcodeml ainda apresenta o mesmo compartilhamento de memória e uso de
 variáveis globais encontrados na implementação original, inviabilizando essa
-estratégia de paralelização nesse \textit{software}, bem como estratégias de
-paralelização do BFGS mais complexas que envolvam a avaliação ou diferenciação
-da função objetivo. 
-
-A partir daí foram voltadas as atenções para \textit{LineSearch2}, mas não foi
-encontrado na literatura implementações paralelas para o método descrito em
-\cite{wolfe1978numerical}, e funções auxiliares utilizadas em seu cálculo
-apresentavam os mesmos problemas de compartilhamento de memória encontrados nas
-outras rotinas estudadas, tanto na implementação original como no slimcodeml,
-portanto a paralelização dessa rotina também foi abandonada.
-
-Por fim, observa-se que algumas das operações matriciais otimizadas pelo
-slimcodeml são da função de probabilidade, cuja avaliação representa o maior
-custo do codeml. Por exemplo, sua sub-rotina \textit{PMatUVRoot}, que pode ser
-visualizada na figura \ref{fig:kcachegrind}, tem sua implementação substituída
-por aquela da biblioteca BLAS -- no slimcodeml, ela é renomeada para
-\textit{PMatUVRoot2}.
+estratégia de paralelização nesse \textit{software}. Quaisquer estratégias de
+paralelização do BFGS que envolvam a avaliação ou diferenciação da função
+objetivo são inviabilizadas, dessa forma \textit{LineSearch2} também não pode
+ser paralelizada, e a solução especulativa mencionada também não é aplicável.
 
 Sendo assim, a paralelização do BFGS tal qual implementado no codeml foi
 descartada, esgotando todas possibilidades de paralelização das rotinas
@@ -1401,6 +1485,13 @@ responsáveis por quase a totalidade do tempo de execução do codeml devido à
 implementação não \textit{thread-safe}. Isto é, as aplicações selecionadas a
 partir de revisão bibliográfica e verificadas sa seção anterior foram
 fornecidas como solução aos usuários.
+
+Por fim, observa-se que algumas das operações matriciais otimizadas pelo
+slimcodeml são da função de verossimilhança, cuja avaliação representa o maior
+custo do codeml. Por exemplo, sua sub-rotina \textit{PMatUVRoot}, que pode ser
+visualizada na figura \ref{fig:kcachegrind}, tem sua implementação substituída
+por aquela da biblioteca BLAS -- no slimcodeml, ela é renomeada para
+\textit{PMatUVRoot2}.
 
 \section{Chamada de variantes}
 \label{sec:SAMtools}
