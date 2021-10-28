@@ -635,7 +635,7 @@ que melhor representa a amostra sob avaliação.
 
 Nesta seção são brevemente apresentados, com base no trabalho de
 \cite{moen2006evolution}, o conceito e história do método científico, do
-pragmatismo, e do ciclo PDCA (\textit{plan-do-check-adjust}), também conhecido
+pragmatismo, e do ciclo PDCA (\textit{plan-do-check-act}), também conhecido
 como ciclo de Deming ou ciclo de Shewhart, bem como a relação entre eles,
 relevantes à metodologia adotada neste trabalho.
 
@@ -667,9 +667,14 @@ PDCA -- planejamento, execução, verificação, e ajuste -- inspirando-se para
 isso em uma visão pragmática do método científico. O modelo visa balancear o
 desejo e as recompensas da tomada de ação com a sabedoria de um estudo prévio.
 
-Dessa forma, a formulação moderna do ciclo de Shewhart providencia um método
-genérico para melhoria de processos ou ferramentas, inspirado em uma visão
-pragmática do método científico.
+Dessa forma, a formulação moderna do ciclo de Shewhart, resumida na figura
+\ref{fig:pdca_orig}, providencia um método genérico para melhoria de processos ou
+ferramentas, inspirado em uma visão pragmática do método científico, e
+comumente usado na gestão de negócios.
+
+\begin{figure} \caption{Ciclo PDCA} \begin{center}
+\includegraphics[width=0.25\linewidth]{img/pdca_orig.png} \end{center}
+\legend{Fonte: Os Autores} \label{fig:pdca_orig} \end{figure}
 
 %\section{Modelagem de experimentos}
 %\label{sec:design}
@@ -1018,100 +1023,55 @@ em que o custo de avaliação da função objetivo não é predominante.
 
 Neste trabalho objetivou-se a melhoria de desempenho dos processos executados
 pelos pesquisadores do HCPA. Para alcançar esse objetivo, foi adotado um
-processo de planejamento, execução, verificação, e ajuste, também conhecida
-como ciclo PDCA, ciclo de Shewhart, ou ciclo de Deming, um método pragmático
-para melhoria de processos inspirado no método científico, e descrito em
-maiores detalhes na seção \ref{sec:pdca}.
+processo de planejamento, execução, verificação, e atuação, também conhecido
+como ciclo PDCA, descrito em maiores detalhes na seção \ref{sec:pdca}.
 
-Este capítulo descreve em alto nível o emprego desse método através de cada uma
-de suas etapas: Na seção \ref{sec:plan} são descritos os passos de
-planejamento; na seção \ref{sec:exec} é descrita a execução do plano traçado na
-etapa anterior e eventuais ajustes, e na seção \ref{sec:test} são descritas as
-etapas de verificação. As etapas formam um ciclo conforme exposto na figura
-\ref{fig:metodo}, que ocorre não somente de forma global, mas também dentro de
-etapas individuais -- a execução de um plano é um processo iterativo
-envolvendo estudo mais detalhado, desenvolvimento, validação, e ajuste. 
+O planejamento primordial inicia com uma reunião junto aos usuários do processo
+e ferramental que objetiva-se melhorar. A partir dessa reunião é traçado um
+plano de estudo dos processos e ferramentas, bem como do \textit{background}
+necessário ao seu entendimento. Esse estudo teórico é executado através da
+busca em livros texto, manuais, e artigos relevantes à área. Uma vez
+finalizado, o conhecimento adquirido é verificado na prática, através de
+experimentação empírica com as ferramentas e entradas utilizadas pelos
+usuários. A partir daí, é avaliada a necessidade de nova iteração desse ciclo
+PDCA, sumarizado na parte superior da figura \ref{fig:pdca_global}, por exemplo
+se mais detalhes de uso precisam ser elucidados, ou se parte-se para a busca,
+na literatura, de soluções aos problemas estudados ou para o desenvolvimento de
+uma solução própria. Os capítulos \ref{chap:intro} e \ref{chap:bg} são
+resultado do emprego desse processo iterativo.  
 
-\begin{figure} \caption{Etapas da metodologia empregada} \begin{center}
-\includegraphics[width=0.85\linewidth]{img/metodo.png} \end{center}
-\legend{Fonte: Os Autores} \label{fig:metodo} \end{figure}
+Uma vez avaliado que uma revisão bibliográfica é necessária, planeja-se uma
+seleção de artigos a serem lidos. Essa seleção é feita através de bases de
+periódicos relevantes na área ou de motores de busca voltados a publicações
+científicas, caso em que os resultados são selecionados atendendo a requisitos
+mínimos de qualidade, como revisões por pares. Caso os resultados sejam muito
+numerosos, uma filtragem por relevância é realizada. Então, é executada a
+leitura dos artigos selecionados, a partir da qual as soluções publicadas são
+testadas. Primeiro, verifica-se se são adequadas para uso dos pesquisadores, se
+os resultados são corretos, e se o desempenho é satisfatório. Esses testes
+geram uma avaliação da necessidade de novo planejamento (iniciando um novo
+ciclo) ou a entrega da solução encontrada aos usuários. Esse ciclo PDCA
+encontra-se reproduzido na parte esquerda figura \ref{fig:pdca_global}.
 
-\section{Planejamento} \label{sec:plan}
+Se, por outro lado, foi avaliado que o desenvolvimento de uma solução própria é
+necessário, outro ciclo é iniciado pela arquitetura dessa solução, planejamento
+as linguagens, bibliotecas e técnicas a serem adotadas. Feito isso, executa-se
+a implementação do programa planejado, seguido de testes de sua corretude e
+desempenho, cujos resultados são avaliados, onde é decidido pela entrega ou
+re-planejamento da solução. Esse ciclo PDCA encontra-se reproduzido na parte
+direita da figura \ref{fig:pdca_global}.
 
-A tarefa primordial de planejamento, primeira etapa do ciclo, consiste da
-compreensão do contexto e do problema dos usuários, através de reuniões com os
-mesmos. Aqui, o pesquisador deve procurar entender as áreas de conhecimento
-envolvidas, o ferramental utilizado, e os problemas enfrentados. Além disso,
-tal interação inicia um elo importante entre o pesquisador e os usuários, cujo
-diálogo é fundamental ao alinhamento de expectativas e validação dos
-resultados. Os resultados dessa etapa de planejamento encontram-se resumidos na
-forma do capítulo introdutório desse trabalho.
+Acima, foi descrita em alto nível a metodologia adotada, que encontra-se
+resumida de forma global na figura \ref{fig:pdca_global}. O restante deste
+capítulo descreve em mais detalhes a metodologia de testes de corretude e
+desempenho executados em cima das aplicações selecionadas através de estudo da
+literatura ou através de desenvolvimento próprio.
 
-Uma vez compreendida a área de estudo faz-se necessário familiarizar-se com
-ela. Para isso, emprega-se um estudo teórico a fim de obter o
-\textit{background} necessário a posterior compreensão aprofundada do
-ferramental utilizado e dos problemas envolvidos. Esse estudo passa por revisão
-bibliográfica de livros-texto, artigos científicos, e manuais de ferramentas
-relevantes à área de estudo, a fim de elucidar conceitos básicos e realizar uma
-introdução a tópicos avançados relevantes ao problema específico sendo
-abordado. O capítulo \ref{chap:bg} resume os resultados dessa etapa de
-planejamento.
+\begin{figure} \caption{Ciclo PDCA global empregado no trabalho} \begin{center}
+\includegraphics[width=0.75\linewidth]{img/pdca_global.png} \end{center}
+\legend{Fonte: Os Autores} \label{fig:pdca_global} \end{figure}
 
-Além do estudo teórico é fundamental uma compreensão empírica do ferramental
-utilizado e dos problemas enfrentados. Para isso, faz-se necessário a obtenção
-e uso prático das ferramentas já previamente estudadas, bem como dos dados de
-entrada utilizados pelos usuários, identificados em etapa anterior. Aqui,
-busca-se um entendimento aprofundado do modo de uso e das dificuldades dos
-usuários, através de sua observação empírica. Alguns dos resultado dessa etapa
-de planejamento manifestam-se na apresentação das ferramentas no capítulo
-\ref{chap:bg}.
-
-As etapas supracitadas visam capacitar o pesquisador à tomada de decisão que
-guiará o restante do trabalho. Além do planejamento inicial descrito acima,
-demais etapas envolvem, naturalmente, um planejamento mais detalhado. Por
-exemplo, uma vez planejada uma abordagem teórica para a solução do problema,
-sua implementação efetiva requer um estudo das aplicações envolvidas. 
-
-\section{Execução e ajuste}
-\label{sec:exec}
-
-O primeiro passo da execução é um estudo da literatura, visando localizar
-publicações que já atacaram os mesmos problemas. A identificação de soluções
-anteriores pode ser um meio de contribuição à eventual implementação de
-soluções próprias, à medida em que enriquece a visão do pesquisador por
-potenciais linhas de desenvolvimento, além de acelerar a resolução do problema,
-eliminando ou confirmando hipóteses. Além disso, a localização de soluções
-pré-existentes pode ser um fim por si só, caso os resultados obtidos em
-publicação anterior sejam satisfatórios ao problema abordado. 
-
-Tal estudo deve partir de uma revisão bibliográfica, em bases de periódicos
-relevantes na área ou através de motores de busca voltados a publicações
-científicas, caso em que os resultados selecionados devem atender a requisitos
-de qualidade, por exemplo excluindo publicações sem revisões por pares. Caso os
-resultados sejam muito numerosos, uma filtragem por relevância deve ser
-realizada.
-
-O resultado dessa revisão bibliográfica encontra-se reproduzido no capítulo
-\ref{chap:anteriores}. Uma vez efetuada a seleção de uma publicação de
-qualidade e adequada ao caso sendo estudado, faz-se necessário uma etapa de
-verificação (ou reprodução) dos resultados, descrita na seção \ref{sec:test}.
-
-Após a verificação da alternativa selecionada, uma decisão é tomada no sentido
-de adotá-la como solução final, caso seja satisfatória, ou ajustar a seleção
-através de nova revisão ou, ainda, partir para o desenvolvimento de uma solução
-própria, seja através da modificação da solução encontrada ou implementação
-original. Essa decisão leva em consideração a satisfação dos usuários com os
-resultados obtidos, a possibilidade teórica de melhoria desses resultados, bem
-como a possibilidade prática -- isto é, a relação entre esforço necessário e
-retorno esperado.
-
-Caso seja optado por uma implementação própria, é realizado um desenvolvimento
-incremental na mesma linha do ciclo global cá descrito, consistindo da
-arquitetura do sistema (planejamento), desenvolvimento de uma solução inicial
-(execução), teste (verificação), seguido de correções ou adição de novas
-funcionalidades (ajuste).
-
-\section{Verificação}
+\section{Testes}
 \label{sec:test}
 
 \subsection{Corretude}
@@ -1580,7 +1540,7 @@ reproduzida na figura \ref{fig:stage3_orig}.
 \begin{figure}
   \caption{Fluxo de análise original via SAMtools, etapa 3}
     \begin{center}
-      \includegraphics[width=0.65\linewidth]{img/stage3_orig.png}
+      \includegraphics[width=0.55\linewidth]{img/stage3_orig.png}
     \end{center}
     \legend{Fonte: Os Autores}
     \label{fig:stage3_orig}
