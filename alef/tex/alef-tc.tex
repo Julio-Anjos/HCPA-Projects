@@ -19,7 +19,7 @@ Clínicas de Porto Alegre}
 
 % orientador e coorientador são opcionais (não diga isso pra eles :))
 \advisor[Prof.~Dr.]{Geyer}{Claudio Fernando Resin}
-\coadvisor[Prof.~Dr.]{Anjos}{Julio Cesar Santos}
+\coadvisor[Prof.~Dr.]{dos Anjos}{Julio Cesar Santos}
 
 \date{novembro}{2021}
 
@@ -139,6 +139,7 @@ Clínicas de Porto Alegre}
 %
 
 \chapter{Introdução}
+\ref{chap:intro}
 
 %
 % Breve contexto da área
@@ -186,19 +187,19 @@ o uso de memória ultrapassa os 64 GB.
 %
 % Motivação e Objetivos (alto nível)
 %
-Motivado pelos problemas de desempenho enfrentados pelos pesquisadores do HCPA,
-mesmo com ferramentas consideradas estado da arte, este trabalho objetivou o
-estudo desses \textit{softwares} e de seus gargalos de desempenho, visando seu
-mapeamento e resolução. Em particular, partindo da observação de que os
-\textit{softwares} em questão não utilizam técnicas de processamento paralelo ou o fazem
-de forma limitada, objetivou-se disponibilizar aos pesquisadores aplicações que
-empregue tais técnicas, a fim de beneficiar-se de ambientes multiprocessados,
-ubíquo em hardware moderno.
+Este trabalho foi motivado pelos problemas de desempenho enfrentados pelos
+pesquisadores do HCPA, mesmo com ferramentas consideradas estado da arte,
+objetivando-se o estudo desses \textit{softwares} e de seus gargalos de
+desempenho, visando seu mapeamento e resolução. Em particular, partindo da
+observação de que os \textit{softwares} em questão não utilizam técnicas de
+processamento paralelo ou o fazem de forma limitada, objetivou-se
+disponibilizar aos pesquisadores aplicações que empregue tais técnicas, a fim
+de beneficiar-se de ambientes multiprocessados, ubíquo em hardware moderno.
 
 %
 % Contribuições
 %
-Através de uma metodologia de planejamento, execução, verificação e ajuste,
+Através de uma metodologia de planejamento, execução, validação e atuação,
 foram mapeados e solucionados os problemas de desempenho enfrentados pelos
 pesquisadores, empregando para isso técnicas de programação paralela. O tempo
 para execução da chamada de variantes foi reduzido em até 91,63\% através do
@@ -218,13 +219,13 @@ paralelizar o codeml.
 %
 % Organização das outras seções
 %
-O resto do texto está organizado da seguinte maneira: No capítulo \ref{chap:bg}
-é apresentado um \textit{background} de bioinformática e de outras áreas do
-conhecimento relevantes à compreensão desse trabalho; no capítulo
-\ref{chap:anteriores} é apresentado o estado da arte para cada área de estudo,
-bem como trabalhos relacionados; no capítulo \ref{chap:mod} é apresentada a
-metodologia empregada; no capítulo \ref{chap:imp} apresenta-se sua
-implementação e os resultados obtidos, e no capítulo \ref{chap:conc} é
+Além desse capítulo, este trabalho está organizado da seguinte maneira: No
+capítulo \ref{chap:bg} é apresentado um \textit{background} de bioinformática e
+de outras áreas do conhecimento relevantes à compreensão desse trabalho; no
+capítulo \ref{chap:anteriores} é apresentado o estado da arte para cada área de
+estudo, bem como trabalhos relacionados; no capítulo \ref{chap:mod} é
+apresentada a metodologia empregada; no capítulo \ref{chap:imp} apresenta-se
+sua implementação e os resultados obtidos, e no capítulo \ref{chap:conc} é
 apresentada uma conclusão, seguida das referências.
 
 %
@@ -605,7 +606,7 @@ de caírem em coroa.
 Para realizar essa estimativa, define-se a função de verossimilhança $L(w|y)$,
 que dá a probabilidade de uma população $w$ caracterizar a amostra $y$. O MLE
 busca, dentro do espaço dos parâmetros, aquele que maximiza $L(w|y)$.
-Normalmente trabalha-se com a maxização do logaritmo natural da função de
+Normalmente trabalha-se com a maximização do logaritmo natural da função de
 verossimilhança (dito log-verossimilhança) pois permite otimizações baseadas no
 rearranjo de certas equações, além de evitar o trabalho com grandezas muito
 pequenas, cuja representação em ponto flutuante pode apresentar desafios. 
@@ -663,7 +664,7 @@ conhecimento''.
 
 William Deming (1900--1993), considerado o pai do controle de qualidade
 moderno, adapta o trabalho de Shewhart para o que hoje é conhecido como o ciclo
-PDCA -- planejamento, execução, verificação, e ajuste -- inspirando-se para
+PDCA -- planejamento, execução, validação, e atuação -- inspirando-se para
 isso em uma visão pragmática do método científico. O modelo visa balancear o
 desejo e as recompensas da tomada de ação com a sabedoria de um estudo prévio.
 
@@ -689,13 +690,14 @@ comumente usado na gestão de negócios.
 \label{chap:anteriores}
 
 Neste capítulo é apresentado o estado da arte nas áreas de análise filogenética
-e chamada de variantes, bem como trabalhos relacionados aos \textit{softwares}
-utilizados pelos pesquisadores do HCPA -- codeml, do pacote PAML, ANGSD, e
-SAMtools -- respectivamente nas seções \ref{sec:filoant} e \ref{sec:callant}.
-Além disso, são expostos trabalhos relacionados à análise de desempenho como
-empregada nesse trabalho, na seção \ref{sec:antanal}, enquanto que na seção
-\ref{sec:parbfgs} são expostos trabalhos relacionados à paralelização do
-algoritmo BFGS, descrito na seção \ref{sec:bfgs}.
+e chamada de variantes, bem como trabalhos relacionados que visam melhorar o
+desempenho dos \textit{softwares} utilizados pelos pesquisadores do HCPA --
+codeml, do pacote PAML, ANGSD, e SAMtools -- respectivamente nas seções
+\ref{sec:filoant} e \ref{sec:callant}. Além disso, são expostos trabalhos
+relacionados à análise de desempenho como empregada nesse trabalho, na seção
+\ref{sec:antanal}, enquanto que na seção \ref{sec:parbfgs} são expostos
+trabalhos relacionados à paralelização do algoritmo BFGS, descrito na seção
+\ref{sec:bfgs}.
 
 \section{Análise filogenética}
 \label{sec:filoant}
@@ -779,9 +781,9 @@ pesquisadores do HCPA.
 \section{Chamada de variantes}
 \label{sec:callant}
 
-Nesta seção os \textit{softwares} utilizados no HCPA (SAMtools e ANGSD) são
-apresentados, bem como expostos trabalhos relacionados que visam a melhoria de
-seu desempenho. A seguir, são brevemente descritas ferramentas de chamada de
+Nesta seção são apresentados os \textit{softwares} utilizados no HCPA (SAMtools
+e ANGSD), bem como expostos trabalhos relacionados que visam a melhoria de seu
+desempenho. A seguir, são brevemente descritas ferramentas de chamada de
 variantes com amplo uso na literatura, mas que empregam métodos diferentes
 daqueles utilizados no HCPA. Um estudo mais aprofundado do ferramental cujos
 métodos divergem daqueles empregados pelos pesquisadores do HCPA foge ao escopo
@@ -883,7 +885,7 @@ vai o conhecimento dos autores desse trabalho, não existem artigos publicados
 que implementem alternativas ao ANGSD ou que realizem algum trabalho em cima do
 mesmo visando a melhoria de seu desempenho.
 
-\subsection{Considerações finais}
+\subsection{Considerações}
 \label{sec:alt}
 
 Uma ferramenta para chamada de variantes com amplo uso na literatura
@@ -942,7 +944,7 @@ de possuírem formatos de entrada e saída, bem como ambientes de execução
 é um objeto de estudo que foge ao escopo desse trabalho, que focou no SAMtools
 e trabalhos relacionados a ele.
 
-\section{Análise de desempenho}
+\section{Ferramentas para análise de desempenho}
 \label{sec:antanal}
 
 Conforme \cite{jain2art}, a análise de desempenho é uma etapa fundamental no
@@ -1023,8 +1025,8 @@ em que o custo de avaliação da função objetivo não é predominante.
 
 Neste trabalho objetivou-se a melhoria de desempenho dos processos executados
 pelos pesquisadores do HCPA. Para alcançar esse objetivo, foi adotado um
-processo de planejamento, execução, verificação, e atuação, também conhecido
-como ciclo PDCA, descrito em maiores detalhes na seção \ref{sec:pdca}.
+processo de planejamento, execução, validação, e atuação, também conhecido
+como ciclo PDCA, já descrito na seção \ref{sec:pdca}.
 
 O planejamento primordial inicia com uma reunião junto aos usuários do processo
 e ferramental que objetiva-se melhorar. A partir dessa reunião é traçado um
@@ -1051,15 +1053,15 @@ testadas. Primeiro, verifica-se se são adequadas para uso dos pesquisadores, se
 os resultados são corretos, e se o desempenho é satisfatório. Esses testes
 geram uma avaliação da necessidade de novo planejamento (iniciando um novo
 ciclo) ou a entrega da solução encontrada aos usuários. Esse ciclo PDCA
-encontra-se reproduzido na parte esquerda figura \ref{fig:pdca_global}.
+encontra-se reproduzido na parte direita da figura \ref{fig:pdca_global}.
 
 Se, por outro lado, foi avaliado que o desenvolvimento de uma solução própria é
-necessário, outro ciclo é iniciado pela arquitetura dessa solução, planejamento
+necessário, outro ciclo é iniciado pela arquitetura dessa solução, planejando
 as linguagens, bibliotecas e técnicas a serem adotadas. Feito isso, executa-se
 a implementação do programa planejado, seguido de testes de sua corretude e
 desempenho, cujos resultados são avaliados, onde é decidido pela entrega ou
-re-planejamento da solução. Esse ciclo PDCA encontra-se reproduzido na parte
-direita da figura \ref{fig:pdca_global}.
+replanejamento da solução. Esse ciclo PDCA encontra-se reproduzido na parte
+esquerda da figura \ref{fig:pdca_global}.
 
 Acima, foi descrita em alto nível a metodologia adotada, que encontra-se
 resumida de forma global na figura \ref{fig:pdca_global}. O restante deste
@@ -1076,7 +1078,7 @@ literatura ou através de desenvolvimento próprio.
 
 \subsection{Corretude}
 
-A verificação de corretude de uma solução executada passa pela verificação dos
+A verificação de corretude de uma solução executada passa pela validação dos
 resultados obtidos. Essa verificação se dá através da comparação com um
 resultado de referência ou \textit{gold standard} -- PAML no caso de análise
 filogenética, e SAMtools no caso de chamada de variantes.
@@ -1177,11 +1179,11 @@ análise mais simples, mas não menos relevante.
 % Implementação (da metodologia)
 %
 %
-\chapter{Implementação}
+\chapter{Avaliação}
 \label{chap:imp}
 
 Neste capítulo é exposta a implementação da metodologia descrita no capítulo
-anterior e seus resultados. Na seção \ref{sec:filomp} é descrito o
+anterior e a avaliação de seus resultados. Na seção \ref{sec:filomp} é descrito o
 planejamento, verificações, implementações e resultados relativos aos \textit{softwares}
 de análise filogenética, e o mesmo é feito na seção \ref{sec:SAMtools} para os
 \textit{softwares} de chamada de variantes.
@@ -1203,20 +1205,20 @@ essa análise em ambientes MIMD de memória compartilhada.
 
 Considerando essa forma de trabalho, elucidada através de reuniões com os
 pesquisadores e estudo teórico e empírico das ferramentas, foram selecionadas
-as aplicações slimcodeml e LMAP para verificação (de corretude e desempenho),
+as aplicações slimcodeml e LMAP para validação (de corretude e desempenho),
 identificadas através de revisão bibliográfica, conforme descrito na seção
 \ref{sec:filoant}.
 
-Além da verificação da corretude e do desempenho dessas soluções, planejou-se
+Além da validação da corretude e do desempenho dessas soluções, planejou-se
 um traço do perfil de execução do codeml original e um estudo de seu
 funcionamento, objetivando o mapeamento de seus gargalos de desempenho e
 vislumbrando uma implementação própria que se beneficie de ambientes
 multiprocessados. Conforme mencionado previamente, o LMAP e demais
 implementações paralelizam \textit{jobs} do codeml, e não a aplicação em si. 
 
-\subsection{Verificação de aplicações selecionadas: slimcodeml e LMAP}
+\subsection{Validação de aplicações selecionadas: slimcodeml e LMAP}
 
-Para a verificação de corretude foi comparada a saída da execução do slimcodeml
+Para a validação de corretude foi comparada a saída da execução do slimcodeml
 e LMAP com o codeml original. Em particular foi comparado o valor da
 log-verossimilhança reportado por cada programa, que é o dado utilizado pelos
 pesquisadores.
@@ -1374,9 +1376,8 @@ gradiente por diferenças finitas, conforme observado na seção
 \ref{sec:parbfgs}. A motivação de paralelizar o cálculo do gradiente de forma
 ``ingênua'', ao invés de utilizando a abordagem especulativa descrita por
 \cite{byrd1988parallel}, é a prototipação rápida de uma abordagem inicial para
-verificação, seguindo a metodologia proposta. Uma segunda etapa (de ajuste),
-caso a verificação seja bem sucedida, consistiria na implementação de
-abordagens mais complexas.
+validação, seguindo a metodologia proposta. Uma segunda etapa, caso a validação
+seja bem sucedida, consistiria na implementação de abordagens mais complexas.
 
 O OpenMP, um modelo de programação paralela para arquiteturas MIMD com memória
 compartilhada \cite{chandra2001parallel}, foi selecionado para paralelização. A
@@ -1460,7 +1461,7 @@ Nesta seção é descrito o pipeline de chamada de variantes utilizando o SAMtoo
 originalmente utilizado pelos pesquisadores, compreendido através da
 implementação da etapa de planejamento da metodologia, isto é, reuniões com os
 pesquisadores, estudo teórico e empírico da ferramenta. Nas subseções que
-seguem é detalhada a aplicação da etapas de execução e verificação.
+seguem é detalhada a aplicação da etapas de execução e validação.
 
 A aplicação samtools providencia o comando \textit{view} para conversão entre
 formatos de arquivo, filtragem, e extração de porções de um arquivo, enquanto
@@ -1553,7 +1554,7 @@ são necessários somente à etapa posterior, arquivos esses na casa de gigabyte
 cada. Isso gerava a necessidade de uma limpeza manual dos arquivos depois de
 cada etapa.
 
-\subsection{Verificação de aplicações selecionadas: sambamba}
+\subsection{Validação de aplicações selecionadas: sambamba}
 
 Foi realizado um \textit{benchmark} do tempo de execução de alguns dos comandos
 supracitados contra aqueles disponibilizados pela ferramenta sambamba, descrita
