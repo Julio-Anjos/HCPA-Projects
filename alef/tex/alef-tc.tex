@@ -12,7 +12,7 @@
 %
 % Informações gerais
 %
-\title{Estudo e otimização dos softwares de bioinformática do Hospital de
+\title{Estudo e otimização dos \textit{softwares} de bioinformática do Hospital de
 Clínicas de Porto Alegre}
 
 \author{Farah}{Alef}
@@ -54,23 +54,23 @@ Clínicas de Porto Alegre}
 % resumo na língua do documento
 \begin{abstract}
   Neste trabalho foi realizado um estudo e otimização dos problemas de
-  desempenho presentes em alguns dos softwares de bioinformática utilizados
+  desempenho presentes em alguns dos \textit{softwares} de bioinformática utilizados
   pelo grupo de pesquisa em genética do Hospital de Clínicas de Porto Alegre
   (HCPA), empregando para isso técnicas de processamento paralelo. O trabalho
-  focou no software de análise filogenética codeml, do pacote PAML, amplamente
-  utilizado na literatura, e no software SAMtools, usado para chamada de
-  variantes, igualmente popular. Foi desenvolvida uma ferramenta de
-  paralelização de \textit{jobs} do SAMtools, reduzido de vários dias para
-  poucas horas o tempo de análise do grupo de pesquisa, enquanto que no caso do
-  codeml foi realizado uma análise de desempenho de alternativas encontradas em
-  revisão bibliográfica, fornecendo aos pesquisadores uma ferramenta que reduz
-  em mais da metade o tempo de execução em relação ao codeml original.
-  \end{abstract}
+  focou no \textit{software} de análise filogenética codeml, do pacote PAML, amplamente
+  utilizado na literatura, e no \textit{software} SAMtools, usado para chamada de
+  variantes, considerado estado da arte. Foi desenvolvida uma ferramenta de
+  paralelização de \textit{jobs} do SAMtools, reduzido em até 91,63\% o tempo
+  de análise do grupo de pesquisa, enquanto que no caso do codeml foi realizado
+  uma análise de desempenho de alternativas encontradas em revisão
+  bibliográfica, fornecendo aos pesquisadores uma ferramenta que reduz em até
+  69,8\% o tempo de execução em relação ao codeml original.  
+\end{abstract}
 
 % resumo na outra língua
 % como parametros devem ser passados o titulo e as palavras-chave
 % na outra língua, separadas por vírgulas
-\begin{englishabstract}{Study and optimization of the bioinformatics software used by Hospital de Clínicas de Porto Alegre}{Bioinformatics, parallelism, codeml, PAML, SAMtools} In this paper we studied and optimized the performance bottlenecks found in some of the bioinformatics software used by the genetics research group from Hospital de Clínicas de Porto Alegre (HCPA), employing parallel programming techniques to achieve these goals. The focus of our work was in the phylogenetic analysis software called codeml, from the PAML package, which is widely used in the literature, as well on the SAMtools software, used for variant calling, also popular. We developed a tool for the parallel execution of SAMtools jobs, reducing total execution time for the group's input from various days to a few hours, while in the case of codeml we analyzed the performance of solutions found in a bibliography review, supplying the researches with a tool whose execution time is half that of codeml.
+\begin{englishabstract}{Study and optimization of the bioinformatics software used by Hospital de Clínicas de Porto Alegre}{Bioinformatics, parallelism, codeml, PAML, SAMtools} In this paper we studied and optimized the performance bottlenecks found in some of the bioinformatics software used by the genetics research group from Hospital de Clínicas de Porto Alegre (HCPA), employing parallel programming techniques to achieve these goals. The focus of our work was in the phylogenetic analysis software called codeml, from the PAML package, which is widely used in the literature, as well on the SAMtools software, used for variant calling, considered state of the art. We developed a tool for the parallel execution of SAMtools jobs, reducing 91,63\% of total execution time for the group's input, while in the case of codeml we analyzed the performance of solutions found in a bibliography review, supplying the researches with a tool whose execution time is a third that of codeml.
 \end{englishabstract}
 
 % lista de figuras
@@ -84,12 +84,16 @@ Clínicas de Porto Alegre}
 \begin{listofabbrv}{POSIX}
     \item[POSIX] \textit{Portable Operating System Interface}
     \item[HCPA] Hospital de Clínicas de Porto Alegre
-    \item[GATK] \textit{Genome Analysis Toolkit}
-    \item[PAML] \textit{Phylogenetic Analysis By Maximum Likelihood}
-    \item[NCBI] \textit{National Center for Biotechnology}
     \item[BFGS] Broyden–Fletcher–Goldfarb–Shanno
+    \item[PAML] \textit{Phylogenetic Analysis By Maximum Likelihood}
+    \item[MIMD] \textit{Multiple instruction, multiple data}
+    \item[GATK] \textit{Genome Analysis Toolkit}
+    \item[NCBI] \textit{National Center for Biotechnology}
+    \item[HGDP] \textit{Human Genome Diversity Project}
+    \item[PDCA] \textit{Plan–do–check–adjust}
     \item[CPU] \textit{Central Processing Unit}
     \item[GPU] \textit{Graphics Processing Unit}
+    \item[UMA] \textit{Uniform memory access}
     \item[API] \textit{Application Programming Interface}
     \item[DNA] Ácido desoxirribonucleico
     \item[RNA] Ácido ribonucleico
@@ -100,6 +104,8 @@ Clínicas de Porto Alegre}
     \item[IPC] \textit{Inter process communication}
     \item[SNV] \textit{Single-nucleotide variant}
     \item[JIT] \textit{Just-in-time}
+    \item[HGP] \textit{Human Genome Project}
+    \item[SMP] \textit{Symmetric multiprocessor} 
     \item[GHz] Giga hertz
     \item[GB] Giga byte
     \item[TB] Tera byte
@@ -113,6 +119,9 @@ Clínicas de Porto Alegre}
     \item[$dS$] Substituições sinônimas
     \item[$F_{ST}$] Índice de fixação
     \item[$\frac{\partial f}{\partial x_i}$] Derivada parcial de $f$ com respeito a $x_i$
+    \item[$\nabla f$] Gradiente de $f$
+    \item[$\nabla^2 f$] Hessiana de $f$
+    \item[$\alpha$] Tamanho do passo da busca linear
 \end{listofsymbols}
 
 % Sumário
@@ -127,104 +136,91 @@ Clínicas de Porto Alegre}
 \chapter{Introdução}
 
 %
+% Breve contexto da área
+%
+A bioinformática representa uma área de conhecimento relativamente recente e em
+franca expansão, que se utiliza de técnicas computacionais para responder a
+perguntas do campo da biologia \cite{baxevanis2020bioinformatics}. O
+sequenciamento do genoma humano, completo em 2003 pelo HGP, o maior projeto
+colaborativo já empregado no ramo da biologia \cite{tripp2011economic}, abriu
+caminho para a análise a nível de sequências genéticas de problemas de biologia
+humana e biomedicina, alterando fundamentalmente como a ciência é conduzida
+nessa área, e apresentando desafios ao processamento da imensa quantidade de
+informação mapeada \cite{baxevanis2020bioinformatics}.
+
+%
 % Breve contexto do problema
 %
 O grupo de pesquisa em genética do Hospital de Clínicas de Porto Alegre (HCPA)
-utiliza uma série de softwares de bioinformática para análise de sequências
-genéticas. Alguns desses softwares apresentam problemas de desempenho, como
-tempo de execução ou uso de memória proibitivamente elevados, o que dificulta
-ou impede suas análises.
+utiliza uma série de \textit{softwares} de bioinformática para análise de sequências
+genéticas da espécie humana e de outras espécies. Alguns desses \textit{softwares}
+apresentam problemas de desempenho, como tempo de execução ou uso de memória
+proibitivamente elevados, o que dificulta ou impede suas análises.
 
 Nomeadamente, para a análise filogenética, que visa elucidar eventos evolutivos
-na linhagem dos seres vivos, o grupo emprega o software codeml, do pacote
+na linhagem dos seres vivos, o grupo emprega o \textit{software} codeml, do pacote
 PAML \cite{yang2007paml}. Apesar de amplamente utilizado na literatura e
 considerado referência para análise filogenética \cite{maldonado2016lmap}, o
-codeml possui implementação ingênua de métodos numéricos computacionalmente
-custosos \cite{yang2020paml}. Para uma única entrada dos pesquisadores, são
-necessárias mais de 16 horas de processamento em hardware moderno.
+codeml é sequencial e possui implementação ingênua de métodos numéricos
+computacionalmente custosos \cite{yang2020paml}. Para uma única entrada dos
+pesquisadores, são necessárias mais de seis horas de processamento em hardware
+moderno.
 
 Já para a execução da chamada de variantes, processo que visa identificar
 variações entre sequências genéticas alinhadas, o grupo emprega os pacotes
 SAMtools \cite{li2009sequence} ou ANGSD \cite{korneliussen2014angsd}, aquele
 sendo considerado estado da
-arte \cite{poplin2018universal} \cite{yao2020evaluation}. O pacote SAMtools,
-amplamente utilizado na literatura para manipulação de arquivos de sequências
-genéticas alinhadas \cite{danecek2021twelve}, apresenta tempo de execução
-demasiadamente elevado. Para uma entrada consistindo de apenas oito amostras,
-são necessários mais de quatro dias de processamento em um hardware moderno.
-Enquanto isso, o pacote ANGSD apresenta uso de memória proibitivamente elevado.
-Para uma entrada consistindo de apenas seis amostras, o uso de memória
-ultrapassava os 64 GB.
-
+arte \cite{poplin2018universal} \cite{yao2020evaluation}. O pacote SAMtools
+apresenta tempo de execução demasiadamente elevado para o caso de uso dos
+pesquisadores. Para uma entrada consistindo de apenas oito amostras de
+sequências genéticas, são necessários mais de quatro dias de processamento em
+um hardware moderno. Enquanto isso, o pacote ANGSD apresenta uso de memória
+proibitivamente elevado. Para uma entrada consistindo de apenas seis amostras,
+o uso de memória ultrapassa os 64 GB.
 
 %
 % Motivação e Objetivos (alto nível)
 %
-Motivado pela resolução dos problemas de desempenho enfrentados pelos
-pesquisadores do HCPA mesmo com ferramentas consideradas estado da arte, este
-trabalho objetivou o estudo desses softwares e de seus gargalos de desempenho,
-visando seu mapeamento e resolução. Partindo da observação que esses softwares
-não empregam técnicas de processamento paralelo ou o fazem de forma limitada,
-objetivou-se o desenvolvimento de um ferramental que empregue tais técnicas, a
-fim de beneficiar-se de ambientes multiprocessados, ubíquo em hardware moderno.
-
-Para isso, planejou-se uma revisão bibliográfica a respeito dos softwares de
-análise filogenética e chamada de variantes, seguida de análises de desempenho
-dos softwares encontrados frente àqueles atualmente utilizados no HCPA. A
-seguir, objetivou-se o traço de perfis de execução das ferramentas estudadas,
-visando identificar seus gargalos de processamento e estudar a possibilidade de
-desenvolvimento de novas ferramentas que os eliminem, potencialmente através da
-execução paralela dos algoritmos empregados.
+Motivado pelos problemas de desempenho enfrentados pelos pesquisadores do HCPA,
+mesmo com ferramentas consideradas estado da arte, este trabalho objetivou o
+estudo desses \textit{softwares} e de seus gargalos de desempenho, visando seu
+mapeamento e resolução. Em particular, partindo da observação de que os
+\textit{softwares} em questão não utilizam técnicas de processamento paralelo ou o fazem
+de forma limitada, objetivou-se disponibilizar aos pesquisadores aplicações que
+empregue tais técnicas, a fim de beneficiar-se de ambientes multiprocessados,
+ubíquo em hardware moderno.
 
 %
 % Contribuições
 %
-Neste trabalho foram mapeados e solucionados os problemas de uso de memória e
-tempo de execução proibitivamente altos enfrentados pelos pesquisadores do HCPA.
-Através de análises de desempenho e desenvolvimento de uma nova ferramenta que
-aplica técnicas de processamento paralelo, foi reduzido em até 91,63\% o tempo
-de processamento dos pipelines de análise executados no HCPA.
+Através de uma metodologia de planejamento, execução, verificação e ajuste,
+foram mapeados e solucionados os problemas de desempenho enfrentados pelos
+pesquisadores, empregando para isso técnicas de programação paralela. O tempo
+para execução da chamada de variantes foi reduzido em até 91,63\% através do
+desenvolvimento de uma ferramenta para execução de \textit{jobs} paralelos, ao
+mesmo tempo evitando problemas de alto uso de memória presentes em trabalhos
+relacionados. Já para a análise filogenética, o tempo de processamento foi
+reduzido em até 69,8\% através de uma combinação de \textit{software} identificado
+através de um estudo da literatura, um deles de paralelização de \textit{jobs}.
 
-% TODO confirmar e pegar o tempo exato
-No caso dos softwares de análise filogenética, para o qual emprega-se o pacote
-PAML no HCPA, a identificação de softwares alternativos através de um estudo da
-literatura, aliado ao desenvolvimento de uma ferramenta para sua execução
-paralela, resultou na redução de mais da metade do tempo de execução, para as
-entradas utilizadas pelos pesquisadores.
-
-Já no caso do processo de chamada de variantes, para o qual empregam-se os
-pacotes ANGSD ou SAMtools no HCPA, foi desenvolvida uma ferramenta para
-execução paralela desse que reduziu em 91,63\% o tempo de execução em relação
-ao pipeline originalmente utilizado pelos pesquisadores, ao mesmo tempo
-evitando problemas de alto uso de memória como aqueles presentes no pacote
-ANGSD. Isso permitiu que o SAMtools fosse utilizado como alternativa definitiva
-ao software ANGSD, cujos problemas de desempenho foram mapeados através de um
-perfil de execução, mas não foram atacados nesse trabalho, sendo a ferramenta
-de paralelização do SAMtools a alternativa favorecida.
-
-Além disso, a ferramenta desenvolvida nesse trabalho evita deficiências
-presentes em outros trabalhos que visam melhorar o desempenho do SAMtools, que
-é considerado estado da arte. Por exemplo, a ferramenta desenvolvida apresenta
-baixo uso de memória, em contraste com alternativas encontradas na literatura
-como PVCtools e elPrep, e possui, diferente de aplicações publicadas na
-literatura como sambamba e elPrep, suporte a formatos de arquivos mais modernos
-utilizados pelos pesquisadores do HCPA.
+Além da resolução dos problemas de desempenho, foi traçado um perfil de
+execução do codeml, e os algoritmos empregados pelas rotinas responsáveis pela
+maior parte do seu tempo de execução foram estudados, explorando estratégias de
+paralelização para eles. Com isso, espera-se que a documentação gerada a partir
+de tal estudo sirva à execução de trabalhos futuros que visem otimizar ou
+paralelizar o codeml.
 
 %
 % Organização das outras seções
 %
-\section{Estrutura do texto}
-
-O resto do texto está organizado da seguinte maneira: no capítulo
-\ref{chap:bg} é apresentado um \textit{background} de bioinformática relevante à
-compreensão desse trabalho, detalhando as áreas de estudo do grupo de pesquisa
-em genética, os softwares empregados no HCPA, e os formatos de arquivo
-envolvidos. No capítulo \ref{chap:anteriores} é apresentado o estado da arte
-para cada área de estudo, bem como trabalhos relacionados a tais softwares. Já
-no capítulo \ref{chap:mod} é apresentada a metodologia de avaliação, enquanto
-que no capítulo \ref{chap:imp} apresenta-se sua implementação e os resultados
-obtidos.  Por fim, no capítulo \ref{chap:conc} é apresentada uma conclusão,
-seguida das referências.
+O resto do texto está organizado da seguinte maneira: No capítulo \ref{chap:bg}
+é apresentado um \textit{background} de bioinformática e de outras áreas do
+conhecimento relevantes à compreensão desse trabalho; no capítulo
+\ref{chap:anteriores} é apresentado o estado da arte para cada área de estudo,
+bem como trabalhos relacionados; no capítulo \ref{chap:mod} é apresentada a
+metodologia empregada; no capítulo \ref{chap:imp} apresenta-se sua
+implementação e os resultados obtidos, e no capítulo \ref{chap:conc} é
+apresentada uma conclusão, seguida das referências.
 
 %
 %
@@ -235,16 +231,20 @@ seguida das referências.
 \chapter{\textit{Background}}
 \label{chap:bg}
 
-Neste capítulo são introduzidos conceitos de bioinformática necessários à
-compreensão dos softwares que foram objeto de estudo desse trabalho.
-Na seção \ref{sec:filo} é apresentado o conceito de análise filogenética,
-objeto de estudo dos usuários do pacote PAML; na seção \ref{sec:call} é exposto
-o conceito chamada de variantes, para o qual os pacotes ANGSD e SAMtools
-são empregados, e na seção \ref{sec:formats} são descritos os formatos de
-arquivos utilizados para cada um desses processos, relevantes ao entendimento
-das soluções desenvolvidas. Por fim, na seção \ref{sec:par} são brevemente
-apresentados alguns conceitos de programação paralela relevantes a esse
-trabalho.
+Neste capítulo são introduzidos conceitos de bioinformática e demais áreas,
+necessários à compreensão dos \textit{softwares} que foram objeto de estudo desse
+trabalho e das técnicas empregas nele. Na seção \ref{sec:filo} é apresentado o
+conceito de análise filogenética, objeto de estudo dos usuários do pacote PAML;
+na seção \ref{sec:call} é exposto o conceito chamada de variantes, para o qual
+os pacotes SAMtools e ANGSD são empregados; na seção \ref{sec:formats} são
+descritos os formatos de arquivos utilizados para cada um desses processos,
+relevantes ao entendimento das soluções desenvolvidas; na seção \ref{sec:par}
+são brevemente apresentados alguns conceitos de programação paralela relevantes
+a esse trabalho; na seção \ref{sec:bfgs} são apresentados conceitos de busca
+linear e do algoritmo BFGS, estudado nesse trabalho, e, por fim, na seção
+\ref{sec:pdca} é apresentado um \textit{backgroud} relevante à metodologia
+adotada.
+
 %, e na seção \ref{sec:design} são abordados conceitos de modelagem de
 %experimentos.
 
@@ -298,12 +298,11 @@ conforme a tabela \ref{tbl:ex1} \cite{yang2002codon}.
     \label{tbl:ex1}
 \end{table}
 
-O propósito de softwares de análise filogenética como o pacote PAML é, em
+O propósito de \textit{softwares} de análise filogenética como o pacote PAML é, em
 síntese, detectar eventos de seleção positiva nas diferentes linhagens da
 árvore filogenética de uma espécie. Para isso, o PAML utiliza modelos
 estatísticos de máxima verossimilhança para comparar a hipótese de ocorrência
-desses eventos contra a hipótese nula de seleção neutra ou
-negativa \cite{moretti2012gcodeml}.
+desses eventos contra a hipótese nula \cite{moretti2012gcodeml}.
 
 \section{Chamada de variantes}
 \label{sec:call}
@@ -334,7 +333,7 @@ que o pipeline de filtragem empregado na chamada de variantes é muitas vezes
 afinado para tecnologias de leitura específicas \cite{poplin2018universal}. Um
 dos pacotes utilizados para realizar a chamada de variantes é o
 SAMtools \cite{pirooznia2014validation}, sendo considerado robusto e estado da
-arte junto ao software
+arte junto ao \textit{software}
 GATK \cite{crysnanto2019accurate} \cite{hwang2015systematic}
 \cite{yao2020evaluation} \cite{poplin2018universal}, que é descrito em mais
 detalhes na seção \ref{sec:alt}.
@@ -362,7 +361,7 @@ empregados para execução do método PBS.
 
 Os pesquisadores do HCPA utilizam os pacotes ANGSD ou SAMtools para realizar a
 chamada de variantes visando entender variações fenotípicas entre populações
-humanas, utilizando para isso o método PBS através do software ANGSD ou através
+humanas, utilizando para isso o método PBS através do \textit{software} ANGSD ou através
 de um pipeline utilizando o SAMtools e posterior análise estatística das
 saídas.
 
@@ -385,7 +384,9 @@ Tais arquivos podem ser manipulados com a ferramenta samtools, do pacote
 SAMtools \cite{danecek2021twelve}. Amostras de sequências genéticas de
 indivíduos da espécie humana são fornecidos no formato CRAM pelo projeto 1000
 Genomes, um esforço colaborativo internacional que visa sequenciar o genoma
-humano e disponibilizar a informação publicamente \cite{via20101000}.
+humano e disponibilizar a informação publicamente \cite{via20101000}. As
+amostras utilizadas neste trabalho são fruto do projeto HGDP, que visa
+sequenciar o genoma de populações humanas diversas \cite{cavalli2005human}.
 
 A chamada de variantes realiza comparações entre múltiplos arquivos nos
 formatos supracitados, produzindo arquivos que representam as variantes
@@ -402,7 +403,7 @@ demais sequências genéticas são alinhadas são fornecidos nesse formato, e o
 pacote SAMtools providencia ferramental para manipulação desses arquivos. O
 genoma de referência é publicado pelo órgão \textit{Genome Reference
 Consortium} (GRC), e a publicação mais atual é nomeada GRCh38, de
-2013 \cite{GUO201783}. Convém mencionar que o software PAML também recebe
+2013 \cite{GUO201783}. Convém mencionar que o \textit{software} PAML também recebe
 arquivos nesse formato como entrada.
 
 O projeto 1000 Genomes fornece ainda sequências alinhadas ao genoma de
@@ -412,9 +413,9 @@ ao GRCh38, encontram-se disponíveis em \textit{mirrors} como do
 \textit{National Center for Biotechnology} (NCBI), providenciando maior largura
 de banda \cite{clarke20121000}.
 
-Por fim, para o software PAML, além de arquivos FASTA contendo as sequências
+Por fim, para o \textit{software} PAML, além de arquivos FASTA contendo as sequências
 genéticas dos indivíduos da árvore filogenética, a árvore em si consiste de uma
-das entradas do software. A árvore é fornecida no formato NWK ou Newick, um
+das entradas do \textit{software}. A árvore é fornecida no formato NWK ou Newick, um
 formato texto plano com representação flexível, que basicamente separa os nodos
 por vírgula e utiliza parênteses para distinguir nodos internos de folhas.
 Originalmente introduzido na aplicação PHYLIP \cite{felsenstein1993phylip}, é
@@ -422,6 +423,12 @@ amplamente utilizado para representação de árvores filogenéticas \cite{freds
 
 \section{Programação paralela}
 \label{sec:par}
+
+A programação paralela, empregada nesse trabalho visando a melhoria do
+desempenho das aplicações estudadas, consiste no conjunto de técnicas para
+desenvolvimento de aplicações para arquiteturas multiprocessadas, descritas
+nesta seção com base em \cite{el2005advanced}, com um foco nos conceitos mais
+relevantes a esse trabalho.
 
 A forma mais comum de classificar arquiteturas de computadores no que tange
 paralelismo é a taxonomia de Flynn, introduzida em 1966. Ela descreve quatro
@@ -431,7 +438,7 @@ independentes com acesso a uma memória global. Em particular, quando esse
 acesso é uniforme entre todos processadores, diz-se da arquitetura
 \textit{symmetric multiprocessor} (SMP) ou \textit{uniform memory access}
 (UMA). Esse é o modelo mais comum em computadores pessoais e servidores de
-propósito geral \cite{el2005advanced}.
+propósito geral.
 
 Arquiteturas MIMD também podem ser organizadas com memória distribuída, em que
 os nodos de processamento são interconectados através de uma rede e não há
@@ -439,8 +446,7 @@ memória global compartilhada, os dados sendo trafegados pela rede através de
 mensagens. Por exemplo, um \textit{cluster} consiste de um conjunto de máquinas
 homogêneas, mas independentes, interconectadas através de uma rede local,
 enquanto em um \textit{grid} as máquinas podem ser heterogêneas e
-geograficamente apartadas, conectadas através de uma rede de longa distância
-\cite{el2005advanced}.
+geograficamente apartadas, conectadas através de uma rede de longa distância.
 
 \begin{table}[h]
     \caption{Taxonomia de Flynn}
@@ -450,10 +456,10 @@ geograficamente apartadas, conectadas através de uma rede de longa distância
           \textit{Categoria}  &   \textit{Descrição} \\
           \hline
           \hline
-          SISD & Fluxo único de instruções sobre um único dado
-          SIMD & Fluxo único de instruções sobre múltiplos dados
-          MISD & Fluxo múltiplo de instruções sobre um único dado
-          MIMD & Fluxo múltiplo de instruções sobre múltiplos dados
+          SISD & Fluxo único de instruções sobre um único dado \\
+          SIMD & Fluxo único de instruções sobre múltiplos dados \\
+          MISD & Fluxo múltiplo de instruções sobre um único dado \\
+          MIMD & Fluxo múltiplo de instruções sobre múltiplos dados \\
           \hline
         \end{tabular}
       \legend{Fonte: \cite{el2005advanced}}
@@ -473,8 +479,102 @@ ainda que as aplicações possuam um \textit{speedup} maior que o linear (chamad
 \textit{super speedup}), por exemplo no caso de algoritmos cujo processamento
 global é interrompido se um dos nodos de processamento paralelo encontra a
 solução, ou se o maior uso de memória \textit{cache} (distribuída entre os
-núcleos de processamento) beneficie suficientemente a
-aplicação \cite{el2005advanced}.
+núcleos de processamento) beneficie suficientemente a aplicação.
+
+\section{Otimização por busca linear}
+\label{sec:bfgs}
+
+Nesta seção, baseada em \cite{nocedal2006numerical}, são revistos alguns
+conceitos da área de otimização relevantes à compreensão do restante deste
+trabalho, com um foco em métodos de busca linear.
+
+Dada uma função $f$, o problema de otimização consiste em encontrar um ponto
+$x*$ tal que $f(x*) \le f(x)$ para todo $x$ (otimização global) ou para todo
+$x$ próximo de $x*$ (otimização local). Nesse contexto, $f$ é chamada de função
+objetivo ou função de custo. A definição supracitada compreende a minimização,
+para problemas de maximização basta inverter o sinal de $f$, uma vez que o
+mínimo de $f$ será um máximo de $-f$.
+
+Uma técnica clássica de otimização é a pesquisa ou buscar linear, também
+conhecida como método de descida. Nela, refina-se iterativamente uma
+aproximação $x_i$ de $x*$ movendo um passo de tamanho $\alpha_i$ em uma direção
+de descida $p_i$. Isto é, a cada iteração, $x_{i+1} \le x_i$, conforme
+expressado na equação de recorrência abaixo.
+
+$$ x_{i + 1} = x_i + \alpha_i p_i $$
+
+Se $f$ é contínua e multivariável, a direção de descida de máximo declive é
+$p_i = -B_{i}^{-1} \nabla f_i$, onde $\nabla$ é o gradiente de $f$, i.e. o
+vetor de suas derivadas parciais de primeira ordem. Os métodos de busca linear
+são classificados pela escolha de $B_i$. Em métodos de primeira ordem como o do
+gradiente ou do máximo declive, $B_i$ é a matriz identidade. Em métodos de
+segunda ordem como o método de Newton, $B_i = \nabla^2 f(x_i)$. Como métodos de
+segunda ordem usam derivadas de segunda ordem, eles exigem que $f$ seja duas
+vezes continuamente diferenciável. Enquanto no método de Newton a Hessiana
+$\nabla^2$ é exata, em métodos quasi-Newton $\nabla^2$ é aproximado.  Abaixo a
+equação de recorrência encontra-se reproduzida na forma usual do método de
+Newton.
+
+$$ x_{i + 1} = x_i - \alpha_i \frac{\nabla f_i}{\nabla^2 f_i} $$
+
+Dentro da categoria de métodos de segunda ordem, a forma de aproximação da
+Hessiana e a escolha do tamanho do passo definem o método. O passo $\alpha_i$
+ideal é dado por outro problema de minimização, $min_\alpha y(\alpha) = f(x_i +
+\alpha p_i)$. Métodos que calculam $\alpha_i$ ideal a cada passo são
+denominados métodos de busca linear exatos, enquanto aqueles que aproximam
+$\alpha_i$ são ditos inexatos. Uma forma de aproximar $\alpha$ de forma inexata
+é garantir que ele cumpra uma série de condições, conhecidas como condições de
+Wolfe, para um decréscimo suficiente na busca linear.
+
+O Broyden–Fletcher–Goldfarb–Shanno (BFGS) \cite{fletcher1980practical} é um
+algoritmo de otimização quasi-Newton inexato que satisfaz as condições de
+Wolfe. O BFGS armazena a aproximação do inverso da Hessiana, uma matriz $n
+\times n$ densa, onde $n$ é o número de variáveis da função sendo otimizada.
+Uma versão com uso limitado de memória que não requer o armazenamento da
+Hessiana inteira é o L-BFGS \cite{liu1989limited}. O codeml utiliza o BFGS para
+maximização da função de probabilidade, também chamada função de
+verossimilhança.
+
+\section{Método científico e o ciclo PDCA}
+\label{sec:pdca}
+
+Nesta seção são brevemente apresentados, com base no trabalho de
+\cite{moen2006evolution}, o conceito e história do método científico, do
+pragmatismo, e do ciclo PDCA (\textit{plan-do-check-adjust}), também conhecido
+como ciclo de Deming ou ciclo de Shewhart, bem como a relação entre eles,
+relevantes à metodologia adotada neste trabalho.
+
+A primeira descrição do método científico é comumente atribuída a Galileu
+Galilei (1564--1642), considerado o pai da ciência moderna, ao combinar
+experimentação empírica com avaliação matemática. Já Francis Bacon (1561--1626)
+é um expoente inicial do método que contribuiu à sua fundamentação como um
+processo iterativo de dedução e indução.
+
+O pragmatismo surge como filosofia através das figuras de Charles Pierce
+(1839--1914), William James (1842--1910), e John Dewey (1859-1952),
+influenciados por Immanuel Kant (1724--1804). Definido como a doutrina de que
+``a função do pensamento é guiar a ação'', os pragmatistas compreendem a
+natureza do conhecimento e da ciência através de seus usos práticos. Um dos
+mais influentes pragmatistas, Clarence Lewis (1883--1964), define o método
+científico como ``um teste de ideias, que, mesmo quando mal sucedido, é
+frutífero, pois aprende-se com as falhas''. 
+
+Walter Shewhart (1891--1967), considerado o pai do controle estatístico de
+processos, foi um pragmatista influenciado por Lewis. Shewhart correlaciona o
+ciclo de ``especificação, produção, e inspeção'' utilizado em linhas de
+produção com o processo de ``hipótese, experimentação, e teste da hipótese'' do
+método científico, descrevendo-o como um ``processo de obtenção de
+conhecimento''. 
+
+William Deming (1900--1993), considerado o pai do controle de qualidade
+moderno, adapta o trabalho de Shewhart para o que hoje é conhecido como o ciclo
+PDCA -- planejamento, execução, verificação, e ajuste -- inspirando-se para
+isso em uma visão pragmática do método científico. O modelo visa balancear o
+desejo e as recompensas da tomada de ação com a sabedoria de um estudo prévio.
+
+Dessa forma, a formulação moderna do ciclo de Shewhart providencia um método
+genérico para melhoria de processos ou ferramentas, inspirado em uma visão
+pragmática do método científico.
 
 %\section{Modelagem de experimentos}
 %\label{sec:design}
@@ -488,11 +588,17 @@ aplicação \cite{el2005advanced}.
 \chapter{Trabalhos relacionados}
 \label{chap:anteriores}
 
-Nesta seção é apresentado o estado da arte nas áreas de análise filogenética e
-chamada de variantes, bem como trabalhos relacionados aos softwares utilizados
-pelos pesquisadores do HCPA -- codeml, do pacote PAML, ANGSD, e SAMtools.
+Neste capítulo é apresentado o estado da arte nas áreas de análise filogenética
+e chamada de variantes, bem como trabalhos relacionados aos \textit{softwares}
+utilizados pelos pesquisadores do HCPA -- codeml, do pacote PAML, ANGSD, e
+SAMtools -- respectivamente nas seções \ref{sec:filoant} e \ref{sec:callant}.
+Além disso, são expostos trabalhos relacionados à análise de desempenho como
+empregada nesse trabalho, na seção \ref{sec:antanal}, enquanto que na seção
+\ref{sec:parbfgs} são expostos trabalhos relacionados à paralelização do
+algoritmo BFGS, descrito na seção \ref{sec:bfgs}.
 
 \section{Análise filogenética}
+\label{sec:filoant}
 
 A implementação de referência ou \textit{gold standard} na área de análise
 filogenética é a aplicação codeml, do pacote PAML \cite{valle2014optimization}.
@@ -503,11 +609,10 @@ filogenética (\textit{branch models} ou modelos de linhagem). Métodos
 estatísticos de máxima verossimilhança são então empregados para selecionar
 qual dos modelos tem o melhor ajuste (\textit{best fit}) \cite{yang2007paml}.
 
-Apesar de ser amplamente utilizado na literatura e estatisticamente
-robusto \cite{maldonado2016lmap}, o codeml possui implementação ingênua de
-métodos numéricos computacionalmente custosos \cite{yang2020paml}. Para o caso
-de uso do grupo de pesquisa em genética do HCPA, o tempo de execução é de
-vários dias.
+Apesar de ser amplamente utilizado na literatura e estatisticamente robusto
+\cite{maldonado2016lmap}, o codeml possui implementação ingênua de métodos
+numéricos computacionalmente custosos, além de ser sequencial
+\cite{yang2020paml}. 
 
 Em \cite{moretti2012gcodeml} os autores exploram o fato de múltiplas execuções
 do codeml serem independentes, o que torna a aplicação embaraçosamente
@@ -534,17 +639,20 @@ cada arquivo de entrada. Dessa forma a execução é paralela mesmo para um úni
 arquivo de entrada, dado múltiplos modelos de variação do $\omega$, que é
 justamente o caso de uso dos pesquisadores do HCPA. O LMAP faz isso criando,
 para uma entrada única, uma estrutura de diretórios com múltiplas entradas
-iguais mas configurações de modelo diferentes. O LMAP utiliza a implementação
-original do codeml, que é a implementação de referência na área.
+iguais, mas configurações de modelo diferentes. Vale ressaltar que o LMAP cria
+essa estrutura de diretórios a partir de \textit{templates} de configuração
+para cada modelo, com uma parametrização padrão. A configuração gerada a partir
+desses \textit{templates} e a respectiva estrutura de diretórios precisam ser
+manualmente ajustados às necessidades do usuário. 
 
-Em \cite{schabauer2012slimcodeml} os autores otimizam e organizam software
+Em \cite{schabauer2012slimcodeml} os autores otimizam e organizam \textit{software}
 original (codeml), mantendo o formato de entrada e saída bem como os métodos
 numéricos utilizados. Em mais detalhes, os autores substituem implementações
 ingênuas de métodos numéricos por aquelas de bibliotecas amplamente utilizadas
 na literatura como BLAS e LAPACK, além de manipularem equações matriciais a fim
 de permitir o uso de implementações mais eficientes, mas dependentes de
 propriedades como a simetria das matrizes envolvidas na operação. A
-implementação é sequencial. O novo software, nomeado slimcodeml, desempenhou
+implementação é sequencial. O novo \textit{software}, nomeado slimcodeml, desempenhou
 quase dez vezes melhor que o original para os dados de entrada dos autores, em
 uma máquina com processador Intel Xeon W3540 de 2.93 GHz. O fato da entrada e
 saída serem os mesmos, bem como os métodos numéricos, e o bom desempenho em
@@ -552,15 +660,15 @@ ambiente semelhante ao utilizado pelos pesquisadores do HCPA fizeram dessa
 ferramenta um dos focos de avaliação de desempenho desse trabalho.
 
 Em \cite{valle2014optimization} os mesmos autores do slimcodeml escrevem um
-novo software, com base de código completamente independente do codeml
+novo \textit{software}, com base de código completamente independente do codeml
 original, fornecendo uma implementação paralela em CPU. Essa implementação,
-chamada fastcodeml, possui formatos de entrada e saída diferentes do software
+chamada fastcodeml, possui formatos de entrada e saída diferentes do \textit{software}
 original, e implementa apenas um subconjunto de seus métodos. O propósito dos
 autores nesse trabalho foi explorar estratégias de paralelização e otimização
 para o problema de análise filogenética de forma geral. Não possuindo as mesmas
-entradas e saídas do software original nem implementando todos seus métodos,
+entradas e saídas do \textit{software} original nem implementando todos seus métodos,
 essa solução não é útil aos pesquisadores do HCPA, mas serve como referência
-para o desenvolvimento de novos softwares de análise filogenética.
+para o desenvolvimento de novos \textit{softwares} de análise filogenética.
 
 Dessa forma, o estado da arte da análise filogenética consiste do codeml como
 implementação de referência, além de alternativas diversas que buscam melhorar
@@ -569,8 +677,9 @@ apresentadas nessa seção, no que tange aplicabilidade ao caso de uso dos
 pesquisadores do HCPA.
 
 \section{Chamada de variantes}
+\label{sec:callant}
 
-Nesta seção os softwares utilizados no HCPA (SAMtools e ANGSD) são
+Nesta seção os \textit{softwares} utilizados no HCPA (SAMtools e ANGSD) são
 apresentados, bem como expostos trabalhos relacionados que visam a melhoria de
 seu desempenho. A seguir, são brevemente descritas ferramentas de chamada de
 variantes com amplo uso na literatura, mas que empregam métodos diferentes
@@ -619,7 +728,7 @@ entrada a ferramenta é consideravelmente mais rápida que o SAMtools, mas
 apresenta um uso de memória consideravelmente mais elevado, de 80 GB. O uso de
 memória observado pelos autores seria proibitivamente elevado para o tamanho de
 entrada utilizado pelos pesquisadores do HCPA, da mesma forma que ocorre com o
-software ANGSD, para o qual procurava-se alternativa justamente devido ao uso
+\textit{software} ANGSD, para o qual procurava-se alternativa justamente devido ao uso
 de memória. Devido a esse fator limitante, essa ferramenta também não foi
 explorada mais a fundo nesse trabalho.
 
@@ -654,7 +763,7 @@ processamento inteiramente em memória volátil. Os autores observam que isso
 incorre em alto uso de RAM quando a chamada de variantes é realizada por
 cromossomo, caso de uso dos pesquisadores do HCPA. Para uma amostra do projeto
 1000 Genomes (NA12878) com 15 GB, consideravelmente menor que as entradas
-utilizadas pelos pesquisadores do HCPA, o software dos autores utilizou 216 GB
+utilizadas pelos pesquisadores do HCPA, o \textit{software} dos autores utilizou 216 GB
 de RAM. No caso de ambientes com restrição de memória, os autores recomendam o
 uso de outras ferramentas para compor o pipeline, incluindo a ferramenta
 sambamba, descrita acima, e o próprio SAMtools. Outro fator limitante é que a
@@ -668,7 +777,7 @@ proibitivamente elevado, e ausência de comandos fundamentais à execução do
 pipeline usado pelos pesquisadores, não foram realizados testes mais
 aprofundados dessa ferramenta nesse trabalho.
 
-Uma alternativa ao SAMtools é o pacote ANGSD, um software para análise genética
+Uma alternativa ao SAMtools é o pacote ANGSD, um \textit{software} para análise genética
 de diferentes populações de uma espécie \cite{korneliussen2014angsd}. Até onde
 vai o conhecimento dos autores desse trabalho, não existem artigos publicados
 que implementem alternativas ao ANGSD ou que realizem algum trabalho em cima do
@@ -694,7 +803,7 @@ execução paralela de chamada de variantes.
 %para modelagem de erros de leitura, modelos ocultos de Markov para cálculo da
 %verossimilhança das amostras, e naive Bayes para classificação e identificação
 %das variantes, posteriormente filtrando falsos positivos com modelos afinados
-%para certas tecnologias de leitura de sequências.\cite{poplin2018universal}
+%para certas tecnologias de leitura de sequências \cite{poplin2018universal}.
 
 Uma ferramenta que implementa uma abordagem distinta tanto do GATK como do
 SAMtools é a DeepVariant, publicada em \cite{poplin2018universal}. O DeepVariant
@@ -719,13 +828,13 @@ como Hadoop e Spark, sendo construída em cima de Apache Parquet e Apache Avro.
 Outros trabalhos como \cite{boufea2017managing} apresentam abordagens
 semelhantes, enquanto que em \cite{decap2015halvade} os autores desenvolvem um
 \textit{framework} para pipelines de análise genética incluindo chamada de variantes
-baseado no GATK utilizando o modelo de programação MapReduce e o software
+baseado no GATK utilizando o modelo de programação MapReduce e o \textit{software}
 Apache Hadoop.
 
-Os softwares descritos acima são apenas algumas das alternativas ao SAMtools
+Os \textit{softwares} descritos acima são apenas algumas das alternativas ao SAMtools
 para execução da chamada de variantes -- há uma miríade de ferramentas menos
 utilizadas ou consideradas menos robustas, ou então particularmente robustas
-apenas para certas tecnologias de leitura. Mesmo os softwares alternativos
+apenas para certas tecnologias de leitura. Mesmo os \textit{softwares} alternativos
 considerados estado da arte ou particularmente robustos empregam métodos
 distintos e com resultados diferentes daqueles empregados pelo SAMtools, além
 de possuírem formatos de entrada e saída, bem como ambientes de execução
@@ -733,62 +842,224 @@ de possuírem formatos de entrada e saída, bem como ambientes de execução
 é um objeto de estudo que foge ao escopo desse trabalho, que focou no SAMtools
 e trabalhos relacionados a ele.
 
+\section{Análise de desempenho}
+\label{sec:antanal}
+
+Conforme \cite{jain2art}, a análise de desempenho é uma etapa fundamental no
+desenvolvimento de \textit{software}. Nesta seção são apresentadas algumas ferramentas
+de análise de desempenho utilizadas neste trabalho, com um foco em particular
+em ferramentas para traço de perfil de execução de aplicações sequenciais.
+
+Para realizar a análise de uma aplicação, é necessário monitorar seu desempenho
+sob uma determinada carga. Ferramentas monitoras podem ser implementadas em
+\textit{software}, \textit{hardware}, ou de forma híbrida. Monitores de \textit{software} podem ser
+classificados como reativos a eventos ou de amostragem, aqueles monitorando a
+ocorrência de certos eventos através da instrumentação da aplicação que os
+gera, enquanto os de amostragem sondam a aplicação em intervalos fixos de
+tempo \cite{jain2art}.
+
+O valgrind \cite{nethercote2007valgrind} consiste de um \textit{framework} para
+instrumentação binária dinâmica de aplicações. Em suma, o valgrind funciona
+gerando uma representação intermediária do código original através de um
+processo de tradução dinâmica (JIT), permitindo que \textit{plugins} 
+instrumentem esse código intermediário coletando dados de interesse. O valgrind
+então traduz novamente para código de máquina a representação intermediária
+agora instrumentada, que executa gerando um perfil da execução. Dessa forma, a
+aplicação de interesse não precisa ser recompilada para ser instrumentada.
+
+O callgrind \cite{weidendorfer2008sequential} é um \textit{plugin} para o
+vallgrind que, em suma, instrumenta instruções de chamada e retorno de funções
+para montar uma pilha de chamadas. Além disso, o callgrind conta instruções
+executadas por rotina e acessos a memória, além de simular acessos à cache.
+Dessa forma ele mede, através de instrumentação do código efetivamente
+executado e simulação de uso da cache, o uso de recursos (como instruções
+executadas e acesso à memória) de cada rotina, não o tempo efetivamente
+dispendido nelas. Uma interface gráfica (kcachegrind) apresenta os resultados.
+
+O gprof \cite{graham1982gprof} é uma ferramenta para gerar perfis de execução.
+Assim como o callgrind, o gprof monta uma pilha de chamadas, mas, diferente do
+callgrind, o gprof reporta tempo efetivamente dispendido em cada rotina, e não
+uso de recursos como instruções executadas. Para isso, o gprof utiliza um
+modelo híbrido de amostragem e instrumentação em tempo de compilação (em
+contraste com a instrumentação dinâmica do valgrind, que não requer
+recompilação). Como o gprof utiliza amostragem, sua intrusão (efeito no tempo
+de execução da aplicação) é consideravelmente menor que a do valgrind. Por
+outro lado, não é capturada a execução completa da aplicação, por definição.
+
+\section{BFGS paralelo}
+\label{sec:parbfgs}
+
+Conforme descrito na seção \ref{sec:bfgs} o codeml utiliza o algoritmo BFGS,
+descrito na mesma seção. Como será descrito no restante desse trabalho, o BFGS
+é uma parte relevante do codeml, e sua paralelização é de particular interesse.
+
+Em \cite{byrd1988parallel} os autores descrevem uma estratégia de paralelização
+para o BFGS em arquiteturas MIMD, seja de memória compartilhada ou distribuída.
+Os autores observam que o BFGS possui dois componentes de custo principais: a
+avaliação da função na etapa de atualização do passo $\alpha$ e no cálculo do
+gradiente $\nabla$, e as operações de álgebra linear utilizadas na aproximação
+da Hessiana $\nabla^2$ e no cálculo de $\alpha$. Os autores observam que os
+custos de operações de álgebra linear são normalmente pequenos, o custo do BFGS
+sendo dominado pelo custo de avaliação da função. Os autores estimam que, para
+funções que executem pelo menos $20n$ multiplicações ou adições e aproximação
+do gradiente por diferenças finitas, o custo de avaliação e diferenciação é de
+90\% ou mais. Os autores observam que o paralelismo mais óbvio é aquele da
+aproximação do gradiente por diferenças finitas, em que cada derivada parcial
+pode ser calculada em paralelo, mas que o \textit{speedup} pode ser menor que
+linear caso o número de processadores $p$ seja inferior ao número de variáveis
+$n$. Dessa forma, o trabalho propõem uma abordagem mais eficiente que envolve a
+avaliação e diferenciação especulativa da função. É observado ainda que a
+paralelização da álgebra linear empregada no algoritmo é interessante no caso
+em que o custo de avaliação da função objetivo não é predominante.
+
 %
 %
 % Modelo / Metodologia 
 %
 %
 
-\chapter{Metodologia}
+\chapter{Metodologia} 
 \label{chap:mod}
 
-Com base no estudo da literatura descrito no capítulo anterior foi identificado
-o estado da arte nas áreas de análise filogenética e chamada de variantes, bem
-como trabalhos que visam superar deficiências presentes nesses softwares,
-atualmente usados no HCPA. Além disso, cada um desses trabalhos foi avaliado
-considerando sua aplicabilidade para uso dos pesquisadores, os mais adequados
-sendo selecionados para estudo mais aprofundado, a ser descrito nesse capítulo,
-que discorre sobre a proposta de trabalho a ser executado a fim de atingir os
-objetivos de eliminação dos problemas de desempenho já mencionados.
+Neste trabalho objetivou-se a melhoria de desempenho dos processos executados
+pelos pesquisadores do HCPA. Para alcançar esse objetivo, foi adotado um
+processo de planejamento, execução, verificação, e ajuste, também conhecida
+como ciclo PDCA, ciclo de Shewhart, ou ciclo de Deming, um método pragmático
+para melhoria de processos inspirado no método científico, e descrito em
+maiores detalhes na seção \ref{sec:pdca}.
 
-\section{Avaliação}
-\label{sec:eval}
+Este capítulo descreve em alto nível o emprego desse método através de cada uma
+de suas etapas: Na seção \ref{sec:plan} são descritos os passos de
+planejamento; na seção \ref{sec:exec} é descrita a execução do plano traçado na
+etapa anterior e eventuais ajustes, e na seção \ref{sec:test} são descritas as
+etapas de verificação. As etapas formam um ciclo conforme exposto na figura
+\ref{fig:metodo}, que ocorre não somente de forma global, mas também dentro de
+etapas individuais -- a execução de um plano é um processo iterativo
+envolvendo estudo mais detalhado, desenvolvimento, validação, e ajuste. 
 
-O estudo do funcionamento e uso das ferramentas selecionadas para avaliação é o
-passo primordial da análise. Somente a partir dessa compreensão, obtida através
-de reuniões com os usuários e uso empírico do software, podem ser desenhadas
-avaliações mais detalhadas. Neste trabalho, cada software sob estudo é
-apresentado, e o modo de uso particular aos pesquisadores do HCPA é esmiuçado
-antes de qualquer análise posterior.
+\begin{figure} \caption{Etapas da metodologia empregada} \begin{center}
+\includegraphics[width=0.85\linewidth]{img/metodo.png} \end{center}
+\legend{Fonte: Os Autores} \label{fig:metodo} \end{figure}
 
-\subsection{\textit{Benchmark}
+\section{Planejamento} \label{sec:plan}
 
-% O quê
-Uma vez compreendido o uso do software e de alternativas mapeadas da literatura
-(quando existentes), a primeira avaliação consiste de um \textit{benchmark} do tempo de
-execução, comparando as ferramentas atualmente empregadas com as selecionadas
-para análise.
-% Por quê
-O objetivo dessa avaliação é confirmar a efetiva eliminação de gargalos de
-desempenho em alternativas que se propõem aos mesmos objetivos desse trabalho.
+A tarefa primordial de planejamento, primeira etapa do ciclo, consiste da
+compreensão do contexto e do problema dos usuários, através de reuniões com os
+mesmos. Aqui, o pesquisador deve procurar entender as áreas de conhecimento
+envolvidas, o ferramental utilizado, e os problemas enfrentados. Além disso,
+tal interação inicia um elo importante entre o pesquisador e os usuários, cujo
+diálogo é fundamental ao alinhamento de expectativas e validação dos
+resultados. Os resultados dessa etapa de planejamento encontram-se resumidos na
+forma do capítulo introdutório desse trabalho.
 
-% Como
-A fim de realizar essa avaliação de forma verossímil, propõe-se a construção de
+Uma vez compreendida a área de estudo faz-se necessário familiarizar-se com
+ela. Para isso, emprega-se um estudo teórico a fim de obter o
+\textit{background} necessário a posterior compreensão aprofundada do
+ferramental utilizado e dos problemas envolvidos. Esse estudo passa por revisão
+bibliográfica de livros-texto, artigos científicos, e manuais de ferramentas
+relevantes à área de estudo, a fim de elucidar conceitos básicos e realizar uma
+introdução a tópicos avançados relevantes ao problema específico sendo
+abordado. O capítulo \ref{chap:bg} resume os resultados dessa etapa de
+planejamento.
+
+Além do estudo teórico é fundamental uma compreensão empírica do ferramental
+utilizado e dos problemas enfrentados. Para isso, faz-se necessário a obtenção
+e uso prático das ferramentas já previamente estudadas, bem como dos dados de
+entrada utilizados pelos usuários, identificados em etapa anterior. Aqui,
+busca-se um entendimento aprofundado do modo de uso e das dificuldades dos
+usuários, através de sua observação empírica. Alguns dos resultado dessa etapa
+de planejamento manifestam-se na apresentação das ferramentas no capítulo
+\ref{chap:bg}.
+
+As etapas supracitadas visam capacitar o pesquisador à tomada de decisão que
+guiará o restante do trabalho. Além do planejamento inicial descrito acima,
+demais etapas envolvem, naturalmente, um planejamento mais detalhado. Por
+exemplo, uma vez planejada uma abordagem teórica para a solução do problema,
+sua implementação efetiva requer um estudo das aplicações envolvidas. 
+
+\section{Execução e ajuste}
+\label{sec:exec}
+
+O primeiro passo da execução é um estudo da literatura, visando localizar
+publicações que já atacaram os mesmos problemas. A identificação de soluções
+anteriores pode ser um meio de contribuição à eventual implementação de
+soluções próprias, à medida em que enriquece a visão do pesquisador por
+potenciais linhas de desenvolvimento, além de acelerar a resolução do problema,
+eliminando ou confirmando hipóteses. Além disso, a localização de soluções
+pré-existentes pode ser um fim por si só, caso os resultados obtidos em
+publicação anterior sejam satisfatórios ao problema abordado. 
+
+Tal estudo deve partir de uma revisão bibliográfica, em bases de periódicos
+relevantes na área ou através de motores de busca voltados a publicações
+científicas, caso em que os resultados selecionados devem atender a requisitos
+de qualidade, por exemplo excluindo publicações sem revisões por pares. Caso os
+resultados sejam muito numerosos, uma filtragem por relevância deve ser
+realizada.
+
+O resultado dessa revisão bibliográfica encontra-se reproduzido no capítulo
+\ref{chap:anteriores}. Uma vez efetuada a seleção de uma publicação de
+qualidade e adequada ao caso sendo estudado, faz-se necessário uma etapa de
+verificação (ou reprodução) dos resultados, descrita na seção \ref{sec:test}.
+
+Após a verificação da alternativa selecionada, uma decisão é tomada no sentido
+de adotá-la como solução final, caso seja satisfatória, ou ajustar a seleção
+através de nova revisão ou, ainda, partir para o desenvolvimento de uma solução
+própria, seja através da modificação da solução encontrada ou implementação
+original. Essa decisão leva em consideração a satisfação dos usuários com os
+resultados obtidos, a possibilidade teórica de melhoria desses resultados, bem
+como a possibilidade prática -- isto é, a relação entre esforço necessário e
+retorno esperado.
+
+Caso seja optado por uma implementação própria, é realizado um desenvolvimento
+incremental na mesma linha do ciclo global cá descrito, consistindo da
+arquitetura do sistema (planejamento), desenvolvimento de uma solução inicial
+(execução), teste (verificação), seguido de correções ou adição de novas
+funcionalidades (ajuste).
+
+\section{Verificação}
+\label{sec:test}
+
+\subsection{Corretude}
+
+A verificação de corretude de uma solução executada passa pela verificação dos
+resultados obtidos. Essa verificação se dá através da comparação com um
+resultado de referência ou \textit{gold standard} -- PAML no caso de análise
+filogenética, e SAMtools no caso de chamada de variantes.
+
+Para o caso de implementações publicadas na literatura, são desenvolvidos
+\textit{scripts} de teste para comparar a saída das aplicações, enquanto que no
+caso de desenvolvimento próprio são aplicados, adicionalmente, testes unitários
+às funções modificadas ou desenvolvidas. Em ambos os casos, a solução é
+validada junto aos usuários (pesquisadores do HCPA), que possuem maior domínio
+do problema.
+
+\subsection{Desempenho}
+
+O objetivo deste trabalho é resolução de problemas de desempenho, dessa forma,
+uma análise comparativa da \textit{performance} das soluções obtidas é
+fundamental. Cabe ressaltar que não é objetivo deste trabalho uma avaliação de
+desempenho dos \textit{softwares} variando fatores como ambiente de execução ou
+parâmetros de execução, mas sim o emprego de soluções aos problemas estudados e
+a confirmação de que elas desempenham de forma satisfatória em um escopo de
+execução limitado a ambientes multiprocessados com \textit{hardware} compatível com
+aquele aos quais os usuários possuem acesso.
+
+A fim de realizar essa análise de forma verossímil, propõe-se a construção de
 um ambiente de trabalho controlado, compatível com os utilizados pelos
 pesquisadores do HCPA, e que permita resultados reprodutíveis. Para isso, duas
 medidas foram tomadas. Primeiro, para controle do ambiente e compatibilidade
 com aquele de uso dos pesquisadores, uma máquina de uso exclusivo dos autores e
-com hardware conhecido e compatível com aquele disponível aos pesquisadores foi
-reservada para uso. Segundo, para garantir a reprodutibilidade dos resultados,
-optou-se por utilizar o software Docker, de virtualização a nível de sistema
-operacional, que fornece uma série de vantagens para pesquisa
-reprodutível \cite{boettiger2015introduction}. A imagem utilizada para todos
-testes descritos neste trabalho está disponível em repositório
-público \cite{dockerme}, enquanto que a máquina utilizada -- doravante ``Thor1''
--- encontra-se descrita na tabela \ref{tbl:thor1}.
+com \textit{hardware} conhecido e compatível com aquele disponível aos
+pesquisadores foi reservada para uso. Segundo, para garantir a
+reprodutibilidade dos resultados, optou-se por utilizar o \textit{software}
+Docker, de virtualização a nível de sistema operacional, que fornece uma série
+de vantagens para pesquisa reprodutível \cite{boettiger2015introduction}. A
+imagem utilizada para todos testes descritos neste trabalho está disponível em
+repositório público \cite{dockerme}, enquanto que a máquina utilizada --
+doravante ``Thor1'' -- encontra-se descrita na tabela \ref{tbl:thor1}.
 
 \begin{table}[h]
-    \caption{Hardware da máquina ``Thor1''}
+    \caption{\textit{Hardware} da máquina ``Thor1''}
     \centering
         \begin{tabular}{c|c}
           \hline
@@ -808,16 +1079,15 @@ público \cite{dockerme}, enquanto que a máquina utilizada -- doravante ``Thor1
 \end{table}
 
 Uma vez construído um ambiente adequado à avaliação de desempenho das
-ferramentas em estudo, propõe-se um \textit{benchmark} de tempo total de execução de
-cada ferramenta e, quando aplicável, cada etapa das análises, para entradas de
-tamanho compatível com o caso de uso dos pesquisadores. Feito isso, propõe-se o
+ferramentas em estudo, propõe-se a avaliação do tempo total de execução de cada
+ferramenta e, quando aplicável, cada etapa das análises, para entradas de
+tamanho compatível com o caso de uso dos usuários. No caso de aplicações
+paralelas, será medido também seu \textit{speedup}. Feito isso, propõe-se o
 traço de um perfil de execução das ferramentas que apresentam gargalos de
 desempenho cujas causas não sejam evidentes, a fim de mapeá-las e avaliar a
 possibilidade de implementações alternativas àquelas encontradas na literatura
 que possam agregar alguma vantagem ou possibilitar ganhos maiores de
 desempenho.
-
-\subsection{Perfil de execução}
 
 Para o traço do perfil de execução foram selecionadas duas abordagens
 distintas. No caso da análise filogenética, que consiste da execução de uma
@@ -829,142 +1099,148 @@ traçado a nível de etapas do pipeline (doravante ``alto nível''), isto é,
 medindo o custo das chamadas a cada comando de cada ferramenta.
 
 Para o traço do perfil de execução de baixo nível, no que tange processamento
-foram selecionadas as ferramentas callgrind (um \textit{plugin} padrão da ferramenta
-valgrind) e kcachegrind, respectivamente para gerar o perfil e analisar os
-resultados, além da ferramenta gprof, outro software para realizar perfis de
-execução. No que tange uso de memória, foi selecionado a ferramenta massif,
-outro \textit{plugin} padrão do valgrind. O funcionamento dessas ferramentas é
-brevemente explicado abaixo, a fim de elucidar a motivação da sua escolha.
-
-Em suma, o valgrind funciona gerando uma representação intermediária do código
-original através de um processo de tradução dinâmica (JIT), enquanto \textit{plugins}
-como o callgrind instrumentam esse código intermediário coletando dados de
-interesse. O valgrind então traduz novamente para código de máquina a
-representação intermediária agora instrumentada, que executa gerando um perfil
-da execução. Em particular, tanto o callgrind como o massif instrumentam
-instruções de chamada e retorno de funções (entre outras) para montar uma pilha
-de chamadas. Enquanto o massif instrumenta e reporta o uso de memória de cada
-rotina, o callgrind conta instruções executadas por rotina, além de contar
-acessos a memória e simular acesso à cache. Dessa forma, o callgrind mede,
-através de instrumentação do código efetivamente executado e simulação de uso
-da cache, o uso de recursos (como instruções executadas e acesso à memória) de
-cada rotina, não o tempo efetivamente dispendido
-nelas \cite{weidendorfer2008sequential}.
-
-O gprof é a ferramenta padrão em ambientes GNU/Linux para realizar perfis de
-execução. Assim como o callgrind, o gprof monta uma pilha de chamadas, mas,
-diferente do callgrind, o gprof reporta tempo efetivamente dispendido em cada
-rotina, e não uso de recursos como instruções executadas. Para isso, o gprof
-utiliza um modelo híbrido de amostragem e instrumentação em tempo de compilação
-(em contraste com a instrumentação dinâmica do valgrind, que não requer
-recompilação) \cite{graham1982gprof}. Como o gprof utiliza amostragem, sua
-intrusão (efeito no tempo de execução da aplicação) é consideravelmente menor
-que a do valgrind. Por outro lado, não é capturada a execução completa da
-aplicação, por definição.
-
-A escolha dessas ferramentas parte de um importante pressuposto, que as
-aplicações analisadas são sequenciais. Como será elucidado no restante desse
-trabalho, as aplicações que foram perfiladas usando essas ferramentas são
-sequenciais, fato esse observado através do estudo da literatura relacionada.
-Para a análise de aplicações paralelas, métodos diferentes podem se fazer
-necessários \cite{weidendorfer2008sequential}. Dito isso, a escolha do callgrind
-se dá pela riqueza e robustez dos resultados produzidos, enquanto o uso do
-gprof, cuja execução é consideravelmente mais rápida, vem para confirmação dos
-resultados obtidos pelo callgrind através de uma análise com um método de
-perfilação diferente.
+foram selecionadas as ferramentas callgrind e kcachegrind, respectivamente para
+gerar o perfil e analisar os resultados, além da ferramenta gprof, descritas em
+\ref{sec:antanal}. No que tange uso de memória, foi selecionado a ferramenta
+massif, outro \textit{plugin} padrão do valgrind. Essa escolha partiu da
+observação de que as aplicações analisadas são sequenciais -- para a análise de
+aplicações paralelas, métodos diferentes podem se fazer necessários
+\cite{weidendorfer2008sequential}. A escolha do callgrind se dá pela riqueza e
+robustez dos resultados produzidos, enquanto o uso do gprof, cuja execução é
+consideravelmente mais rápida, vem para confirmação dos resultados obtidos pelo
+callgrind através de uma análise com um método de perfilação diferente.
 
 Já para o perfil de ``alto nível'' foram desenvolvidos \textit{shell scripts}
 para mensuração do tempo total dispendido por cada etapa do pipeline, sendo uma
 análise mais simples, mas não menos relevante.
 
-\section{Implementação}
-
-Uma vez realizada uma análise de desempenho conforme discorrido nas seções
-anteriores, caso sejam identificados gargalos, propõe-se o estudo de
-implementações próprias visando sua solução, beneficiando-se de técnicas de
-processamento paralelo sempre que viável. O objetivo é explorar novas soluções
-que possam superar aquelas já presentes na literatura, caso a abordagem adotada
-venha a ser diferente, bem como beneficiar-se do caráter multiprocessado do
-hardware moderno.
-
-A exploração de novas abordagens se dá através da compreensão dos algoritmos
-empregados na implementação original, através de seu estudo, seja por manuais
-da ferramenta ou publicações a seu respeito ou por leitura do código fonte. Uma
-vez identificados e compreendidos os algoritmos empregados, propõe-se um estudo
-da literatura de alternativas mais eficientes ou que se beneficiem de
-paralelismo, e posterior implementação de tais alternativas.
-
-Uma vez desenvolvida implementação própria, faz-se necessário a execução de
-testes de corretude da mesma. Para isso propõe-se testes unitários comparando
-os resultados da implementação própria com aquela de referência (original).
-Além disso, faz-se necessário novos testes de desempenho, a serem executados
-conforme já descrito acima. No caso de implementações que façam uso de técnicas
-de paralelismo, propõe-se também a realização de testes de \textit{speedup} (desempenho
-relativo à implementação sequencial).
-
-Quanto à adoção de técnicas de processamento paralelo, foram favorecidas
-abordagens voltadas para ambientes multiprocessados com memória compartilhada e
-para as linguagens de programação C e C++ ou para ambientes POSIX no caso de
-paralelismo de \textit{jobs}. Essas escolhas se dão, respectivamente, pois os
-ambientes de uso pelos pesquisadores são esses e as aplicações em estudo são
-escritas nessas linguagens e para esse ambiente.
-
 %
 %
-% Avaliação (implementação) e Resultados
+% Implementação (da metodologia)
 %
 %
 \chapter{Implementação}
-
-%
-%
-% Avaliação (implementação) e Resultados
-%
-%
-\chapter{Avaliação}
 \label{chap:imp}
 
 Neste capítulo é exposta a implementação da metodologia descrita no capítulo
-anterior e seus resultados. Na seção \ref{sec:filomp} são descritas as avaliações de
-desempenho, implementações e resultados relativos aos softwares de análise
-filogenética, e o mesmo é feito na seção \ref{sec:SAMtools} para os softwares de
-chamada de variantes.
+anterior e seus resultados. Na seção \ref{sec:filomp} é descrito o
+planejamento, verificações, implementações e resultados relativos aos \textit{softwares}
+de análise filogenética, e o mesmo é feito na seção \ref{sec:SAMtools} para os
+\textit{softwares} de chamada de variantes.
 
 \section{Análise filogenética: pacote PAML}
 \label{sec:filomp}
-
-\subsection{Avaliação}
 
 A análise filogenética realizada pelos pesquisadores utilizando o pacote PAML
 consiste de uma única chamada à aplicação, com uma única entrada, que consiste
 da árvore filogenética das espécies sendo analisadas (no formato NWK) e das
 sequências alinhadas dessas espécies (no formato FASTA). Por fim, o codeml
-sempre recebe uma arquivo de configuração que determina os modelos (de sítio ou
-linhagem) de variação do $\omega$ a serem empregados na análise. Os modelos
-configurados pelos pesquisadores são o M1a, M2a, M7, M8, e M8a. A descrição das
-especificidades de cada modelo foge ao escopo desse trabalho, podendo ser
-encontrada em \cite{yang2000codon} e \cite{zhang2005evaluation}.
+sempre recebe um arquivo de configuração que determina os modelos (de sítio ou
+linhagem) de variação do $\omega$ a serem empregados na análise, além de
+parâmetros de execução. Os modelos configurados pelos pesquisadores são o M1a,
+M2a, M7, M8, e M8a. A descrição das especificidades de cada modelo e de todos
+parâmetros de execução foge ao escopo desse trabalho, podendo ser encontrada em
+\cite{yang2000codon} e \cite{zhang2005evaluation}. Os pesquisadores realizam
+essa análise em ambientes MIMD de memória compartilhada.
 
-\subsection{\textit{Benchmark}}
+Considerando essa forma de trabalho, elucidada através de reuniões com os
+pesquisadores e estudo teórico e empírico das ferramentas, foram selecionadas
+as aplicações slimcodeml e LMAP para verificação (de corretude e desempenho),
+identificadas através de revisão bibliográfica, conforme descrito na seção
+\ref{sec:filoant}.
 
-Foi realizado um \textit{benchmark} da aplicação original (codeml do pacote PAML) contra
-as soluções encontradas na literatura, sempre utilizando os dados de entrada
-fornecidos por pesquisadores do grupo. Na comparação com o slimcodeml,
-obteve-se uma redução no tempo total de execução de 16h 38m para 5h 24m, ou
-67,53\%. Em contraste, o LMAP apresentou tempo de execução de 10h 15m. Isto é,
-o slimcodeml foi significativamente mais rápido que a execução paralela
-utilizando o LMAP.
+Além da verificação da corretude e do desempenho dessas soluções, planejou-se
+um traço do perfil de execução do codeml original e um estudo de seu
+funcionamento, objetivando o mapeamento de seus gargalos de desempenho e
+vislumbrando uma implementação própria que se beneficie de ambientes
+multiprocessados. Conforme mencionado previamente, o LMAP e demais
+implementações paralelizam \textit{jobs} do codeml, e não a aplicação em si. 
 
-Conforme observador previamente, o slimcodeml recebe a mesma entrada e produz a
+\subsection{Verificação de aplicações selecionadas: slimcodeml e LMAP}
+
+Para a verificação de corretude foi comparada a saída da execução do slimcodeml
+e LMAP com o codeml original. Em particular foi comparado o valor da
+log-verossimilhança (logaritmo natural da função de verossimilhança) reportado
+por cada programa, que é o dado utilizado pelos pesquisadores.
+
+Os modelos de substituição de sítios do codeml utilizados foram o M1a, M2a, M7,
+M8, e M8a, e os resultados (log-verossimilhança) são apresentados na tabela
+\ref{tbl:log}. Os resultados utilizando o LMAP foram omitidos, uma vez que a
+ferramenta simplesmente paraleliza \textit{jobs} -- os valores de saída são
+idênticos aos da execução sequencial. Observa-se que a única diferença consta
+no modelo M8, na sexta casa decimal. Trata-se de um artefato de exibição -- o
+codeml original imprime a saída arredondada à sexta casa decimal, enquanto o
+slimcodeml imprime até a décima quinta casa decimal utilizando notação
+científica. Na tabela o valor foi truncado ao invés de arredondado, a fim de
+demonstrar a diferença na saída.
+
+\begin{table}[h]
+    \caption{Log-verossimilhança produzida pelas ferramentas de análise filogenética}
+    \centering
+        \begin{tabular}{c|c|c}
+          \hline
+          \textit{Ferramenta}  &   \textit{Modelo} & \textit{Log-verossimilhança (lnL)} \\
+          \hline
+          \hline
+          codeml            & M1a & -4639,032381 \\
+          codeml            & M2a & -4639,032381 \\
+          codeml            & M7  & -4592,001687 \\
+          codeml            & M8  & \textbf{-4587,622362} \\
+          codeml            & M8a & -4589.821078 \\
+          slimcodeml        & M1a & -4639,032381 \\
+          slimcodeml        & M2a & -4639,032381 \\
+          slimcodeml        & M7  & -4592,001687 \\
+          slimcodeml        & M8  & \textbf{-4587,622361} \\
+          slimcodeml        & M8a & -4589.821078 \\
+          \hline
+        \end{tabular}
+      \legend{Fonte: Os autores}
+    \label{tbl:log}
+\end{table}
+
+Foi realizado então uma comparação do tempo de execução da aplicação original
+(codeml do pacote PAML) com as soluções encontradas na literatura, sempre
+utilizando os dados de entrada fornecidos por pesquisadores do grupo. Na
+comparação com o slimcodeml, houve um aumento no tempo total de execução de 6h
+12m para 6h 34m. Em contraste, o LMAP apresentou tempo de execução de 1h 59m
+(uma redução de 69,8\%), utilizando todos núcleos de processamento. Isto é, o
+LMAP foi significativamente mais rápido que a execução sequencial utilizando o
+slimcodeml. Todavia, ao dividir o tempo por modelo (tabela
+\ref{tbl:pamstages}), percebe-se que o slimcodeml possui um tempo máximo menor.
+
+\begin{table}[h]
+    \caption{Tempos de execução das ferramentas por modelo}
+    \centering
+        \begin{tabular}{c|c|c}
+          \hline
+          \textit{Modelo}  & \textit{codeml} & \textit{slimcodeml} \\
+          \hline
+          \hline
+          M1a & 20m    & 39m   \\
+          M2a & 59m    & 39m    \\
+          M7  & 1h 35m & 1h 47m \\
+          M8  & 1h 59m & 1h 52m \\
+          M8a & 1h 19m & 1h 37m \\
+          \hline
+        \end{tabular}
+      \legend{Fonte: Os autores}
+    \label{tbl:pamstages}
+\end{table}
+
+Conforme observado previamente, o slimcodeml recebe a mesma entrada e produz a
 mesma saída do codeml original. Dessa forma, foi substituído o executável do
 codeml por aquele do slimcodeml e rodado o LMAP novamente, dessa forma se
-beneficiando tanto da implementação mais eficiente do slimcodeml como do
-paralelismo do LMAP. A tabela \ref{tbl:paml} apresenta uma comparação dos
-tempos de execução de cada uma das ferramentas estudadas para os arquivos de
-entrada fornecidos pelos pesquisadores do HCPA, no ambiente de execução
-descrito na tabela \ref{tbl:thor1}, bem como da combinação das ferramentas
-feita nesse trabalho. Os modelos de substituição de sítios do codeml (NSSites)
-utilizados foram o M1a, M2a, M7, M8, e M8a.
+beneficiando tanto do máximo menor do slimcodeml como do paralelismo do LMAP.
+Os testes de corretude foram repetidos. A tabela \ref{tbl:paml} apresenta uma
+comparação dos tempos de execução de cada uma das ferramentas estudadas para os
+arquivos de entrada fornecidos pelos pesquisadores do HCPA, no ambiente de
+execução descrito na tabela \ref{tbl:thor1}, bem como da combinação das
+ferramentas feita nesse trabalho. 
+
+Em suma, a maior vantagem está no uso do LMAP, que beneficia-se do paralelismo,
+para a entrada utilizada pelos pesquisadores. Todavia, pode ser útil uma
+combinação com o slimcodeml, para casos de uso em que ele performe melhor que o
+codeml. 
 
 \begin{table}[h]
     \caption{Tempos de execução das ferramentas de análise filogenética}
@@ -974,22 +1250,17 @@ utilizados foram o M1a, M2a, M7, M8, e M8a.
           \textit{Ferramenta}  &   \textit{Tempo de execução} \\
           \hline
           \hline
-          codeml & 16h 38m \\
-          slimcodeml & 5h 24m \\
-          LMAP (codeml) & 10h 15m \\
-          LMAP (slimcodeml) & 12h 33m \\
+          codeml & 6h 12m \\
+          slimcodeml & 6h 34m \\
+          LMAP (codeml) & 1h 59m \\
+          LMAP (slimcodeml) & 1h 53m \\
           \hline
         \end{tabular}
       \legend{Fonte: Os autores}
     \label{tbl:paml}
 \end{table}
 
-% TODO
-(EM ANDAMENTO) Conforme observado na tabela \ref{tbl:paml}, utilizando uma combinação das
-ferramentas slimcodeml e LMAP obteve-se TODO refazer os testes, não deveria
-ser pior o tempo com o LMAP.
-
-\subsection{Perfil de execução}
+\subsection{codeml: Perfil de execução e paralelização}
 \label{subsec:codemlpar}
 
 Além do estudo de implementações presentes na literatura, nesse trabalho o
@@ -998,54 +1269,75 @@ de entrada do caso de uso do grupo de pesquisa do HCPA, objetivando-se
 identificar gargalos de desempenho e explorar soluções alternativas às
 presentes na literatura.
 
-Com base no resultado desse perfil de execução, foram implementadas e testadas
-algumas abordagens de paralelismo em CPU das rotinas que consumiam o maior
-tempo de execução do codeml, mas tal abordagem foi posteriormente descartada em
-favor das soluções encontradas na literatura, conforme será descrito abaixo.
-Uma abordagem para GPU foi estudada, mas igualmente descartada em favor das
-soluções existentes.
+Com base no resultado desse perfil de execução e estudo da ferramenta, foram
+implementadas e testadas algumas abordagens de paralelismo em CPU das rotinas
+que consumiam o maior tempo de execução do codeml, mas tal abordagem foi
+posteriormente descartada em favor das soluções encontradas na literatura,
+conforme será descrito abaixo. 
 
-O perfil de execução revelou que $97,28\%$ do tempo de execução da aplicação
-era dispendido na rotina \textit{ming2}. Um estudo do código fonte revela que
-ela implementa o algoritmo de Broyden–Fletcher–Goldfarb–Shanno (BFGS), um
-método numérico para resolução de problemas de otimização. Tal método possui,
-no caso do codeml, duas sub-rotinas responsáveis por quase a totalidade de seu
-tempo de execução: \textit{gradientB} e \textit{LineSearch2}.
+O perfil de execução obtido com o callgrind revela que a rotina \textit{ming2}
+é responsável por $97,28\%$ do custo de processamento do codeml. Através de um
+estudo da aplicação observou-se que essa rotina implementa o algoritmo BFGS,
+descrito na seção \ref{sec:bfgs}. O codeml utiliza ele para maximizar a função
+de probabilidade, no escopo da estimativa por máxima verossimilhança. 
 
-A rotina \textit{gradientB}, responsável por $42,99\%$ do tempo total da
-aplicação, implementa o cálculo do gradiente via diferenças finitas, enquanto
-\textit{LineSearch2}, responsável por $53,27\%$ do tempo de execução,
-implementa um método numérico de busca linear utilizando interpolação
-quadrática, descrito em \cite{wolfe1978numerical}. A
-figura~\ref{fig:kcachegrind} fornece uma visualização da pilha de chamadas em
-questão.
+Tal método possui duas sub-rotinas responsáveis por quase a totalidade de seu
+custo: \textit{gradientB} e \textit{LineSearch2}. A rotina \textit{gradientB},
+responsável por $42,99\%$ do custo, implementa o cálculo do gradiente via
+diferenças finitas, enquanto \textit{LineSearch2}, responsável por $53,27\%$ do
+custo, implementa um método numérico de busca linear utilizando interpolação
+quadrática, descrito em \cite{wolfe1978numerical}, para atualizar o passo
+$\alpha_i$.
+
+Ambas rotinas, por sua vez, chamam a rotina \textit{lfundG}, responsável po
+94,98\% do custo total do programa. \textit{lfundG} é a função de
+verossimilhança (ou função de probabilidade) sendo constantemente avaliada
+(para atualização do $\alpha$) e diferenciada (para o cálculo do gradiente) no
+processo de otimização. Essa rotina, por sua vez, é modularizada em
+\textit{fx\_r}. A figura \ref{fig:kcachegrind}, uma captura de tela da
+ferramenta kcachegrind, mostra uma visualização da pilha de chamadas
+supracitada.
+
+Em outras palavras, a avaliação e diferenciação da função objetivo constitui
+94,98\% do custo do BFGS no codeml, que implementa o cálculo do gradiente por
+diferenças finitas. Esse é exatamente o resultado esperado para essa classe de
+problemas, conforme descrito no trabalho de \cite{byrd1988parallel}, exposto na
+seção \ref{sec:parbfgs}. O BFGS, por sua vez, representa 97,28\% do custo do
+codeml. O perfil foi traçado também com o gprof, sem alterações
+significativas nos resultados, confirmando a análise pelo callgrind. Importante
+ressaltar que esses testes consideram a entrada dos pesquisadores do HCPA e o
+ambiente descrito na tabela \ref{tbl:thor1}.
 
 \begin{figure} \caption{Pilha de chamadas do codeml} \begin{center}
-\includegraphics[width=0.3\linewidth]{img/kcachegrind.png} \end{center}
+\includegraphics[width=0.9\linewidth]{img/kcachegrind.png} \end{center}
 \legend{Fonte: Os Autores} \label{fig:kcachegrind} \end{figure}
 
-\subsection{Implementação}
-\label{subsec:codemlpar}
+A primeira implementação paralela considerada foi a mais óbvia, do cálculo do
+gradiente por diferenças finitas, conforme observado na seção
+\ref{sec:parbfgs}. A motivação de paralelizar o cálculo do gradiente de forma
+``ingênua'', ao invés de utilizando a abordagem especulativa descrita por
+\cite{byrd1988parallel}, é a prototipação rápida de uma abordagem inicial para
+verificação, seguindo a metodologia proposta. Uma segunda etapa (de ajuste),
+caso a verificação seja bem sucedida, consistiria na implementação de
+abordagens mais complexas.
 
-Foi considerada uma implementação paralela para todos os métodos numéricos
-supracitados. Em um primeiro momento o cálculo do gradiente foi paralelizado
-utilizando OpenMP, um modelo de programação paralela para sistemas com
-múltiplos processadores com memória compartilhada \cite{chandra2001parallel}. A
-escolha de OpenMP se dá por três fatores: ser adequado ao ambiente de trabalho
-dos pesquisadores do HCPA (máquinas multiprocessadas), pela simplicidade de uso
-para paralelização de laços, e pela disponibilidade nos ambientes utilizados.
+O OpenMP, um modelo de programação paralela para arquiteturas MIMD com memória
+compartilhada \cite{chandra2001parallel}, foi selecionado para paralelização. A
+escolha OpenMP se dá por três fatores: ser adequado ao ambiente de trabalho dos
+pesquisadores do HCPA, pela simplicidade de uso para paralelização de laços, e
+pela disponibilidade nas linguagens e sistemais operacionais utilizados.
 
-O cálculo do gradiente é aproximado utilizando diferenças finitas para obter as
-derivadas parciais de primeiro grau. O codeml permite utilizar diferenças
-finitas progressivas, centradas, ou regressivas. A paralelização se dá sob
-todas variáveis da função cujo gradiente está sendo obtido. O número de \textit{threads}
-foi definido pelo mínimo entre o número de núcleos de processamento disponíveis
-e o número de variáveis na função (iterações no laço). Foi utilizado um
-escalonador estático com tamanho do bloco igual ao número de variáveis sob o
-número de \textit{threads}, uma vez que a carga de trabalho é homogênea (as variáveis
-são todas da mesma função). O algoritmo encontra-se reproduzido abaixo, onde
-$p$ é o número de processadores disponíveis, $t$ o número de \textit{threads} a ser
-usado, $c$ o tamanho do bloco, e $n$ o número de variáveis.
+Para o cálculo do gradiente, o codeml permite utilizar diferenças finitas
+progressivas, centradas, ou regressivas. A paralelização se dá sob todas
+variáveis da função cujo gradiente está sendo obtido. O número de
+\textit{threads} foi definido pelo mínimo entre o número de núcleos de
+processamento disponíveis e o número de variáveis na função (iterações no
+laço). Foi utilizado um escalonador estático com tamanho do bloco igual ao
+número de variáveis sob o número de \textit{threads}, uma vez que a carga de
+trabalho é homogênea (as variáveis são todas da mesma função). O algoritmo
+encontra-se reproduzido abaixo, onde $p$ é o número de processadores
+disponíveis, $t$ o número de \textit{threads} a ser usado, $c$ o tamanho do
+bloco, e $n$ o número de variáveis.
 
 \begin{algorithmic}
 \State $t \gets \max(1, \min(p, n))$
@@ -1085,7 +1377,9 @@ dependências pudessem ter sido removidas, possibilitando a implementação
 paralela do cálculo do gradiente. Todavia, apesar de melhor organizado, o
 slimcodeml ainda apresenta o mesmo compartilhamento de memória e uso de
 variáveis globais encontrados na implementação original, inviabilizando essa
-estratégia de paralelização nesse software.
+estratégia de paralelização nesse \textit{software}, bem como estratégias de
+paralelização do BFGS mais complexas que envolvam a avaliação ou diferenciação
+da função objetivo. 
 
 A partir daí foram voltadas as atenções para \textit{LineSearch2}, mas não foi
 encontrado na literatura implementações paralelas para o método descrito em
@@ -1094,29 +1388,28 @@ apresentavam os mesmos problemas de compartilhamento de memória encontrados nas
 outras rotinas estudadas, tanto na implementação original como no slimcodeml,
 portanto a paralelização dessa rotina também foi abandonada.
 
-Por fim, as atenções foram voltadas para o próprio \textit{ming2}, cujo método
-numérico (BFGS) é iterativo. Foi realizada uma revisão bibliográfica, que
-revelou implementações paralelas desse algoritmo para GPU em
-\cite{fei2014parallel}. Os resultados mostram que a implementação não
-performa bem para entradas pequenas. Foi realizado então um estudo do uso pelo
-codeml desse algoritmo, realizando para isso pequenas adaptações no código para
-aumentar a verbosidade dos \textit{logs} da aplicação, ao que observou-se  que
-o codeml trabalha com uma entrada fixa de tamanho 61 para esse algoritmo -- o
-número códons que traduzem para aminoácidos -- tamanho esse considerado pequeno
-com base no estudo supracitado. Dessa forma, conclui-se que uma paralelização
-em GPU seria ineficiente. Além disso, a paralelização desse algoritmo é
-complexa e de difícil adaptação ao caso do codeml.
+Por fim, observa-se que algumas das operações matriciais otimizadas pelo
+slimcodeml são da função de probabilidade, cuja avaliação representa o maior
+custo do codeml. Por exemplo, sua sub-rotina \textit{PMatUVRoot}, que pode ser
+visualizada na figura \ref{fig:kcachegrind}, tem sua implementação substituída
+por aquela da biblioteca BLAS -- no slimcodeml, ela é renomeada para
+\textit{PMatUVRoot2}.
 
-Dessa forma, essa abordagem também foi descartada, esgotando todas
-possibilidades de paralelização das rotinas responsáveis por quase a totalidade
-do tempo de execução do codeml. Ou seja, este trabalho limitou-se à avaliação
-de desempenho das alternativas encontradas na literatura, no que tange os
-softwares de análise filogenética.
+Sendo assim, a paralelização do BFGS tal qual implementado no codeml foi
+descartada, esgotando todas possibilidades de paralelização das rotinas
+responsáveis por quase a totalidade do tempo de execução do codeml devido à
+implementação não \textit{thread-safe}. Isto é, as aplicações selecionadas a
+partir de revisão bibliográfica e verificadas sa seção anterior foram
+fornecidas como solução aos usuários.
 
-\section{Chamada de variantes: Pacote SAMtools}
+\section{Chamada de variantes}
 \label{sec:SAMtools}
 
-\subsection{Avaliação}
+Nesta seção é descrito o pipeline de chamada de variantes utilizando o SAMtools
+originalmente utilizado pelos pesquisadores, compreendido através da
+implementação da etapa de planejamento da metodologia, isto é, reuniões com os
+pesquisadores, estudo teórico e empírico da ferramenta. Nas subseções que
+seguem é detalhada a aplicação da etapas de execução e verificação.
 
 A aplicação samtools providencia o comando \textit{view} para conversão entre
 formatos de arquivo, filtragem, e extração de porções de um arquivo, enquanto
@@ -1196,7 +1489,7 @@ reproduzida na figura \ref{fig:stage3_orig}.
 \begin{figure}
   \caption{Fluxo de análise original via SAMtools, etapa 3}
     \begin{center}
-      \includegraphics[width=0.85\linewidth]{img/stage3_orig.png}
+      \includegraphics[width=0.65\linewidth]{img/stage3_orig.png}
     \end{center}
     \legend{Fonte: Os Autores}
     \label{fig:stage3_orig}
@@ -1209,7 +1502,7 @@ são necessários somente à etapa posterior, arquivos esses na casa de gigabyte
 cada. Isso gerava a necessidade de uma limpeza manual dos arquivos depois de
 cada etapa.
 
-\subsection{\textit{Benchmark}}
+\subsection{Verificação de aplicações selecionadas: sambamba}
 
 Foi realizado um \textit{benchmark} do tempo de execução de alguns dos comandos
 supracitados contra aqueles disponibilizados pela ferramenta sambamba, descrita
@@ -1222,7 +1515,7 @@ versões mais antigas, apresentou problemas na leitura dos arquivos -- no
 \textit{issue tracker} do projeto há relatos desses problemas, e a resposta dos
 autores foi remover o suporte a CRAM completamente. Cada conversão leva entre
 duas e três horas para arquivos de entrada entre 22 GB e 34 GB, na máquina
-Thor1, cujo hardware está descrito na tabela \ref{tbl:thor1}.
+Thor1, cujo \textit{hardware} está descrito na tabela \ref{tbl:thor1}.
 
 Feita a conversão, foram testados individualmente os comandos providenciados
 pela ferramenta sambamba, comparando com os comandos equivalentes da ferramenta
@@ -1230,7 +1523,8 @@ samtools. O comando de indexação foi consideravelmente mais lento na ferrament
 sambamba, apesar de usar múltiplos núcleos enquanto o samtools roda
 sequencialmente. Enquanto o samtools levou 39s para indexar um CRAM de 26 GB, o
 sambamba levou 2m 9s para indexar o BAM convertido a partir dele, de 53 GB. A
-amostra utilizada foi a HGDP00519, do projeto 1000 Genomes \cite{via20101000}.
+amostra utilizada foi a HGDP00519, do projeto HGDP \cite{cavalli2005human},
+fornecida pelo projeto 1000 Genomes \cite{via20101000}.
 
 Já para a rotina de visualização de uma região ou cromossomo o sambamba foi
 consideravelmente mais rápido. Enquanto o samtools levou 4m 5s para visualizar
@@ -1270,7 +1564,7 @@ necessário uma conversão custosa, de várias horas para cada arquivo de entrad
 para uma redução no tempo de execução de poucos minutos para alguns segundos.
 No total, não traria benefícios aos usuários.
 
-\subsection{Perfil de execução}
+\subsection{SAMtools: Perfil de execução e paralelização}
 
 Através de um estudo da literatura e do manual das ferramentas utilizadas
 percebeu-se oportunidade de melhorias no fluxo de análise utilizado pelos
@@ -1281,14 +1575,15 @@ desnecessário, uma vez que as ferramentas possuem suporte a CRAM. Isso ocorre
 por motivos históricos, pois originalmente o SAMtools não trabalhava com
 arquivos CRAM \cite{danecek2021twelve}.
 
-Foi medido o tempo de execução de cada um dos comandos que compõem o fluxo
-original de análise, expostos na tabela \ref{tbl:sambamba}, para uma entrada
-de uma amostra. A conversão de CRAM para BAM era particularmente custosa.
-Observado isso, foi testado e comprovado que todo restante da análise poderia
-ser executado sem essa etapa, observando o suporte para CRAM e comparando as
-saídas do fluxo otimizado com o fluxo original. Dessa forma, essa etapa de
-conversão foi removida no fluxo otimizado.
-P
+Foi verificado através de testes de desempenho medido o tempo de execução de
+cada um dos comandos que compõem o fluxo original de análise, expostos na
+tabela \ref{tbl:sambamba}, para uma entrada de uma amostra. A conversão de CRAM
+para BAM era particularmente custosa.  Observado isso, foi verificado através
+de testes de corretude que todo restante da análise poderia ser executado sem
+essa etapa, observando o suporte para CRAM e comparando as saídas do fluxo
+otimizado com o fluxo original. Dessa forma, essa etapa de conversão foi
+removida no fluxo otimizado.
+
 Ainda em \cite{danecek2021twelve} os autores comentam que conversões de BCF
 para VCF são custosas e porventura desnecessárias. Na última etapa do fluxo de
 análise original é realizada tal conversão seguida de um filtro, para uso dos
@@ -1312,13 +1607,11 @@ do genoma de referência também fornece o respectivo arquivo de índice, que te
 apenas 2,7 megabytes. Dessa forma, a etapa de indexação foi substituída pelo
 download do índice de referência, novamente economizando tempo de execução.
 
-\subsection{Implementação}
-
 Foi observado ainda que as duas primeiras etapas do fluxo original eram
 embaraçosamente paralelas, consistindo de passos independentes para cada
 arquivo de entrada.  Como os pesquisadores do HCPA possuem acesso a máquinas
 multiprocessadas, foi realizada uma paralelização de ambas etapas utilizado GNU
-Parallel \cite{tange_ole_2021_5233953}l. A escolha dessa ferramenta se deu pela
+Parallel \cite{tange_ole_2021_5233953}. A escolha dessa ferramenta se deu pela
 facilidade de uso, disponibilidade nos ambientes usados pelos pesquisadores, e
 suporte a ajuste automático do número de \textit{jobs} paralelos ao número de
 núcleos de processamento disponíveis. Foi desenvolvida uma ferramenta para
@@ -1363,7 +1656,8 @@ tempos de execução utilizando o pipeline original e o otimizado. Os testes
 foram realizados na máquina Thor1, descrita na tabela \ref{tbl:thor1},
 utilizando todos núcleos de processamento disponíveis. Foram utilizados como
 entrada as amostras HGDP00715, HGDP00711, HGDP00519, HGDP00714, HGDP00712,
-HGDP00777, HGDP00525, e HGDP00719, do projeto 1000 Genomes \cite{via20101000}.
+HGDP00777, HGDP00525, e HGDP00719, do projeto HGDP \cite{cavalli2005human},
+disponibilizadas pelo projeto 1000 Genomes \cite{via20101000}.
 
 \begin{table}[h]
     \caption{Tempos de execução do SAMtools}
@@ -1447,11 +1741,11 @@ fluxo de análise. Os resultados encontram-se reproduzidos nas tabelas
     \label{tbl:stages}
 \end{table}
 
-O \textit{speedup} para duas entradas é menor do que o ideal, tão menor quanto maior o
-número de núcleos utilizados. Isso é esperado, uma vez que não estamos
+O \textit{speedup} para duas entradas é menor do que o ideal, tão menor quanto
+maior o número de núcleos utilizados. Isso é esperado, uma vez que não estamos
 utilizando todos núcleos disponíveis na etapa 1 quando há somente duas
-entradas. Para seis entradas o mesmo é observado, mas o \textit{speedup} fica mais
-próximo do ideal. Isso é esperado, visto que utilizamos todos núcleos
+entradas. Para seis entradas o mesmo é observado, mas o \textit{speedup} fica
+mais próximo do ideal. Isso é esperado, visto que utilizamos todos núcleos
 disponíveis em todas etapas, exceto a última.
 
 Conforme pode ser observado na tabela \ref{tbl:stages}, que discrimina os
@@ -1478,18 +1772,18 @@ escolha com melhor desempenho para IPC \cite{immich2003performance}.
 
 Todavia, o fato do IO residir em memória volátil incorre em uso mais elevado
 desse recurso, justamente o que tentava-se evitar ao buscar uma alternativa a
-softwares como ANGSD e PVCtools. Dessa forma, uma vez testado e observado que o
+\textit{softwares} como ANGSD e PVCtools. Dessa forma, uma vez testado e observado que o
 uso de memória tornava-se elevado demais utilizando um pipeline, foi mantida
 somente a paralelização de \textit{jobs} sob os arquivos de entrada, com
 remoção automática dos arquivos intermediários gerados por cada etapa, operação
 antes realizada manualmente pelos pesquisadores. Observa-se que é precisamente
-esse tipo de abordagem que tomam os softwares sambamba e elPrep, que apresentam
+esse tipo de abordagem que tomam os \textit{softwares} sambamba e elPrep, que apresentam
 uso de memória demasiadamente elevado.
 
 Tanto o samtools como o bcftools e a ferramenta desenvolvida pelos autores
-requerem um ambiente com uma série de softwares pré-instalados e em versões
+requerem um ambiente com uma série de \textit{softwares} pré-instalados e em versões
 específicas, o que porventura gerava dificuldades aos pesquisadores do HCPA. A
-fim de superar tais dificuldades decidiu-se por utilizar o software Docker,
+fim de superar tais dificuldades decidiu-se por utilizar o \textit{software} Docker,
 também utilizado nas análises de desempenho. Além disso, foi desenvolvida uma
 interface gráfica para o uso do samtools e bcftools para chamada de variantes.
 O intuito é facilitar o uso do ferramental para profissionais da biologia que
@@ -1552,11 +1846,9 @@ plataformas Linux, Mac, e Windows, respectivamente.
 \section{Chamada de variantes: Pacote ANGSD}
 \label{sec:angsd}
 
-\subsection{Avaliação}
-
 Outra aplicação utilizada pelo grupo de pesquisa em genética é o pacote ANGSD,
-software para análise genética de diferentes populações de uma
-espécie \cite{korneliussen2014angsd}. Os pesquisadores utilizam esse software
+\textit{software} para análise genética de diferentes populações de uma
+espécie \cite{korneliussen2014angsd}. Os pesquisadores utilizam essa aplicação
 para determinar se a genética de uma população influencia em alguma
 característica específica de seus indivíduos, através de um teste chamado
 \textit{Population Branch Statistic} (PBS), caracterizado pela comparação da
@@ -1579,7 +1871,7 @@ htslib para manipulação desses arquivos.
 Uma primeira observação realizada através de reuniões com os pesquisadores é
 que esses dados de entrada são obtidos sempre no formato CRAM do projeto 1000
 Genomes, e que estava sendo realizada uma etapa de conversão de CRAM para BAM
-para uso do angsd. Essa conversão é realizada utilizando o software SAMtools,
+para uso do angsd. Essa conversão é realizada utilizando o \textit{software} SAMtools,
 descrito em mais detalhes na seção \ref{sec:SAMtools}, e leva algumas horas
 para cada arquivo de entrada. Todavia, como observado anteriormente, o angsd
 trabalha também com o formato CRAM, fato esse observado através do estudo do
@@ -1587,10 +1879,10 @@ manual da ferramenta. Sendo assim, a etapa de conversão é desnecessária. Essa
 observação já economizou algumas horas de execução.
 
 Eliminada essa etapa de pré-processamento dos dados, realizou-se um perfil de
-execução do software a fim de elucidar seu alto uso de memória. Foi utilizada a
-ferramenta massif, do software valgrind.
+execução do \textit{software} a fim de elucidar seu alto uso de memória. Foi utilizada a
+ferramenta massif, do \textit{software} valgrind.
 
-\subsection{Perfil de execução}
+\subsection{ANGSD: Perfil de execução}
 
 Inicialmente realizou-se um estudo do utilitário realSFS, que apresentava o
 principal problema de desempenho. Através de um estudo do código fonte foi
@@ -1636,28 +1928,28 @@ por parte dos pesquisadores.
 \chapter{Conclusão}
 \label{chap:conc}
 
-Neste trabalho foram estudados os softwares de bioinformática usados pelos
+Neste trabalho foram estudados os \textit{softwares} de bioinformática usados pelos
 pesquisadores do Hospital de Clínicas de Porto Alegre, nomeadamente os
-softwares de análise filogenética e chamada de variantes, com um foco nos
+\textit{softwares} de análise filogenética e chamada de variantes, com um foco nos
 pacotes PAML e SAMtools, que realizam tais tarefas, respectivamente.
 
-No caso dos softwares de análise filogenética foi realizado um estudo da
+No caso das aplicações de análise filogenética foi realizado um estudo da
 literatura, análise de desempenho das soluções encontradas e da solução de
 referência usada pelos pesquisadores do HCPA (pacote PAML), além de uma
-tentativa de paralelização do software original. Com isso, concluiu-se que uma
-implementação paralela exigiria grande esforço, provavelmente necessitando uma
-reescrita do software para eliminar compartilhamento de memória e uso
-abundante de variáveis globais presentes na implementação original que
-dificultam sua paralelização. Além disso, foi encontrada solução na literatura
-que reduz em mais da metade o tempo de processamento para o caso de uso dos
-pesquisadores do HCPA, sendo essa a alternativa adotada para análise
+tentativa de paralelização da ferramenta original. Com isso, concluiu-se
+que uma implementação paralela exigiria grande esforço, provavelmente
+necessitando uma reescrita do \textit{software} para eliminar compartilhamento
+de memória e uso abundante de variáveis globais presentes na implementação
+original que dificultam sua paralelização. Além disso, foi encontrada solução
+na literatura que reduz em mais da metade o tempo de processamento para o caso
+de uso dos pesquisadores do HCPA, sendo essa a alternativa adotada para análise
 filogenética.
 
-Para os softwares de chamada de variantes também foi realizado uma revisão
+Para os \textit{softwares} de chamada de variantes também foi realizado uma revisão
 bibliográfica e análises de desempenho, além do desenvolvimento de uma
 ferramenta própria que paraleliza \textit{jobs} da aplicação de referência
 (SAMtools), otimizando o pipeline de chamada de variantes utilizado até então
-pelos pesquisadores do HCPA, além de fornecer uma interface gráfica para sua
+pelos pesquisadores do HCPA em até 91,63\%, além de fornecer uma interface gráfica para sua
 operação. A escolha de desenvolvimento de uma solução própria que paraleliza
 \textit{jobs} da aplicação de referência visa superar deficiências presentes em
 soluções encontradas na literatura, nomeadamente o uso elevado de memória, a
@@ -1681,32 +1973,51 @@ facilita a reprodução dos resultados obtidos nesse trabalho.
 
 \section{Discussão e trabalhos futuros}
 
-Além do pacote SAMtools e softwares alternativos a ele, existem diversas
-ferramentas utilizados para chamadas de variante utilizando modelos diferentes
-daquele empregado pelo SAMtools, produzindo resultados discrepantes conforme
-descrito na seção \ref{sec:alt}.
+Além do pacote SAMtools e \textit{softwares} alternativos a ele, existem
+diversas ferramentas utilizados para chamadas de variante utilizando modelos
+diferentes daquele empregado pelo SAMtools, produzindo resultados discrepantes
+conforme descrito na seção \ref{sec:alt}. Um trabalho futuro consiste em
+explorar o uso dessas ferramentas junto aos pesquisadores do grupo de pesquisa
+em genética, com avaliação tanto de seu desempenho como da aplicabilidade desse
+ferramental considerando os resultados potencialmente diferentes entre si, para
+o caso de uso do HCPA, levando em consideração a literatura a respeito dessas
+ferramentas.
 
-Um trabalho futuro consiste em explorar o uso dessas ferramentas junto aos
-pesquisadores do grupo de pesquisa em genética, com avaliação tanto de seu
-desempenho como da aplicabilidade desse ferramental considerando os resultados
-potencialmente diferentes entre si, para o caso de uso do HCPA, levando em
-consideração a literatura a respeito dessas ferramentas.
-
-Outra linha de trabalho futuro é a adição de suporte a arquivos CRAM às
-ferramentas sambamba e elPrep, a fim de adequá-las aos arquivos atualmente
-disponibilizados pelo projeto 1000 Genomes. Uma abordagem seria utilizar a
+A adição de suporte a arquivos CRAM às ferramentas sambamba e elPrep, a fim de
+adequá-las aos arquivos atualmente disponibilizados pelo projeto 1000 Genomes
+pode ser de interesse para trabalhos futuros. Uma abordagem seria utilizar a
 htslib para isso, levando em consideração que essas ferramentas dividem os
 arquivos de entrada para processamento -- não bastaria simplesmente utilizar a
 API para leitura do arquivo CRAM completo para memória.
 
-Por fim, outro trabalho futuro consiste no estudo de uma abordagem para \textit{cluster}
-e comparação com as ferramentas presentes na literatura que adotam tal
-abordagem. Um desafio em tal abordagem é a transferência dos dados entre os
-nodos de execução, uma vez que cada etapa intermediária produz saídas de vários
-gigabytes para cada entrada. Uma possibilidade é o uso de \textit{frameworks} Apache
-Flink, especificamente projetado para processamento paralelo e com tolerância a
-falhas de pipelines (isto é, fluxos de execução em que a entrada de uma etapa é
-a saída da anterior) \cite{carbone2015apache}.
+Ainda outro trabalho futuro consiste no estudo de uma abordagem para
+\textit{cluster} e comparação com as ferramentas presentes na literatura que
+adotam tal abordagem, tanto no caso do PAML como do SAMtools. Em particular no
+caso do SAMtools, um desafio em tal abordagem é a transferência dos dados entre
+os nodos de execução, uma vez que cada etapa intermediária produz saídas de
+vários gigabytes para cada entrada. Uma possibilidade é o uso de
+\textit{frameworks} Apache Flink, especificamente projetado para processamento
+paralelo e com tolerância a falhas de pipelines (isto é, fluxos de execução em
+que a entrada de uma etapa é a saída da anterior) \cite{carbone2015apache}.
+
+O desenvolvimento de um ferramental para execução de \textit{jobs} paralelos do
+codeml que simplifique a divisão da entrada em relação ao LMAP é um trabalho
+futuro de interesse. Conforme descrito na seção \ref{sec:filoant}, a estrutura
+de diretórios gerada pelo LMAP para dividir a entrada precisa ser manualmente
+afinada à parametrização desejada, uma vez que ela é criada a partir de
+\textit{templates}. Apesar da proposta do LMAP ser justamente simplificar essa
+divisão e posterior execução paralela, a necessidade de ajuste manual na
+estrutura de diretórios causa, na experiência dos autores, dificuldade maior do
+que a criação manual dessa estrutura e a execução paralela de jobs usando GNU
+Parallel. Dessa forma, há espaço para o desenvolvimento de um ferramental que
+realize a divisão da entrada de acordo com as necessidades dos usuários do
+HCPA, sem necessidade de parametrização manual, bem como a posterior execução
+paralela da entrada dividida.
+
+Uma linha de trabalho mais distante desse, mas relacionada, consiste em
+explorar estratégias de paralelização para o BFGS. Por exemplo, em
+\cite{fei2014parallel} e \cite{sanseverino2014cuda} são descritas
+implementações paralelas em GPU para o L-BFGS. 
 
 %
 %
@@ -1717,4 +2028,4 @@ a saída da anterior) \cite{carbone2015apache}.
 \bibliographystyle{abntex2-alf}
 \bibliography{biblio}
 
-end{document}
+\end{document}
