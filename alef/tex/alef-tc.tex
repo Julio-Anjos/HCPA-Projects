@@ -3,6 +3,7 @@
 \usepackage{graphicx}         % pacote para importar figuras
 \usepackage{times}            % pacote para usar fonte Adobe Times
 \usepackage{algpseudocode}
+\usepackage{float}
 \usepackage{url}
 \usepackage{amsmath}
 % \usepackage{palatino}
@@ -139,7 +140,7 @@ Clínicas de Porto Alegre}
 %
 
 \chapter{Introdução}
-\ref{chap:intro}
+\label{chap:intro}
 
 %
 % Breve contexto da área
@@ -1023,24 +1024,30 @@ em que o custo de avaliação da função objetivo não é predominante.
 \chapter{Metodologia} 
 \label{chap:mod}
 
-Neste trabalho objetivou-se a melhoria de desempenho dos processos executados
-pelos pesquisadores do HCPA. Para alcançar esse objetivo, foi adotado um
-processo de planejamento, execução, validação, e atuação, também conhecido
-como ciclo PDCA, já descrito na seção \ref{sec:pdca}.
+Neste trabalho objetivou-se a melhoria de desempenho dos processos e
+ferramental empregados pelos pesquisadores do HCPA. Para alcançar esse
+objetivo, foi adotada uma metodologia de planejamento, execução, validação, e
+atuação, baseada no ciclo PDCA clássico, já descrito na seção \ref{sec:pdca}.
+Este capítulo descreve o método particular baseado no PDCA desenvolvido nesse
+trabalho, exposto na figura \ref{fig:pdca_global}.
+
+\begin{figure}[H] \caption{Ciclo PDCA global empregado no trabalho} \begin{center}
+\includegraphics[width=0.75\linewidth]{img/pdca_global.png} \end{center}
+\legend{Fonte: Os Autores} \label{fig:pdca_global} \end{figure}
 
 O planejamento primordial inicia com uma reunião junto aos usuários do processo
 e ferramental que objetiva-se melhorar. A partir dessa reunião é traçado um
-plano de estudo dos processos e ferramentas, bem como do \textit{background}
+plano de estudo desses processos e ferramentas, bem como do \textit{background}
 necessário ao seu entendimento. Esse estudo teórico é executado através da
-busca em livros texto, manuais, e artigos relevantes à área. Uma vez
-finalizado, o conhecimento adquirido é verificado na prática, através de
+busca em livros texto, manuais, e artigos relevantes à área. Finalizado esse
+estudo, o conhecimento adquirido é verificado na prática, através de
 experimentação empírica com as ferramentas e entradas utilizadas pelos
 usuários. A partir daí, é avaliada a necessidade de nova iteração desse ciclo
-PDCA, sumarizado na parte superior da figura \ref{fig:pdca_global}, por exemplo
-se mais detalhes de uso precisam ser elucidados, ou se parte-se para a busca,
-na literatura, de soluções aos problemas estudados ou para o desenvolvimento de
-uma solução própria. Os capítulos \ref{chap:intro} e \ref{chap:bg} são
-resultado do emprego desse processo iterativo.  
+PDCA, sumarizado na parte superior da figura \ref{fig:pdca_global}. Por exemplo,
+se mais detalhes de uso precisam ser elucidados o ciclo é reiniciado. Senão,
+avalia-se executar uma busca na literatura de soluções aos problemas estudados,
+ou o desenvolvimento de uma solução própria. Os capítulos \ref{chap:intro} e
+\ref{chap:bg} são resultado do emprego desse processo iterativo.  
 
 Uma vez avaliado que uma revisão bibliográfica é necessária, planeja-se uma
 seleção de artigos a serem lidos. Essa seleção é feita através de bases de
@@ -1063,15 +1070,10 @@ desempenho, cujos resultados são avaliados, onde é decidido pela entrega ou
 replanejamento da solução. Esse ciclo PDCA encontra-se reproduzido na parte
 esquerda da figura \ref{fig:pdca_global}.
 
-Acima, foi descrita em alto nível a metodologia adotada, que encontra-se
-resumida de forma global na figura \ref{fig:pdca_global}. O restante deste
+Acima, foi descrita em alto nível a metodologia adotada. O restante deste
 capítulo descreve em mais detalhes a metodologia de testes de corretude e
 desempenho executados em cima das aplicações selecionadas através de estudo da
 literatura ou através de desenvolvimento próprio.
-
-\begin{figure} \caption{Ciclo PDCA global empregado no trabalho} \begin{center}
-\includegraphics[width=0.75\linewidth]{img/pdca_global.png} \end{center}
-\legend{Fonte: Os Autores} \label{fig:pdca_global} \end{figure}
 
 \section{Testes}
 \label{sec:test}
