@@ -70,7 +70,7 @@ Clínicas de Porto Alegre}
   facilitar o uso do ferramental por profissionais que porventura não estejam
   familiarizados com interfaces por linha de comando.
   %
-  Além disso, foi identificada uma ferramenta para execução paralela de
+  Já para a análise filogenética, foi identificada uma ferramenta para execução paralela de
   \textit{jobs} do \textit{codeml} através de uma revisão bibliográfica e de análises de
   desempenho, reduzindo em até 68\% o tempo de análise dos pesquisadores. Um
   perfil de execução do \textit{codeml} foi traçado, mapeando seus gargalos de
@@ -247,11 +247,11 @@ revisão bibliográfica e análise de desempenho, de um software de paralelizaç
 de \textit{jobs}.
 
 Além da resolução dos problemas de desempenho, foi traçado um perfil de
-execução do \textit{codeml}, e os algoritmos implementados nas rotinas responsáveis pela
-maior parte do seu tempo de execução foram caracterizados. Além disso, foram
-exploradas estratégias de paralelização para eles. Com isso, espera-se que a
-documentação gerada sirva à execução de trabalhos futuros que visem otimizar ou
-paralelizar o \textit{codeml}.
+execução do \textit{codeml}, e os algoritmos implementados nas rotinas
+responsáveis pela maior parte do seu tempo de execução foram caracterizados,
+sendo explora ainda estratégias de paralelização para eles. Com isso, espera-se
+que a documentação gerada sirva à execução de trabalhos futuros que visem
+otimizar ou paralelizar o \textit{codeml}.
 
 %
 % Organização das outras seções
@@ -438,7 +438,7 @@ A chamada de variantes realiza comparações entre múltiplos arquivos nos
 formatos supracitados, produzindo arquivos que representam as variantes
 encontradas. Quando as informações de variantes são armazenadas em texto plano
 diz-se do arquivo VCF, seu equivalente binário sendo o formato BCF, ambos
-gerados e manipulados pela ferramenta bcftools, do pacote
+gerados e manipulados pela ferramenta \textit{bcftools}, do pacote
 \textit{SAMtools} \cite{danecek2021twelve}.
 
 Já o formato FASTA é utilizado para representar sequências
@@ -501,8 +501,8 @@ para uma execução independente do processo que os originou. Observa-se que no
 caso de arquiteturas com memória distribuída não é possível o uso de
 \textit{threads} entre os nodos, uma vez que a memória não é compartilhada.
 Por fim, dentro de um fluxo de execução paralelo com memória compartilhada,
-diz-se de subtarefas que cumpram seu objetivo sem interações indesejadas com
-outras tarefas de \textit{thread-safe}, enquanto aquelas que possuam interações
+subtarefas que cumpram seu objetivo sem interações indesejadas com outras
+tarefas são ditas \textit{thread-safe}, enquanto aquelas que possuam interações
 indesejadas, por exemplo devido a concorrência de acesso a memória
 compartilhada, são chamadas não \textit{thread-safe}.
 
@@ -558,7 +558,7 @@ disponível. Diz-se desse processo um \textit{pipeline}. Um mecanismo para IPC
 em ambientes POSIX voltado para criação de \textit{pipelines} são os \textit{pipes}, que
 fornecem uma interface simples para direcionar a saída de um programa à entrada
 do próximo, ambos rodando em paralelo, usando um \textit{buffer} em memória
-volátil para isso \cite{immich2003performance}. Num ambiente POSIX, \textit{pipes} são
+volátil para isso \cite{immich2003performance}. Em um ambiente POSIX, \textit{pipes} são
 também a escolha com melhor desempenho para IPC \cite{immich2003performance}.
 
 Uma vez desenvolvida uma aplicação paralela utilizando algum mecanismo como os
@@ -813,12 +813,13 @@ trabalhos relacionados à paralelização do algoritmo BFGS, já descrito na se�
 
 A implementação de referência ou \textit{gold standard} na área de análise
 filogenética é a aplicação \textit{codeml}, do pacote PAML \cite{valle2014optimization}.
-Em suma, o \textit{codeml} detecta eventos de seleção utilizando diferentes modelos de
-variação das taxas de substituição $\omega$ ao longo da sequência genética
-(\textit{site models} ou modelos de sítio) e das linhagens da árvore
-filogenética (\textit{branch models} ou modelos de linhagem). Métodos
-estatísticos de máxima verossimilhança são então empregados para selecionar
-qual dos modelos tem o melhor ajuste (\textit{best fit}) \cite{yang2007paml}.
+Em suma, o \textit{codeml} detecta eventos de seleção utilizando diferentes
+modelos de variação das taxas de substituição $\omega$ (também chamados de
+modelos de substituição) ao longo da sequência genética (\textit{site models}
+ou modelos de sítio) e das linhagens da árvore filogenética (\textit{branch
+models} ou modelos de linhagem). Métodos estatísticos de máxima verossimilhança
+são então empregados para selecionar qual dos modelos tem o melhor ajuste
+(\textit{best fit}) \cite{yang2007paml}. 
 
 Apesar de ser amplamente utilizado na literatura e estatisticamente robusto
 \cite{maldonado2016lmap}, o \textit{codeml} possui implementação ingênua de métodos
@@ -845,9 +846,9 @@ solução não foi estudada mais a fundo nesse trabalho.
 Em \cite{maldonado2016lmap} é implementado uma
 ferramenta, chamada LMAP, para execução paralela de múltiplos \textit{jobs} do
 \textit{codeml} em uma única máquina (em CPU). Diferente do gcodeml, o LMAP lança um
-\textit{job} para cada modelo (de variação do $\omega$) do \textit{codeml}, não para
+\textit{job} para cada modelo de substituição do \textit{codeml}, não para
 cada arquivo de entrada. Dessa forma a execução é paralela mesmo para um único
-arquivo de entrada, dado múltiplos modelos de variação do $\omega$, que é
+arquivo de entrada, dado múltiplos modelos de substituição, que é
 justamente o caso de uso dos pesquisadores do HCPA. O LMAP faz isso criando,
 para uma entrada única, uma estrutura de diretórios com múltiplas entradas
 iguais, mas configurações de modelo diferentes. Vale ressaltar que o LMAP cria
@@ -903,14 +904,14 @@ pesquisadores do HCPA foge ao escopo desse trabalho.
 O pacote \textit{SAMtools} \cite{li2009sequence}, uma das aplicações utilizada pelos
 pesquisadores para chamada de variantes, é amplamente utilizada na literatura
 \cite{danecek2021twelve} e considerada estado da arte \cite{yao2020evaluation}.
-O samtoools e a ferramenta bcftools que o acompanha são construídos em cima da
+O samtoools e a ferramenta \textit{bcftools} que o acompanha são construídos em cima da
 biblioteca htslib \cite{bonfield2021htslib}, dos mesmos autores, que permite a
 leitura e manipulação de arquivos em formatos diversos representando sequências
 genéticas alinhadas, descritos na seção \ref{sec:formats}.
 
 A combinação dessas duas ferramentas é usada para montar o \textit{pipeline} de chamada
 de variantes, que consiste, além dos passos da chamada em si utilizando o
-bcftools, de etapas de pré e pós processamento dos dados usando o \textit{samtools},
+\textit{bcftools}, de etapas de pré e pós processamento dos dados usando o \textit{samtools},
 essenciais ao processo de análise.
 
 Em \cite{takeuchi2016cljam} os autores desenvolvem uma aplicação para execução
@@ -1153,26 +1154,43 @@ acima, além de minuciar, na seção \ref{sec:test}, as etapas de validação
 empregadas neles.
 
 \begin{figure}[H] \caption{Ciclo PDCA global empregado no trabalho} \begin{center}
-\includegraphics[width=0.75\linewidth]{img/pdca_global.png} \end{center}
+\includegraphics[width=0.85\linewidth]{img/pdca_global.png} \end{center}
 \legend{Fonte: Os Autores} \label{fig:pdca_global} \end{figure}
 
 \section{Ciclo 1: Levantamento de requisitos}
 \label{sec:plan}
 
 O planejamento primordial inicia com uma reunião junto aos usuários do processo
-e ferramental que objetiva-se melhorar. A partir dessa reunião é traçado um
-plano de estudo desses processos e ferramentas, bem como do \textit{background}
-necessário ao seu entendimento. Esse estudo teórico é executado através da
-busca em livros texto, manuais, e artigos relevantes à área. Finalizado esse
-estudo, o conhecimento adquirido é validado na prática, através de
+e ferramental que objetiva-se melhorar. Nela, são elucidados os problemas
+enfrentados, além dos requisitos funcionais de uma solução, isto é, quais os
+dados de entrada, quais processos devem ser executados neles e qual é a saída
+esperada, bem como os requisitos não funcionais -- o que se espera em termos de
+desempenho, ambiente de execução, e outras qualidades não comportamentais. 
+
+A partir dessa reunião é traçado um plano de estudo dos processos e ferramentas
+utilizados, bem como do \textit{background} necessário ao seu entendimento, a
+fim de entregar uma solução que atenda aos requisitos levantados. A reunião
+inicial com os usuários também forma um vínculo fundamental ao desenvolvimento
+do trabalho, uma vez que a comunicação com eles se repete a cada iteração do
+ciclo, e a colaboração mútua é essencial à real compreensão dos problemas e ao
+planejamento de soluções adequadas.
+
+O estudo conceitual do \textit{background} necessário e das ferramentas
+empregados é executado através da busca em livros texto, manuais, e artigos
+relevantes à área. Finalizada essa leitura, é validado na prática, através de
 experimentação empírica com as ferramentas e entradas utilizadas pelos
-usuários, validando os problemas de desempenho relatados, conforme será
-descrito em maiores detalhes na seção \ref{sec:test}. A partir daí, é avaliada
-a necessidade de nova iteração desse ciclo PDCA, sumarizado na parte superior
-da Figura \ref{fig:pdca_global}. Por exemplo, se mais detalhes de uso precisam
-ser elucidados o ciclo é reiniciado. Senão, avalia-se iniciar um ciclo de busca
-na literatura por soluções aos problemas estudados, ou um ciclo de otimização
-do software.
+usuários, os problemas de desempenho relatados. Essa validação e a avaliação de
+seus resultados será descrito em maiores detalhes na seção \ref{sec:test}. Uma
+experiência \textit{hands on} com o ferramental que objetiva-se melhorar
+contribui ainda a um entendimento tácito do problema, validando o conhecimento
+obtido através de reuniões e leitura. 
+
+Com isso, é avaliada a necessidade de nova iteração desse ciclo PDCA,
+sumarizado na parte superior da Figura \ref{fig:pdca_global}. Por exemplo, se
+os problemas de desempenho relatados não puderam ser validado ou se mais
+detalhes de uso precisam ser elucidados o ciclo é reiniciado. Senão, é iniciado
+um ciclo de busca na literatura por soluções aos problemas estudados, descrito
+a seguir.
 
 \section{Ciclo 2: Revisão bibliográfica}
 \label{sec:lit}
@@ -1188,62 +1206,88 @@ selecionados apenas artigos de periódicos com revisão por pares, que, quando
 muito numerosos, foram filtrados por número de citações.
 
 Então, é executada a leitura dos artigos selecionados, a partir da qual as
-soluções publicadas são testadas. Primeiro, verifica-se se são adequadas para
-uso dos pesquisadores, se os resultados são corretos, e se o desempenho é
-satisfatório. Essas validações, descritas em maiores detalhes na seção
-\ref{sec:test}, geram uma avaliação da necessidade de replanejamento e novo
-levantamento de requisitos (iniciando um novo ciclo) ou a entrega da solução
-encontrada aos usuários. Esse ciclo PDCA encontra-se reproduzido na parte
-direita da Figura \ref{fig:pdca_global}.
+soluções publicadas são validadas. Primeiro, é validado se são adequadas para
+uso dos pesquisadores, conforme os requisitos levantados no ciclo anterior.
+Isto é, se as aplicações encontradas suportam as entradas necessárias, se elas
+realizam os processos esperados, e se produzem as saídas corretas. Além disso,
+é validado se o desempenho é satisfatório em hardware e sistema operacional
+compatível com o dos usuários, de acordo com as expectativas alinhadas junto a
+eles. Essa etapa de validação e a avaliação de seus resultados é exposta em
+maiores detalhes na seção \ref{sec:test}. 
+
+Caso seja avaliado que as soluções encontradas não atendem aos requisitos e
+caso mais artigos relevantes estejam disponíveis, um novo ciclo é iniciado
+planejando-se uma nova seleção de textos para leitura. Alternativamente, caso
+as soluções encontradas sejam inadequadas e não haja mais literatura relevante
+disponível, é avaliado pelo início de um ciclo de otimização através de uma
+solução própria. Por outro lado, se as soluções encontradas na literatura
+atendem aos requisitos, é avaliada a sua entrega aos usuários. Esse ciclo PDCA
+encontra-se reproduzido na parte direita da Figura \ref{fig:pdca_global}.
 
 \section{Ciclo 3: Otimização}
 \label{sec:dev}
 
-Se, no levantamento de requisitos, for avaliado que convém a otimização do software,
-um novo ciclo PDCA é iniciado pela arquitetura dessa solução, planejando as
-linguagens, bibliotecas e técnicas a serem adotadas.  Em um primeiro momento é
-planejado, dentro do universo das soluções possíveis ao problema, aquela que
-for de implementação mais simples, para que possa ser rapidamente validado sua
-corretude e desempenho. Caso ela seja avaliada como adequada, mas não
-suficiente, uma nova iteração do ciclo é iniciada com o planejamento de
+Se, através do levantamento de requisitos e revisão bibliográfica, for avaliado
+que convém a otimização do software através de uma solução própria, um novo
+ciclo PDCA é iniciado pela arquitetura dessa solução, planejando as linguagens,
+bibliotecas e técnicas a serem adotadas. Esse planejamento é feito levando em
+consideração os requisitos levantados, selecionando linguagens e bibliotecas
+compatíveis com as ferramentas sendo otimizadas e que estejam disponíveis nos
+ambientes utilizados pelos usuários. 
+
+Em um primeiro momento é planejado, dentro do universo das soluções possíveis
+ao problema, aquela que for de implementação mais simples, para que possa ser
+rapidamente validado sua corretude e desempenho, validações essas descritas em
+maiores detalhes na seção \ref{sec:test}. Caso a solução seja avaliada como correta,
+mas insuficiente, uma nova iteração do ciclo é iniciada com o planejamento de
 soluções mais robustas. Se, por outro lado, ela for inadequada, uma nova
 iteração inicia com o replanejamento de sua implementação, ou então com um novo
-ciclo de levantamento de requisitos, se conceitos mais básicos precisem ser revistos.
-Alternativamente, se a solução empregada é adequada e suficiente, ela é
-entregue aos usuários. Esse ciclo PDCA de otimização encontra-se
-reproduzido na parte esquerda da Figura \ref{fig:pdca_global}.
+ciclo de levantamento de requisitos, se for necessário rever expectativas ou
+explorar alternativas fundamentalmente diferentes.  Alternativamente, se a
+solução empregada é adequada e suficiente, ela é entregue aos usuários. Esse
+ciclo PDCA de otimização encontra-se reproduzido na parte esquerda da Figura
+\ref{fig:pdca_global}. 
 
 \section{Validação}
 \label{sec:test}
 
 Acima, foi descrita em alto nível a metodologia adotada. Nesta seção é exposta
-em maiores detalhes a metodologia de validação de corretude e desempenho
-empregada nos ciclos de revisão bibliográfica e otimização. Essas validações
-são fundamentais ao trabalho, visto que as soluções adotadas, seja através de
-estudo da literatura ou implementação própria, devem produzir resultados
-corretos e um desempenho consistentemente satisfatório. Isto é, uma vez que os
-métodos empregados na aplicação original e na solução entregue sejam os mesmos,
-é necessário, mas não suficiente, validar que os resultados (a saída do
-programa) sejam os mesmos, mas também validar que a solução entregue possua
-tempo de processamento consistentemente inferior, para entradas e ambiente de
-execução compatíveis com aqueles dos usuários.
+em maiores detalhes a metodologia de validação de corretude e desempenho. Essas
+validações são fundamentais ao trabalho. A validação inicial dos problemas de
+desempenho influenciará na revisão bibliográfica e no ciclo de otimização. Uma vez
+adotadas soluções próprias ou da literatura, é preciso validar que elas
+produzem resultados corretos e um desempenho consistentemente satisfatório.
+Isto é, uma vez que os métodos empregados na aplicação original e na solução
+entregue sejam os mesmos, é necessário, mas não suficiente, validar que os
+resultados (a saída do programa) sejam os mesmos, mas também validar que a
+solução entregue possua tempo de processamento consistentemente inferior, para
+entradas e ambiente de execução compatíveis com aqueles dos usuários.
 
 \subsection{Corretude}
 
 As soluções executadas são validadas por corretude através da comparação com um
 resultado de referência ou \textit{gold standard}. Para a análise filogenética,
-a referência é o pacote PAML, enquanto que para a chamada de variantes é o
-pacote \textit{SAMtools}, conforme já exposto no capítulo \ref{chap:anteriores}. Para a
-análise filogenética o valor comparado com a referência é a
-log-verossimilhança, que é a saída utilizada pelos usuários. Já para a chamada
-de variantes é comparado o conteúdo das variantes (VCFs), ignorando o
-cabeçalho, que contém informações de data que são naturalmente diferentes entre
+a referência é o pacote PAML, que produz como saída a log-verossimilhança para
+cada modelo de substituição configurado em sua execução. Os modelos utilizados
+pelos usuários são o M1a, M2a, M7, M8, e M8a. Uma descrição detalhada de cada
+modelo foge ao escopo desse trabalho, podendo ser encontrada em
+\cite{yang2000codon} e \cite{zhang2005evaluation}. Dessa forma, para validar a
+corretude das aplicações de análise filogenética a log-verossimilhança
+produzida por elas para esses modelos é comparada com aquela produzida pelo
+\textit{codeml}.
+
+Já para a chamada de variantes a referência é o pacote \textit{SAMtools}. O
+\textit{pipeline} de análise utilizando ele produz as variantes no formato VCF.
+Para avaliar a corretude de implementações alternativas, o conteúdo dos
+arquivos VCF gerados no fim do \textit{pipeline} de análise é comparado com
+aquele produzido utilizando o \textit{SAMtools}. O cabeçalho dos arquivos é
+ignorado, pois contém informações de data que são naturalmente diferentes entre
 execuções.
 
 Para o caso de implementações publicadas na literatura, são desenvolvidos
 \textit{scripts} de validação para comparar a saída das aplicações com a
 referência, enquanto que no caso de desenvolvimento próprio para otimização de
-desemepenho são aplicados, adicionalmente, testes unitários às funções
+desempenho são aplicados, adicionalmente, testes unitários às funções
 modificadas ou desenvolvidas. Em ambos os casos, a solução é também validada
 junto aos usuários (pesquisadores do HCPA), que avaliam de forma independente
 os resultados das soluções entregues.
@@ -1293,27 +1337,27 @@ doravante ``Thor1'' -- encontra-se descrita na Tabela \ref{tbl:thor1}.
     \label{tbl:thor1}
 \end{table}
 
-Uma vez construído um ambiente adequado, é avaliado o tempo total de execução
-de cada ferramenta sob estudo e, quando aplicável, de cada uma de suas etapa de
-execução, para entradas de tamanho compatível com o caso de uso dos usuários.
-No caso de aplicações paralelas, é medido também seu \textit{speedup}. Para a
-mensuração do tempo referente às soluções definitivas, são realizadas cinco
-execuções, das quais serão reportadas a média e desvio padrão.
-
-Além disso, durante o levantamento de requisitos propõe-se o traço de um perfil de
-execução das ferramentas que apresentam gargalos de desempenho cujas causas não
-sejam evidentes, a fim de mapeá-las e avaliar a possibilidade de implementações
-alternativas àquelas encontradas na literatura que possam agregar alguma
-vantagem ou possibilitar ganhos maiores de desempenho.
+Uma vez construído um ambiente adequado, durante o levantamento de requisitos é
+validado o tempo total de execução de cada ferramenta sob estudo e, quando
+aplicável, de cada uma de suas etapa de execução, para entradas de tamanho
+compatível com o caso de uso dos usuários. Algumas aplicações necessitam de
+vários dias de processamento, caso em que não foram executadas replicações das
+medidas de tempo de execução, o que seria inviável no escopo desse trabalho.
+Além disso, ainda durante o levantamento de requisitos, propõe-se o traço de um
+perfil de execução das ferramentas que apresentam gargalos de desempenho cujas
+causas não sejam evidentes, a fim de mapeá-las e avaliar a possibilidade de
+otimizações alternativas àquelas encontradas na literatura que possam agregar
+alguma vantagem ou possibilitar ganhos maiores de desempenho.
 
 Para o traço do perfil de execução foram selecionadas duas abordagens
 distintas. No caso da análise filogenética, que consiste da execução de uma
 única aplicação para uma única entrada, será traçado um perfil a nível de
-sub-rotinas da aplicação (doravante ``baixo nível''), a fim de elucidar gargalos
-de desempenho internos a ela. Já no caso da chamada de variantes, que consiste
-de um \textit{pipeline} de execução de múltiplas ferramentas ou comandos, o perfil será
-traçado a nível de etapas do \textit{pipeline} (doravante ``alto nível''), isto é,
-medindo o custo das chamadas a cada comando de cada ferramenta.
+sub-rotinas da aplicação (doravante ``baixo nível''), a fim de elucidar
+gargalos de desempenho internos a ela. Já no caso da chamada de variantes, que
+consiste de um \textit{pipeline} de execução de múltiplas ferramentas ou
+comandos, o perfil será traçado a nível de etapas do \textit{pipeline}
+(doravante ``alto nível''), isto é, medindo o custo das chamadas a cada comando
+de cada ferramenta.
 
 Para o traço do perfil de execução de baixo nível, no que tange processamento
 foram selecionadas as ferramentas callgrind e kcachegrind, respectivamente para
@@ -1328,8 +1372,19 @@ consideravelmente mais rápida, vem para confirmação dos resultados obtidos pe
 callgrind através de uma análise com um método de perfil diferente.
 
 Já para o perfil de ``alto nível'' foram desenvolvidos \textit{shell scripts}
-para mensuração do tempo total dispendido por cada etapa do \textit{pipeline}, sendo uma
-análise mais simples, mas não menos relevante.
+para mensuração do tempo total dispendido por cada etapa do \textit{pipeline},
+sendo uma análise mais simples, mas não menos relevante.
+
+Por fim, para as soluções adotadas através dos ciclos de revisão bibliográfica
+ou otimização, a validação de desempenho e avaliação dos resultados é realizada
+através da medida do tempo de execução, comparando com aquele da aplicação
+original, validado durante o levantamento de requisitos. Nesse caso, são
+executadas cinco replicações das medidas, sendo apresentada a média e o desvio
+padrão dessas execuções. A escolha de cinco replicações se deu porque mesmo as
+soluções otimizadas necessitam de diversas horas para completar o
+processamento, inviabilizando, no escopo desse trabalho, um número de
+replicações maior. No caso de aplicações paralelas, é medido também seu
+\textit{speedup}. 
 
 %
 %
@@ -1349,57 +1404,99 @@ softwares de análise filogenética, e o mesmo é feito na seção
 \label{sec:filomp}
 
 Inicialmente foram realizadas reuniões com os usuários e um estudo teórico e
-empírico das ferramentas, conforme o ciclo de levantamento de requisitos. Com isso,
-elucidou-se que a análise filogenética realizada pelos pesquisadores utilizando
-o pacote PAML consiste de uma única chamada à aplicação, com uma única entrada,
-que consiste da árvore filogenética das espécies sendo analisadas (no formato
-NWK) e das sequências alinhadas dessas espécies (no formato FASTA). Por fim, o
-\textit{codeml} sempre recebe um arquivo de configuração que determina os modelos (de
-sítio ou linhagem) de variação do $\omega$ a serem empregados na análise, além
-de parâmetros de execução. Os modelos configurados pelos pesquisadores são o
-M1a, M2a, M7, M8, e M8a. A descrição de cada modelo e de todos parâmetros de
-execução foge ao escopo desse trabalho, podendo ser encontrada em
-\cite{yang2000codon} e \cite{zhang2005evaluation}. Os pesquisadores realizam
-essa análise em ambientes MIMD UMA, e ela possui tempo de execução elevado.
+empírico das ferramentas, conforme o ciclo de levantamento de requisitos. Com
+isso, elucidou-se que a análise filogenética realizada pelos pesquisadores tem
+como entrada a árvore filogenética das espécies sendo analisadas, no formato
+NWK, as sequências alinhadas dessas espécies, no formato FASTA, e um arquivo de
+configuração que determina os modelos de substituição (de sítio ou linhagem),
+além de parâmetros de execução. Os pesquisadores realizam essa análise em
+ambientes MIMD UMA, e ela possui tempo de execução de algumas horas para uma
+entrada única, considerado elevado.
 
-Através desse ciclo inicial de planejamento, em particular do estudo do manual
-e do código fonte da ferramenta, cuja publicação vem de longa data, foi
-constatado que a sua implementação de alguns métodos numéricos é ingênua. A
-partir disso avaliou-se que pode haver trabalhos já publicados melhorando esse
-ponto. Então, iniciou-se um ciclo de revisão bibliográfica, cujos resultados
-são expostos na seção \ref{sec:filoant}. Conforme já descrito lá, foram
-identificadas as aplicações \textit{slimcodeml} e LMAP para validação (de corretude e
-desempenho) e avaliação dos resultados, etapas que serão detalhadas na seção
-\ref{sec:slimeval}.
+Através do estudo do manual e do código fonte da ferramenta, cuja publicação
+vem de longa data, foi constatado que a sua implementação de alguns métodos
+numéricos é ingênua. A partir disso avaliou-se que pode haver trabalhos já
+publicados melhorando esse ponto, fazendo necessária uma revisão bibliográfica.
+Os resultados desse estudo da literatura, selecionando ferramentas que atendam
+aos requisitos supracitados, são expostos na seção \ref{sec:filoant}. Conforme
+já descrito lá, foram identificadas as aplicações \textit{slimcodeml} e LMAP
+para validação (de corretude e desempenho), cujos resultados são avaliados na
+seção \ref{sec:slimeval}.
 
-Além do início de um ciclo de revisão bibliográfica, foi validado que os
-problemas de desempenho são inerentes à implementação do \textit{codeml} através do
-traço de um perfil de execução, a partir do qual avaliou-se que convém iniciar
-um ciclo de otimização para eliminar os gargalos de desempenho mapeados,
-conforme o ciclo de levantamento de requisitos. Em particular manteve-se em mente a
-possibilidade de aplicar técnicas de paralelismo para beneficiar-se dos
-ambientes multiprocessados utilizados -- conforme mencionado previamente, o
-LMAP e demais implementações paralelizam \textit{jobs} do \textit{codeml}, e
-não a aplicação em si. Esse perfil de execução bem como o ciclo de
-otimização são descritos na seção \ref{sec:codemlpar}.
+Além do início de um ciclo de revisão bibliográfica, avaliou-se iniciar também
+um ciclo de otimização. Para isso, os gargalos de desempenho foram mapeados
+através do traço de um perfil de execução, descrito na seção seguinte. Em
+particular manteve-se em mente a possibilidade de aplicar técnicas de
+paralelismo para beneficiar-se dos ambientes multiprocessados utilizados --
+conforme mencionado previamente, o LMAP e demais implementações paralelizam
+\textit{jobs} do \textit{codeml}, e não a aplicação em si. 
+
+\subsection{Perfil de execução do \textit{codeml}}
+\label{sec:codemlpar}
+
+Durante o levantamento de requisitos foi realizado um perfil de execução do
+\textit{codeml} utilizando as ferramentas callgrind e gprof, para os dados de
+entrada do grupo de pesquisa do HCPA, objetivando-se mapear os problemas de
+desempenho observados, além de avaliar sua otimização através de soluções
+alternativas àquelas presentes na literatura.
+
+O perfil de execução obtido com o callgrind revela que a rotina \textit{ming2}
+é responsável por 97,28\% do custo de processamento do \textit{codeml}. Através de um
+estudo da aplicação observou-se que essa rotina implementa o algoritmo BFGS,
+já descrito na seção \ref{sec:bfgs}. O \textit{codeml} utiliza ele para maximização no
+processo de MLE, já descrita na seção \ref{sec:mle}. O \textit{ming2} possui duas
+sub-rotinas responsáveis por quase a totalidade de seu custo:
+\textit{gradientB} e \textit{LineSearch2}. A rotina \textit{gradientB},
+responsável por 42,99\% do custo, implementa o cálculo do gradiente via
+diferenças finitas, enquanto \textit{LineSearch2}, responsável por 53,27\% do
+custo, implementa um método numérico de busca linear utilizando interpolação
+quadrática, descrito em \cite{wolfe1978numerical}, para atualizar o passo
+$\alpha$ na Equação \ref{eq:optnewton}.
+
+Ambas rotinas, por sua vez, chamam a rotina \textit{lfundG}, responsável por
+94,98\% do custo total do programa. \textit{lfundG} é a função de
+verossimilhança sendo constantemente avaliada para atualização do $\alpha$ e
+diferenciada para o cálculo do gradiente, no processo de otimização, conforme a
+Equação \ref{eq:mle}. Essa rotina, por sua vez, é modularizada em
+\textit{fx\_r}. A Figura \ref{fig:kcachegrind}, uma captura de tela da
+ferramenta kcachegrind, apresenta uma visualização da pilha de chamadas
+supracitada.
+
+Isto é, a avaliação e diferenciação da função objetivo constitui 94,98\% do
+custo do BFGS no \textit{codeml}, que implementa o cálculo do gradiente por diferenças
+finitas. Esse é exatamente o resultado esperado para essa classe de problemas,
+conforme descrito no trabalho de \cite{byrd1988parallel}, já exposto na seção
+\ref{sec:parbfgs}. O BFGS, por sua vez, representa 97,28\% do custo do \textit{codeml}.
+O perfil foi traçado também com o gprof, sem alterações significativas nos
+resultados, confirmando a análise pelo callgrind. Importante ressaltar que
+esses testes consideram a entrada dos pesquisadores do HCPA e o ambiente
+descrito na Tabela \ref{tbl:thor1}.
+
+\begin{figure} \caption{Pilha de chamadas do \textit{codeml}} \begin{center}
+\includegraphics[width=0.9\linewidth]{img/kcachegrind.png} \end{center}
+\legend{Fonte: Os Autores} \label{fig:kcachegrind} \end{figure}
+
+A partir dessa validação da aplicação original, avaliou-se interessante a
+otimização do software, explorando a solução dos gargalos de desempenho
+identificados, iniciando um ciclo de otimização, que será descrito na seção
+\ref{sec:optcodeml}.
 
 \subsection{Validação de aplicações selecionadas: \textit{slimcodeml} e LMAP}
 \label{sec:slimeval}
 
-Para a validação de corretude foi comparada a saída da execução do \textit{slimcodeml} e
-LMAP com o \textit{codeml} original. Em particular foi comparado o valor da
-log-verossimilhança reportado por cada programa. Os modelos de substituição de
-sítios do \textit{codeml} utilizados foram o M1a, M2a, M7, M8, e M8a, e os resultados
-(log-verossimilhança) são apresentados na Tabela \ref{tbl:log}. Os resultados
-utilizando o LMAP foram omitidos, uma vez que a ferramenta simplesmente
-paraleliza \textit{jobs} -- os valores de saída são idênticos aos da execução
-sequencial. Observa-se que a única diferença consta no modelo M8, na sexta casa
-decimal. Trata-se de um artefato de exibição -- o \textit{codeml} original imprime a
-saída arredondada à sexta casa decimal, enquanto o \textit{slimcodeml} imprime até a
-décima quinta casa decimal utilizando notação científica. Na Tabela o valor foi
-truncado ao invés de arredondado, a fim de demonstrar a diferença na saída.
-Esses resultados foram reproduzidos de forma independente pelos pesquisadores
-do HCPA.
+Nesta seção é exposta a validação das aplicações selecionadas no ciclo de
+revisão bibliográfica. A Tabela \ref{tbl:log} apresenta a comparação da
+log-verossimilhança de cada modelo de substituição, conforme produzida pelo
+\textit{slimcodeml} e pelo \textit{codeml}, de acordo a metodologia de
+avaliação descrita na seção \ref{sec:test}. Os resultados utilizando o LMAP
+foram omitidos, uma vez que a ferramenta simplesmente paraleliza \textit{jobs}
+-- os valores de saída são idênticos aos da execução sequencial. Observa-se que
+a única diferença consta no modelo M8, na sexta casa decimal. Trata-se de um
+artefato de exibição -- o \textit{codeml} original imprime a saída arredondada
+à sexta casa decimal, enquanto o \textit{slimcodeml} imprime até a décima
+quinta casa decimal utilizando notação científica. Na tabela foi utilizada a
+mesma representação do \textit{codeml}, truncando o valor exibido pelo
+\textit{slimcodeml}, a fim de demonstrar a diferença na saída. 
 
 \begin{table}[h]
     \caption{Log-verossimilhança produzida pelas ferramentas de análise filogenética}
@@ -1425,21 +1522,17 @@ do HCPA.
     \label{tbl:log}
 \end{table}
 
-Conforme observado previamente, o \textit{slimcodeml} recebe a mesma entrada e produz a
-mesma saída do \textit{codeml} original. Dessa forma, foi testado o LMAP utilizando o
-\textit{slimcodeml}, em adição ao LMAP com o \textit{codeml} original, substituído para isso o
-executável do \textit{codeml} por aquele do \textit{slimcodeml}. Com isso esperava-se
-beneficiar-se da combinação de duas ferramentas que propõem-se a melhorar o
-desempenho do \textit{codeml}.
-
-Para validação foi realizada uma comparação do tempo de execução da aplicação
-original com as soluções encontradas na literatura, sempre utilizando os dados
-de entrada fornecidos por pesquisadores do grupo, com cinco execuções para cada
-caso. Os resultados encontram-se reproduzidos na Tabela \ref{tbl:paml}.
-Conforme pode ser observado, há uma melhora significativa com a execução
-paralela utilizando o LMAP, de até 68\%. Por outro lado, o uso do \textit{slimcodeml}
-não trouxe redução significativa no tempo de execução, para a entrada
-utilizada.
+A Tabela \ref{tbl:paml} expõe os resultados da validação de desempenho,
+conforme a metodologia descrita na seção \ref{sec:test}. Além de validar o
+desempenho do LMAP utilizando o \textit{codeml}, como feito no artigo que
+apresenta o LMAP, ele também foi testado utilizando o \textit{slimcodeml}, para
+isso substituindo o executável do \textit{codeml} por aquele do
+\textit{slimcodeml}. Com isso esperava-se beneficiar-se da combinação de duas
+ferramentas que propõem-se a melhorar o desempenho do \textit{codeml}.
+Conforme pode ser observado na tabela, há uma melhora significativa com a
+execução paralela utilizando o LMAP, de até 68\%. Por outro lado, o uso do
+\textit{slimcodeml} não trouxe redução significativa no tempo de execução, para
+a entrada utilizada.
 
 \begin{table}[h]
     \caption{Tempo de execução das ferramentas de análise filogenética}
@@ -1459,57 +1552,12 @@ utilizada.
     \label{tbl:paml}
 \end{table}
 
-\subsection{codeml: Perfil de execução e paralelização}
-\label{sec:codemlpar}
+\subsection{Otimização do \textit{codeml}}
+\label{sec:optcodeml}
 
-Durante o levantamento de requisitos foi realizado um perfil de execução do \textit{codeml}
-utilizando as ferramentas callgrind e gprof, para os dados de entrada do caso
-de uso do grupo de pesquisa do HCPA, objetivando-se validar que os problemas de
-desempenho observados são inerentes à implementação do \textit{codeml} e
-avaliar a otimização através de soluções alternativas às presentes na
-literatura (em um ciclo de otimização).
-
-O perfil de execução obtido com o callgrind revela que a rotina \textit{ming2}
-é responsável por 97,28\% do custo de processamento do \textit{codeml}. Através de um
-estudo da aplicação observou-se que essa rotina implementa o algoritmo BFGS,
-já descrito na seção \ref{sec:bfgs}. O \textit{codeml} utiliza ele para maximização no
-processo de MLE, já descrita na seção \ref{sec:mle}. O \textit{ming2} possui duas
-sub-rotinas responsáveis por quase a totalidade de seu custo:
-\textit{gradientB} e \textit{LineSearch2}. A rotina \textit{gradientB},
-responsável por 42,99\% do custo, implementa o cálculo do gradiente via
-diferenças finitas, enquanto \textit{LineSearch2}, responsável por 53,27\% do
-custo, implementa um método numérico de busca linear utilizando interpolação
-quadrática, descrito em \cite{wolfe1978numerical}, para atualizar o passo
-$\alpha$.
-
-Ambas rotinas, por sua vez, chamam a rotina \textit{lfundG}, responsável por
-94,98\% do custo total do programa. \textit{lfundG} é a função de
-verossimilhança sendo constantemente avaliada para atualização do $\alpha$ e
-diferenciada para o cálculo do gradiente, no processo de otimização (Equação
-\ref{eq:mle}). Essa rotina, por sua vez, é modularizada em \textit{fx\_r}. A
-Figura \ref{fig:kcachegrind}, uma captura de tela da ferramenta kcachegrind,
-apresenta uma visualização da pilha de chamadas supracitada.
-
-Isto é, a avaliação e diferenciação da função objetivo constitui 94,98\% do
-custo do BFGS no \textit{codeml}, que implementa o cálculo do gradiente por diferenças
-finitas. Esse é exatamente o resultado esperado para essa classe de problemas,
-conforme descrito no trabalho de \cite{byrd1988parallel}, já exposto na seção
-\ref{sec:parbfgs}. O BFGS, por sua vez, representa 97,28\% do custo do \textit{codeml}.
-O perfil foi traçado também com o gprof, sem alterações significativas nos
-resultados, confirmando a análise pelo callgrind. Importante ressaltar que
-esses testes consideram a entrada dos pesquisadores do HCPA e o ambiente
-descrito na Tabela \ref{tbl:thor1}.
-
-\begin{figure} \caption{Pilha de chamadas do \textit{codeml}} \begin{center}
-\includegraphics[width=0.9\linewidth]{img/kcachegrind.png} \end{center}
-\legend{Fonte: Os Autores} \label{fig:kcachegrind} \end{figure}
-
-A partir dessa validação da aplicação original, avaliou-se interessante a
-otimização do software, explorando a solução dos gargalos de desempenho
-identificados, iniciando um ciclo de otimização, descrito abaixo.
-
-A primeira implementação arquitetada foi uma paralelização do cálculo do
-gradiente por diferenças finitas -- conforme já descrito na seção
+Para a otimização do \textit{codeml}, considerando seu perfil de execução, a
+primeira implementação arquitetada foi uma paralelização do cálculo do
+gradiente por diferenças finitas. Conforme já descrito na seção
 \ref{sec:parbfgs}, essa é a abordagem de paralelismo mais simples para esse
 problema. A motivação de paralelizar o cálculo do gradiente de forma
 ``ingênua'', ao invés de utilizando a abordagem especulativa descrita por
@@ -1581,18 +1629,19 @@ Sendo assim, a paralelização do BFGS tal qual implementado no \textit{codeml} 
 descartada, esgotando todas possibilidades de paralelização das rotinas
 responsáveis por quase a totalidade do tempo de execução do \textit{codeml} devido à
 implementação não \textit{thread-safe}. Isto é, as aplicações selecionadas a
-partir de revisão bibliográfica e verificadas na seção anterior foram
-entregues como solução aos usuários.
+partir de revisão bibliográfica e validadas na seção anterior foram entregues
+como solução aos usuários.
 
-% TODO encaixar melhor em outro lugar
 Por fim, observa-se que algumas das operações matriciais otimizadas pelo
-\textit{slimcodeml} são da função de verossimilhança, cuja avaliação representa o maior
-custo do \textit{codeml}. Por exemplo, sua sub-rotina \textit{PMatUVRoot}, que pode ser
-visualizada na Figura \ref{fig:kcachegrind}, tem sua implementação substituída
-por aquela da biblioteca BLAS -- no \textit{slimcodeml}, ela é renomeada para
-\textit{PMatUVRoot2}.
+\textit{slimcodeml} são da função de verossimilhança, cuja avaliação representa
+o maior custo do \textit{codeml}. Por exemplo, sua sub-rotina
+\textit{PMatUVRoot}, que pode ser visualizada na Figura \ref{fig:kcachegrind},
+tem sua implementação substituída por aquela da biblioteca BLAS -- no
+\textit{slimcodeml}, ela é renomeada para \textit{PMatUVRoot2}. Todavia, isso
+não trouxe melhoria significativa de desempenho, dentro do escopo de avaliação
+mencionado.
 
-\section{Chamada de variantes}
+\section{Chamada de variantes: pacote \textit{SAMTools}}
 \label{sec:SAMtools}
 
 Nesta seção é minuciado o \textit{pipeline} de chamada de variantes utilizando
@@ -1613,10 +1662,10 @@ indexam os arquivos para acesso aleatório rápido. A ferramenta providencia uma
 série de outras funcionalidades que fogem ao escopo desse trabalho e estão
 descritas em \cite{danecek2021twelve}.
 
-Já a aplicação bcftools, parte do pacote \textit{SAMtools}, providencia comandos para
+Já a aplicação \textit{bcftools}, parte do pacote \textit{SAMtools}, providencia comandos para
 execução da chamada de variantes -- \textit{mpileup} e \textit{call}, que
 calculam as variantes entre as sequências alinhadas lidas e agrupadas através
-de um processo descrito em \cite{li2011improving}. O bcftools providencia mais
+de um processo descrito em \cite{li2011improving}. O \textit{bcftools} providencia mais
 21 comandos com mais de 230 opções diferentes para diversas análises das
 sequências genéticas alinhadas manipuladas pelo \textit{samtools}. Uma descrição
 completa desses comandos foge ao escopo desse trabalho e pode ser encontrada em
@@ -1692,91 +1741,25 @@ são necessários somente à etapa posterior, arquivos esses na casa de gigabyte
 cada. Isso gerava a necessidade de uma limpeza manual dos arquivos depois de
 cada etapa.
 
-\subsection{Validação de aplicações selecionadas: \textit{sambamba}}
-\label{sec:sambamba}
+\subsection{Perfil de execução do \textit{SAMtools}}
 
-Esta seção descreve a validação da aplicação \textit{sambamba}, identificada em revisão
-bibliográfica já exposta na seção \ref{sec:callant}. A conversão de CRAM para
-BAM para uso do \textit{sambamba} foi realizada usando o \textit{samtools}, uma vez que o
-\textit{sambamba}, apesar de providenciar tal suporte em suas versões mais antigas,
-apresentou problemas na leitura dos arquivos -- no \textit{issue tracker} do
-projeto há relatos desses problemas, e a resposta dos autores foi remover o
-suporte a CRAM completamente. A conversão leva mais de duas horas para arquivos
-de entrada de 22 GB, na máquina Thor1, cujo hardware está descrito na
-Tabela \ref{tbl:thor1}. Feita a conversão, foram testados individualmente os
-comandos providenciados pela ferramenta \textit{sambamba}, comparando com os comandos
-equivalentes da ferramenta \textit{samtools}.  Primeiramente, foi validado que o
-conteúdo dos arquivos produzidos é o mesmo, então, foi validado seu desempenho,
-através do tempo médio de cinco execuções. A amostra utilizada foi a HGDP00519,
-do projeto HGDP \cite{cavalli2005human}, fornecida pelo projeto 1000 Genomes
-\cite{via20101000}.
+Através de um perfil de execução de ``alto nível'' do custo de cada etapa do
+\textit{pipeline} descrito acima, observou-se que a etapa de conversão de CRAM
+para BAM era particularmente custosa. Então, a partir de um estudo do manual
+das ferramentas utilizadas e de publicações de seus autores, percebeu-se
+oportunidade de melhorias no fluxo de análise utilizado pelos pesquisadores. Em
+particular, em \cite{danecek2021twelve} os autores observam que o uso do
+comando \textit{samtools view -b}, para conversão de CRAM para BAM, apesar de
+frequentemente presente em guias na internet é normalmente desnecessário, uma
+vez que as ferramentas possuem suporte a CRAM. Isso ocorre por motivos
+históricos, pois originalmente o \textit{SAMtools} não trabalhava com arquivos
+CRAM \cite{danecek2021twelve}.
 
-O comando de indexação foi consideravelmente mais lento na ferramenta \textit{sambamba},
-apesar de usar múltiplos núcleos enquanto o \textit{samtools} roda sequencialmente.
-Enquanto o \textit{samtools} levou em média 40 segundos para indexar um CRAM de 26 GB, o
-\textit{sambamba} levou mais de dois minutos para indexar o BAM convertido a partir
-dele, de 53 GB. Já para a rotina de visualização de uma região ou cromossomo o
-\textit{sambamba} foi consideravelmente mais rápido. Enquanto o \textit{samtools} leva em média
-mais de quatro minutos para visualizar uma região do arquivo supracitado, o
-\textit{sambamba} levou apenas 19 segundos. Já os comandos \textit{merge} e
-\textit{mpileup} não puderam ser executados com o \textit{sambamba} -- para o mesmo
-arquivo em que os comandos mencionados anteriormente rodaram com sucesso, tais
-comandos apresentaram erros sobre o formato do arquivo, tanto na versão mais
-atual do \textit{sambamba} como em versões anteriores. Esse problema não é completamente
-inesperado -- conforme já mencionado na seção \ref{sec:callant}, as notas de
-lançamento do \textit{sambamba} indicam que alguns comandos da chamada de variantes não
-foram extensivamente testados. A Tabela \ref{tbl:sambamba} sumariza os
-resultados, com os tempos em segundos.
-
-\begin{table}[h]
-    \caption{Tempo de execução das ferramentas de chamada de variantes}
-    \centering
-        \begin{tabular}{c|c|c}
-          \hline
-          \textit{Comando}  &   \textit{Média}  & \textit{Desvio padrão} \\
-          \hline
-          \hline
-          sambamba view chr & 16,4  & 3,28 \\
-          sambamba index    & 127,4 & 5,32 \\
-          samtools view chr & 241,4 & 6,64 \\
-          samtools index    & 40,2  & 1,79 \\
-          \hline
-        \end{tabular}
-      \legend{Todos tempos em segundos. Fonte: Os autores}
-    \label{tbl:sambamba}
-\end{table}
-
-Observa-se que os resultados não são diretamente comparáveis com aqueles
-apresentados na publicação original do \textit{sambamba} \cite{tarasov2015sambamba},
-visto que nela os autores utilizam arquivos BAM com o \textit{SAMtools}, enquanto que
-neste trabalho são utilizados arquivos CRAM, significativamente menores. Diante
-dessa validação avaliou-se por não utilizar o \textit{sambamba}. O único cenário em que
-seu uso seria benéfico é na visualização das regiões, mas como o \textit{sambamba} não
-trabalha com CRAM seria necessário uma conversão custosa, de várias horas para
-cada arquivo de entrada, para uma redução no tempo de execução de poucos
-minutos para alguns segundos.  No total, não traria benefícios aos usuários.
-Dessa forma, avaliou-se pelo início de um ciclo de otimização através de uma
-solução própria, descrito na seção \ref{sec:parsamtools}
-
-\subsection{\textit{SAMtools}: Perfil de execução e paralelização}
-\label{sec:parsamtools}
-
-Através de um estudo da literatura e do manual das ferramentas utilizadas
-percebeu-se oportunidade de melhorias no fluxo de análise utilizado pelos
-pesquisadores. Em particular, em \cite{danecek2021twelve} os autores observam
-que o uso do comando \textit{samtools view -b}, para conversão de CRAM para
-BAM, apesar de frequentemente presente em guias na internet é normalmente
-desnecessário, uma vez que as ferramentas possuem suporte a CRAM. Isso ocorre
-por motivos históricos, pois originalmente o \textit{SAMtools} não trabalhava com
-arquivos CRAM \cite{danecek2021twelve}.
-
-Foi validado, através de um perfil de execução do fluxo original em alto nível,
-já descrito na seção \ref{sec:perfmethod}, que a conversão de CRAM para BAM era
-particularmente custosa. Observado isso, foi verificado através de validações
-de corretude que todo restante da análise poderia ser executado sem essa etapa,
-observando o suporte para CRAM e comparando as saídas do fluxo otimizado com o
-fluxo original. Essa observação contribuiu à avaliação de que uma solução própria
-removendo essa etapa de conversão pudesse ser adequada.
+Observado isso, foi verificado através de validações de corretude que todo
+restante da análise poderia ser executado sem essa etapa, observando o suporte
+para CRAM e comparando as saídas do fluxo otimizado com o fluxo original. Essa
+observação contribuiu à avaliação de que uma solução própria removendo essa
+etapa de conversão pudesse ser adequada à otimização.
 
 Ainda em \cite{danecek2021twelve} os autores comentam que conversões de BCF
 para VCF são custosas e porventura desnecessárias. Na última etapa do fluxo de
@@ -1785,7 +1768,7 @@ arquivos pela ferramenta VCFtools. Apesar do nome, essa ferramenta também
 trabalha com arquivos no formato BCF \cite{man2015vcftools}. Foi validada a
 remoção da etapa de conversão supracitada, substituindo o filtro com o
 utilitário \textit{vcfutils} do pacote \textit{SAMtools} pela filtragem com o próprio
-bcftools utilizando o comando \textit{filter}. Com isso foi avaliado que a
+\textit{bcftools} utilizando o comando \textit{filter}. Com isso foi avaliado que a
 maior parte do tempo de execução está na filtragem e não na conversão, e não
 houve diferença significativa de desempenho do VCFtools usando BCF ou VCF. Por
 fim, os pesquisadores precisam dos arquivos de saída finais no formato VCF para
@@ -1807,15 +1790,88 @@ embaraçosamente paralelas, consistindo de passos independentes para cada
 arquivo de entrada. Como os pesquisadores do HCPA possuem acesso a máquinas
 multiprocessadas, foi avaliado interessante a otimização através do
 desenvolvimento de uma ferramenta para execução paralela de ambas etapas.
-Assim, iniciou-se um ciclo de otimização, que será descrito nesta seção.
+Assim, iniciou-se um ciclo de otimização, que será descrito na seção
+\ref{sec:parsamtools}.
 
-Foi planejada a utilização do GNU Parallel, já descrito na seção \ref{sec:par},
-para realizar a execução paralela. A escolha dessa ferramenta se deu pela
-facilidade de uso, disponibilidade nos ambientes usados pelos pesquisadores, e
-suporte a ajuste automático do número de \textit{jobs} paralelos ao número de
-núcleos de processamento disponíveis. Então, foi arquitetado um fluxo de
-execução paralelo incorporando as otimizações ao fluxo original já mencionadas,
-resultando no pseudo código reproduzido abaixo.
+\subsection{Validação de aplicações selecionadas: \textit{sambamba}}
+\label{sec:sambamba}
+
+Esta seção descreve a validação da aplicação \textit{sambamba}, identificada em revisão
+bibliográfica já exposta na seção \ref{sec:callant}. A conversão de CRAM para
+BAM para uso do \textit{sambamba} foi realizada usando o \textit{samtools}, uma vez que o
+\textit{sambamba}, apesar de providenciar tal suporte em suas versões mais antigas,
+apresentou problemas na leitura dos arquivos -- no \textit{issue tracker} do
+projeto há relatos desses problemas, e a resposta dos autores foi remover o
+suporte a CRAM completamente. A conversão leva mais de duas horas para arquivos
+de entrada de 22 GB, na máquina Thor1, cujo hardware está descrito na
+Tabela \ref{tbl:thor1}. Feita a conversão, foram testados individualmente os
+comandos providenciados pela ferramenta \textit{sambamba}, comparando com os comandos
+equivalentes da ferramenta \textit{samtools}, antes de realizar uma validação
+do \textit{pipeline} completo. 
+
+Primeiramente, foi validado que o conteúdo dos arquivos produzidos é o mesmo,
+então, foi validado seu desempenho, através do tempo médio de cinco execuções.
+A amostra utilizada foi a HGDP00519, do projeto HGDP \cite{cavalli2005human},
+fornecida pelo projeto 1000 Genomes \cite{via20101000}, e os resultados
+encontram-se reproduzidos na Tabela \ref{tbl:sambamba}, com todos tempos em segundo.
+
+\begin{table}[h]
+    \caption{Tempo de execução das ferramentas de chamada de variantes}
+    \centering
+        \begin{tabular}{c|c|c}
+          \hline
+          \textit{Comando}  &   \textit{Média}  & \textit{Desvio padrão} \\
+          \hline
+          \hline
+          sambamba view chr & 16,4  & 3,28 \\
+          sambamba index    & 127,4 & 5,32 \\
+          samtools view chr & 241,4 & 6,64 \\
+          samtools index    & 40,2  & 1,79 \\
+          \hline
+        \end{tabular}
+      \legend{Todos tempos em segundos. Fonte: Os autores}
+    \label{tbl:sambamba}
+\end{table}
+
+O comando de indexação foi consideravelmente mais lento na ferramenta \textit{sambamba},
+apesar de usar múltiplos núcleos enquanto o \textit{samtools} roda sequencialmente.
+Enquanto o \textit{samtools} levou em média 40 segundos para indexar um CRAM de 26 GB, o
+\textit{sambamba} levou mais de dois minutos para indexar o BAM convertido a partir
+dele, de 53 GB. Já para a rotina de visualização de uma região ou cromossomo o
+\textit{sambamba} foi consideravelmente mais rápido. Enquanto o \textit{samtools} leva em média
+mais de quatro minutos para visualizar uma região do arquivo supracitado, o
+\textit{sambamba} levou apenas 19 segundos. Já os comandos \textit{merge} e
+\textit{mpileup} não puderam ser executados com o \textit{sambamba} -- para o mesmo
+arquivo em que os comandos mencionados anteriormente rodaram com sucesso, tais
+comandos apresentaram erros sobre o formato do arquivo, tanto na versão mais
+atual do \textit{sambamba} como em versões anteriores. Esse problema não é completamente
+inesperado -- conforme já mencionado na seção \ref{sec:callant}, as notas de
+lançamento do \textit{sambamba} indicam que alguns comandos da chamada de variantes não
+foram extensivamente testados. 
+
+Observa-se que os resultados não são diretamente comparáveis com aqueles
+apresentados na publicação original do \textit{sambamba} \cite{tarasov2015sambamba},
+visto que nela os autores utilizam arquivos BAM com o \textit{SAMtools}, enquanto que
+neste trabalho são utilizados arquivos CRAM, significativamente menores. Diante
+dessa validação avaliou-se por não utilizar o \textit{sambamba}. O único cenário em que
+seu uso seria benéfico é na visualização das regiões, mas como o \textit{sambamba} não
+trabalha com CRAM seria necessário uma conversão custosa, de várias horas para
+cada arquivo de entrada, para uma redução no tempo de execução de poucos
+minutos para alguns segundos.  No total, não traria benefícios aos usuários.
+Dessa forma, avaliou-se pelo início de um ciclo de otimização através de uma
+solução própria, descrito a seguir.
+
+\subsection{Otimização do \textit{SAMtools}}
+\label{sec:parsamtools}
+
+Para a otimização do \textit{pipeline} de análise utilizando o
+\textit{SAMtools}, foi arquitetado um fluxo de execução paralelo incorporando
+as otimizações ao fluxo original já mencionadas, resultando no pseudo código
+reproduzido abaixo. Observa-se que esse algoritmo contempla todas três etapas,
+e que no restante dessa seção são expostas validações da solução completa.
+Todavia, convém mencionar que a otimização se deu por etapa, validando cada uma
+antes de iniciar a próxima, até validar a solução completa, de acordo com a
+metodologia adotada, de um ciclo de otimização incremental.
 
 \begin{algorithmic}
   \State $C \gets \text{input CRAMs}$
@@ -1844,32 +1900,30 @@ resultando no pseudo código reproduzido abaixo.
 \State bcftools view C
 \end{algorithmic}
 
-Acima, reproduz-se o pseudo código completo, e no restante dessa seção são
-expostas validações da solução completa. Todavia, convém mencionar que a
-otimização se deu por etapas, já discriminadas acima, de acordo com a
-metodologia adotada de um ciclo de otimização incremental.
+Foi planejada a execução paralela utilizando GNU Parallel, já descrito na seção
+\ref{sec:par}. A escolha dessa ferramenta se deu pela facilidade de uso,
+disponibilidade nos ambientes usados pelos pesquisadores, e suporte a ajuste
+automático do número de \textit{jobs} paralelos ao número de núcleos de
+processamento disponíveis. 
 
-A validação da corretude da ferramenta se deu através da comparação das saídas
-do \textit{pipeline} original com o otimizado, validando tais resultados junto
-aos pesquisadores do HCPA. Validada a corretude da implementação, foram
-realizados novas medidas de seu tempo de execução. As otimizações e a
-paralelização reduziram drasticamente o tempo de análise. Uma vez observada a
-melhora substancial no tempo de execução, as medidas com a ferramenta otimizada
-foram replicadas cinco vezes. Na Tabela \ref{tbl:SAMtools} encontram-se
-reproduzidos os tempos de execução utilizando o \textit{pipeline} original (uma
-execução) e o otimizado (média e desvio de cinco execuções). Observa-se que a
-execução original leva vários dias para cada caso, não havendo tempo no escopo
-desse trabalho para sua replicação, portanto não há medida de variança dos
-resultados. Os testes foram realizados na máquina Thor1, descrita na Tabela
-\ref{tbl:thor1}, utilizando todos núcleos de processamento disponíveis.  Foram
-utilizados como entrada as amostras HGDP00715, HGDP00711, HGDP00519, HGDP00714,
-HGDP00712, HGDP00777, HGDP00525, e HGDP00719, do projeto HGDP
-\cite{cavalli2005human}, disponibilizadas pelo projeto 1000 Genomes
-\cite{via20101000}. Observa-se que a redução do tempo de processamento para
-oito entradas foi de 88,79\%.
+Validada a corretude da implementação otimizada, conforme a metodologia
+descrita na seção \ref{sec:test}, foram realizados medidas de seu tempo de
+execução. As otimizações e a paralelização reduziram drasticamente o tempo de
+análise. Uma vez observada a melhora substancial no tempo de execução, as
+medidas com a ferramenta otimizada foram replicadas, conforme a metodologia
+adotada. 
+
+Na Tabela \ref{tbl:SAMtools} encontram-se reproduzidos os tempos de execução em
+minutos utilizando o \textit{pipeline} original (uma execução) e o otimizado
+(média e desvio de cinco execuções), na máquina Thor1, utilizando todos núcleos
+de processamento disponíveis. Foram utilizados como entrada as amostras
+HGDP00715, HGDP00711, HGDP00519, HGDP00714, HGDP00712, HGDP00777, HGDP00525, e
+HGDP00719, do projeto HGDP \cite{cavalli2005human}, disponibilizadas pelo
+projeto 1000 Genomes \cite{via20101000}. Observa-se que a redução do tempo de
+processamento para oito entradas foi de 88,79\%.
 
 \begin{table}[h]
-    \caption{Tempos de execução do \textit{SAMtools} \textit{versus} a ferramenta desenvolvida}
+    \caption{Tempos de execução do \textit{pipeline} original e otimizado}
     \centering
         \begin{tabular}{c|c|c|c}
           \hline
@@ -1932,15 +1986,16 @@ entradas. Para seis entradas o mesmo é observado, mas o \textit{speedup} fica
 mais próximo do ideal. Isso é esperado, visto que utilizamos todos núcleos
 disponíveis em todas etapas, exceto a última.
 
-Conforme pode ser observado na Tabela \ref{tbl:stages}, que discrimina os
-resultados por etapa, o maior ganho com o paralelismo está na etapa 2, em que é
-lançado um \textit{job} para cada um dos 22 cromossomos, limitado ao número de
-CPUs disponíveis. Conforme esperado, a etapa 1, em que é lançado um
-\textit{job} para cada entrada, limitado pelo número de CPUs disponíveis, só
-tem ganho de desempenho até o número de \textit{jobs} ser igual ao número de
-entradas. Por fim, conforme esperado, a etapa 3 tem tempo constante, uma vez
-que executa em uma única \textit{thread} -- mas possui ganho de desempenho em relação ao
-\textit{pipeline} original em que havia uma etapa de indexação desnecessária.
+Isso pode ser melhor observado através da Tabela \ref{tbl:stages}, que
+discrimina os resultados por etapa. O maior ganho com o paralelismo está na
+etapa 2, em que é lançado um \textit{job} para cada um dos 22 cromossomos,
+limitado ao número de CPUs disponíveis. Conforme esperado, a etapa 1, em que é
+lançado um \textit{job} para cada entrada, limitado pelo número de CPUs
+disponíveis, só tem ganho de desempenho até o número de \textit{jobs} ser igual
+ao número de entradas. Por fim, conforme esperado, a etapa 3 tem tempo
+constante, uma vez que executa em uma única \textit{thread} -- mas possui ganho
+de desempenho em relação ao \textit{pipeline} original em que havia uma etapa
+de indexação desnecessária.
 
 Observa-se que uma alternativa à paralelizar somente os \textit{jobs} sob cada
 entrada seria utilizar um \textit{pipeline} dos comandos, dado que, para alguns
@@ -1959,41 +2014,42 @@ realizada manualmente pelos pesquisadores. Observa-se que é precisamente esse
 tipo de abordagem (\textit{pipeline}) que tomam os softwares como o
 \textit{elPrep}, que apresentam uso de memória demasiadamente elevado.
 
-Tanto o \textit{samtools} como o bcftools e a ferramenta desenvolvida pelos autores
-requerem um ambiente com uma série de softwares pré-instalados e em versões
-específicas, o que porventura gerava dificuldades aos pesquisadores do HCPA. A
-fim de superar tais dificuldades decidiu-se por utilizar o software Docker,
-também utilizado nas análises de desempenho. Além disso, foi desenvolvida uma
-interface gráfica para o uso do \textit{samtools} e bcftools para chamada de variantes.
-O intuito é facilitar o uso do ferramental para profissionais da biologia que
-porventura não estejam familiarizados com interfaces por linha de comando.
+Um dos requisitos levantados junto aos usuários foi a facilidade para uso.
+Tanto o \textit{samtools} como o \textit{bcftools} e a ferramenta desenvolvida
+pelos autores requerem um ambiente com uma série de softwares pré-instalados e
+em versões específicas, o que porventura gerava dificuldades aos pesquisadores
+do HCPA. A fim de superar tais dificuldades decidiu-se por utilizar o software
+Docker, também utilizado nas análises de desempenho. Além disso, foi
+desenvolvida uma interface gráfica para o uso do \textit{samtools} e
+\textit{bcftools} para chamada de variantes. O intuito é facilitar o uso do
+ferramental para profissionais da biologia que porventura não estejam
+familiarizados com interfaces por linha de comando.
+
+Para desenvolvimento da interface, uma nova iteração do ciclo de otimização,
+planejou-se utilizar a linguagem de programação Python, amplamente utilizada
+para computação científica \cite{oliphant2007python}. A escolha da linguagem se
+deu principalmente pelo sua disponibilidade em múltiplos sistemas operacionais,
+visto que um dos requisitos de usabilidade era a portabilidade para os sistemas
+operacionais Windows, Linux, e Mac, e há suporte tanto de interpretadores da
+linguagem como das bibliotecas utilizadas para todas essas plataformas
+\cite{oliphant2007python}. Outro fator que influenciou a escolha foi a
+agilidade no desenvolvimento que a linguagem proporciona
+\cite{oliphant2007python}. Foi selecionada a biblioteca \textit{guietta} para
+criação da interface gráfica \cite{guietta}, um \textit{wrapper} em cima da
+biblioteca \textit{PySide2}, um \textit{binding} para Python da biblioteca
+multiplataforma Qt \cite{loganathan2013pyside}. A escolha da biblioteca vem
+pela sua facilidade de uso e pela disponibilidade multiplataforma. 
 
 A interface é executada na máquina local do usuário, que pode configurar uma
-máquina remota para execução do \textit{pipeline} de análise. Além da execução do
-\textit{pipeline}, a interface automatiza uma série de outros passos realizados pelos
-pesquisadores, como obtenção dos dados e manipulação dos arquivos de resultado.
-A interface permite ainda realizar todas etapas em segundo plano, verificar seu
-progresso, e interrompê-las.
-
-Para desenvolvimento da interface optou-se por utilizar a linguagem de
-programação Python, amplamente utilizada para computação
-científica \cite{oliphant2007python}. A escolha da linguagem se deu
-principalmente pelo sua disponibilidade em múltiplos sistemas operacionais,
-visto que os usuários (pesquisadores do HCPA) manifestaram interesse em
-utilizar a ferramenta nos sistemas operacionais Windows, Linux, e Mac, e há
-suporte tanto de interpretadores da linguagem como das bibliotecas utilizadas
-para todas essas plataformas \cite{oliphant2007python}. Outro fator que
-influenciou a escolha foi a agilidade no desenvolvimento que a linguagem
-proporciona \cite{oliphant2007python}.
-
-Foi utilizada a biblioteca \textit{guietta} para criação da interface
-gráfica \cite{guietta}, um \textit{wrapper} em cima da biblioteca
-\textit{PySide2}, um \textit{binding} para Python da biblioteca multiplataforma
-Qt \cite{loganathan2013pyside}. A escolha da biblioteca vem pela sua facilidade
-de uso e pela disponibilidade multiplataforma. As Figuras
-\ref{fig:samgui_linux}, \ref{fig:samgui_mac}, e \ref{fig:samgui_windows}
-apresentam uma captura de tela da interface gráfica desenvolvida nas
-plataformas Linux, Mac, e Windows, respectivamente.
+máquina remota para execução do \textit{pipeline} de análise. Além da execução
+do \textit{pipeline}, a interface automatiza uma série de outros passos
+realizados pelos pesquisadores, como obtenção dos dados e manipulação dos
+arquivos de resultado, requisitos funcionais esses previamente levantados. A
+interface permite ainda realizar todas etapas em segundo plano, verificar seu
+progresso, e interrompê-las. As Figuras \ref{fig:samgui_linux},
+\ref{fig:samgui_mac}, e \ref{fig:samgui_windows} apresentam uma captura de tela
+da interface gráfica desenvolvida nas plataformas Linux, Mac, e Windows,
+respectivamente.
 
 \begin{figure}
   \caption{Captura de tela da interface gráfica ``SAMGUI'' em ambiente Linux}
@@ -2035,8 +2091,8 @@ frequência de ocorrência de determinados alelos entre pares de
 indivíduos de diferentes populações \cite{yi2010sequencing}.
 
 A análise em questão consiste de duas etapas, a primeira utilizando o binário
-angsd, a aplicação principal do pacote ANGSD, e a segunda etapa utilizando a
-ferramenta realSFS, um utilitário fornecido pelo pacote. A primeira etapa leva
+\textit{angsd}, a aplicação principal do pacote ANGSD, e a segunda etapa utilizando a
+ferramenta \textit{realSFS}, um utilitário fornecido pelo pacote. A primeira etapa leva
 cerca de um dia para cada arquivo de entrada e porventura apresenta uso elevado
 de memória, enquanto que a segunda etapa, que recebe como entrada a saída da
 etapa anterior, nunca termina a execução devido a uso de memória
@@ -2044,15 +2100,15 @@ proibitivamente elevado, para os dados de entrada dos pesquisadores do HCPA.
 
 A entrada da primeira etapa consiste em arquivos nos formatos BAM ou CRAM,
 descritos na seção \ref{sec:formats}, um arquivo de entrada para cada indivíduo
-de cada população sob análise. O angsd então utiliza a biblioteca
+de cada população sob análise. O \textit{angsd} então utiliza a biblioteca
 htslib para manipulação desses arquivos.
 
 Uma primeira observação realizada através de reuniões com os pesquisadores é
 que esses dados de entrada são obtidos sempre no formato CRAM do projeto 1000
 Genomes, e que estava sendo realizada uma etapa de conversão de CRAM para BAM
-para uso do angsd. Essa conversão é realizada utilizando o software
+para uso do \textit{angsd}. Essa conversão é realizada utilizando o software
 \textit{SAMtools}, já previamente descrito, e leva algumas horas para cada arquivo de
-entrada. Todavia, como observado anteriormente, o angsd trabalha também com o
+entrada. Todavia, como observado anteriormente, o \textit{angsd} trabalha também com o
 formato CRAM, fato esse observado através do estudo do manual da ferramenta.
 Sendo assim, a etapa de conversão é desnecessária. Essa observação já
 economizou algumas horas de execução.
@@ -2061,9 +2117,9 @@ Eliminada essa etapa de pré-processamento dos dados, realizou-se um perfil de
 execução do software a fim de elucidar seu alto uso de memória, com o
 \textit{plugin} massif, do valgrind.
 
-\subsection{ANGSD: Perfil de execução}
+\subsection{Perfil de execução do ANGSD}
 
-Inicialmente estudou-se o uso de memória do utilitário realSFS, que apresentava o
+Inicialmente estudou-se o uso de memória do utilitário \textit{realSFS}, que apresentava o
 principal problema de desempenho. Através de um estudo do código fonte foi
 observado que o utilitário implementa dois otimizadores, um legado utilizando
 BFGS (o mesmo algoritmo usado no pacote PAML) e o padrão utilizando
@@ -2089,18 +2145,15 @@ confiabilidade dos resultados.
 
 Foi realizada nova reunião com os pesquisadores, reiniciando o ciclo de
 levantamento de requisitos, em que foi observado que é possível realizar a mesma
-análise feita com o angsd (PBS) utilizando o pacote \textit{SAMtools}, construído em
-cima da biblioteca htslib (tal qual o angsd), e que já era utilizado na etapa
+análise feita com o \textit{angsd} (PBS) utilizando o pacote \textit{SAMtools}, construído em
+cima da biblioteca htslib (tal qual o \textit{angsd}), e que já era utilizado na etapa
 de pré-processamento dos dados, seguida de uma análise estatística dos
 resultados. Todavia, o \textit{pipeline} de análise utilizando tais ferramentas
-apresentava tempos proibitivamente lentos. Na seção \ref{sec:SAMtools} é
-descrito um estudo desse \textit{pipeline} e posterior otimização através do
-desenvolvimento de uma ferramenta que otimiza e paraleliza sua execução,
-resolvendo o problema de desempenho supracitado. Tal estudo foi realizado em
-paralelo ao estudo do angsd descrito acima e, uma vez que os resultados foram
-se mostrando mais frutíferos, o foco dese trabalho passou a ser esse
-ferramental, a análise pelo angsd sendo substituída pela análise pelo
-\textit{SAMtools} por parte dos pesquisadores.
+apresentava tempos proibitivamente lentos. Conforme já exposto, foi realizada
+uma otimização que reduziu significativamente esse tempo. Uma vez que os
+resultados dessa abordagem demonstraram-se mais frutíferos, o foco dese
+trabalho passou a ser esse ferramental, a análise pelo \textit{angsd} sendo substituída
+pela análise pelo \textit{SAMtools} por parte dos pesquisadores.
 
 %
 %
@@ -2162,7 +2215,7 @@ corretude e desempenho. Avaliada como satisfatória, foi entregue aos usuários.
 \section{Discussão e trabalhos futuros}
 
 Mesmo a solução para execução paralela do \textit{pipeline} de análise
-filognética ainda leva diversas horas para executar com poucas entradas, o que
+filogenética ainda leva diversas horas para executar com poucas entradas, o que
 motiva trabalhos futuros visando melhorias subsequentes. Além do pacote
 \textit{SAMtools} e softwares alternativos a ele, existem diversas ferramentas
 utilizados para chamadas de variante utilizando modelos diferentes daquele
@@ -2174,13 +2227,13 @@ considerando os resultados potencialmente diferentes entre si, para o caso de
 uso do HCPA, levando em consideração a literatura a respeito dessas
 ferramentas.
 
-Outra via de trabalho futuro objetivando uma maior melhoria de desempenho para
-a chamada de variantes é a adição de suporte a arquivos CRAM às ferramentas
-\textit{sambamba} e \textit{elPrep}, a fim de adequá-las aos arquivos atualmente disponibilizados
-pelo projeto 1000 Genomes. Uma abordagem seria utilizar a htslib para isso,
-levando em consideração que essas ferramentas dividem os arquivos de entrada
-para processamento -- não bastaria simplesmente utilizar a API para leitura do
-arquivo CRAM completo para memória.
+Outro trabalho futuro objetivando uma melhoria de desempenho para a chamada de
+variantes é a adição de suporte a arquivos CRAM às ferramentas
+\textit{sambamba} e \textit{elPrep}, a fim de adequá-las aos arquivos
+atualmente disponibilizados pelo projeto 1000 Genomes. Uma abordagem seria
+utilizar a htslib para isso, levando em consideração que essas ferramentas
+dividem os arquivos de entrada para processamento -- não bastaria simplesmente
+utilizar a API para leitura do arquivo CRAM completo para memória.
 
 Ainda outro trabalho futuro consiste no estudo de uma abordagem para
 \textit{cluster} e comparação com as ferramentas presentes na literatura que
@@ -2211,7 +2264,7 @@ paralelização para o BFGS. No caso do L-BFGS existem outras estratégias de
 paralelismo além daquela mencionada nesse trabalho para o BFGS. Por exemplo, em
 \cite{fei2014parallel} e \cite{sanseverino2014cuda} são descritas
 implementações paralelas em GPU, que podem ser de interesse uma vez sanados os
-problemas na implementação original. O fastcodeml, já descrito na seção
+problemas na implementação original. O \textit{fastcodeml}, já descrito na seção
 \ref{sec:filoant}, pode ser um bom ponto de partida para explorar essa linha de
 solução.
 
