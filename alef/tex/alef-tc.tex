@@ -226,7 +226,7 @@ objetivando-se o estudo desses softwares e de seus gargalos de
 desempenho, visando seu mapeamento e resolução. Em particular, partindo da
 observação de que os softwares em questão não utilizam técnicas de
 processamento paralelo ou o fazem de forma limitada, objetivou-se
-disponibilizar aos pesquisadores aplicações que empregue tais técnicas, a fim
+disponibilizar aos pesquisadores aplicações que empreguem tais técnicas, a fim
 de beneficiar-se de ambientes multiprocessados, ubíquo em hardware moderno.
 
 %
@@ -276,9 +276,9 @@ capítulo \ref{chap:conc} é apresentada uma conclusão, seguida das referência
 
 Neste capítulo são introduzidos conceitos de bioinformática e demais áreas,
 necessários à compreensão dos softwares que foram objeto de estudo desse
-trabalho e das técnicas empregadas nele. Na seção \ref{sec:filo} é apresentado o
+trabalho e das técnicas nele empregadas. Na seção \ref{sec:filo} é apresentado o
 conceito de análise filogenética, objeto de estudo dos usuários do pacote PAML;
-na seção \ref{sec:call} é exposto o conceito chamada de variantes, para o qual
+na seção \ref{sec:call} é exposto o conceito de chamada de variantes, para o qual
 os pacotes \textit{SAMtools} e ANGSD são empregados; na seção \ref{sec:formats} são
 descritos os formatos de arquivos utilizados para cada um desses processos,
 relevantes ao entendimento das soluções desenvolvidas; na seção \ref{sec:par}
@@ -459,7 +459,7 @@ ao GRCh38, encontram-se disponíveis em \textit{mirrors} como do
 \textit{National Center for Biotechnology} (NCBI), providenciando maior largura
 de banda \cite{clarke20121000}.
 
-Por fim, para o software PAML, além de arquivos FASTA contendo as sequências
+Por fim, para pacote PAML, além de arquivos FASTA contendo as sequências
 genéticas dos indivíduos da árvore filogenética, a árvore em si consiste de uma
 das entradas do software. A árvore é fornecida no formato NWK ou Newick, um
 formato texto plano com representação flexível, que basicamente separa os nodos
@@ -651,7 +651,7 @@ classificados pela escolha de $B_i$. Em métodos de primeira ordem, como o do
 gradiente ou do máximo declive, $B_i$ é a matriz identidade. Em métodos de
 segunda ordem como o de Newton, $B_i = \nabla^2 f(x_i)$, dando a equação de
 recorrência abaixo (Equação \ref{eq:optnewton}), equivalente à Equação
-\ref{eq:newtonop} para funções de uma única variável.
+\ref{eq:newtonopt} para funções de uma única variável.
 
 \begin{equation}
 \label{eq:optnewton}
@@ -725,17 +725,19 @@ anteriormente descrito:
 
 % $$ \frac{\partial^2 ln L(w|y)}{\partial w^2_i} < 0 $$
 
-Um método numérico empregado para realizar essa maximização é o BFGS, já
-descrito na seção \ref{sec:bfgs}. Sendo $lnL$ a log-verossimilhança, tem-se a
-seguinte equação de recorrência (Equação \ref{eq:mle}):
+Um método numérico que pode ser empregado para realizar essa maximização é o
+método de Newton, já descrito na seção \ref{sec:bfgs}. Sendo $lnL$ a
+log-verossimilhança, tem-se a seguinte equação de recorrência (Equação
+\ref{eq:mle}):
 
 \begin{equation}
 \label{eq:mle}
 w_{i+1} = w_i - \alpha_i \frac{\nabla lnL_i}{\nabla^2 lnL_i}
 \end{equation}
 
-O \textit{codeml} emprega o BFGS para realizar o MLE a fim de caracterizar a
-população que melhor representa a amostra sob avaliação.
+O \textit{codeml} emprega o BFGS, um método de otimização quasi-Newton, para
+realizar o MLE a fim de caracterizar a população que melhor representa a
+amostra sob avaliação.
 
 %Observa-se que $L(w|y)$ não é uma função de densidade de probabilidade
 %dos parâmetros -- por definição, uma
@@ -777,9 +779,9 @@ PDCA -- planejamento, execução, validação, e atuação -- inspirando-se para
 isso em uma visão pragmática do método científico. O modelo visa balancear o
 desejo e as recompensas da tomada de ação com a sabedoria de um estudo prévio.
 
-Dessa forma, a formulação moderna do ciclo de Shewhart, resumida na Figura
-\ref{fig:pdca_orig}, providencia um método genérico para melhoria de processos ou
-ferramentas, inspirado em uma visão pragmática do método científico, e
+Assim, a formulação moderna do ciclo de Shewhart, resumida na Figura
+\ref{fig:pdca_orig}, providencia um método genérico para melhoria de processos
+ou ferramentas, inspirado em uma visão pragmática do método científico, e
 comumente usado na gestão de negócios.
 
 \begin{figure} \caption{Ciclo PDCA} \begin{center}
@@ -836,7 +838,7 @@ por um paralelismo de \textit{jobs}, desenvolvendo uma ferramenta voltada
 para execução em \textit{cluster} ou \textit{grid}, mais especificamente
 visando ambientes com o \textit{middleware} Advanced Resource Connector (ARC),
 utilizado no \textit{grid} aos quais os autores possuíam acesso. A ferramenta,
-chamada gcodeml, é desenvolvida na linguagem de programação Python, utilizando
+chamada \textit{gcodeml}, é desenvolvida na linguagem de programação Python, utilizando
 a biblioteca GC3Pie, que providencia \textit{bindings} para controle e execução
 de \textit{jobs} ARC. O caso de uso dos pesquisadores do HCPA envolve um
 arquivo de entrada único, e o ambiente de execução aos quais os pesquisadores
@@ -845,7 +847,7 @@ solução não foi estudada mais a fundo nesse trabalho.
 
 Em \cite{maldonado2016lmap} é implementado uma
 ferramenta, chamada LMAP, para execução paralela de múltiplos \textit{jobs} do
-\textit{codeml} em uma única máquina (em CPU). Diferente do gcodeml, o LMAP lança um
+\textit{codeml} em uma única máquina (em CPU). Diferente do \textit{gcodeml}, o LMAP lança um
 \textit{job} para cada modelo de substituição do \textit{codeml}, não para
 cada arquivo de entrada. Dessa forma a execução é paralela mesmo para um único
 arquivo de entrada, dado múltiplos modelos de substituição, que é
@@ -874,7 +876,7 @@ ferramenta um dos focos de avaliação de desempenho desse trabalho.
 Em \cite{valle2014optimization} os mesmos autores do \textit{slimcodeml} escrevem um
 novo software, com base de código completamente independente do \textit{codeml}
 original, fornecendo uma implementação paralela em CPU. Essa implementação,
-chamada fastcodeml, possui formatos de entrada e saída diferentes do software
+chamada \textit{fastcodeml}, possui formatos de entrada e saída diferentes do software
 original, e implementa apenas um subconjunto de seus métodos. O propósito dos
 autores nesse trabalho foi explorar estratégias de paralelização e otimização
 para o problema de análise filogenética de forma geral. Não possuindo as mesmas
@@ -905,9 +907,9 @@ O pacote \textit{SAMtools} \cite{li2009sequence}, uma das aplicações utilizada
 pesquisadores para chamada de variantes, é amplamente utilizada na literatura
 \cite{danecek2021twelve} e considerada estado da arte \cite{yao2020evaluation}.
 O samtoools e a ferramenta \textit{bcftools} que o acompanha são construídos em cima da
-biblioteca htslib \cite{bonfield2021htslib}, dos mesmos autores, que permite a
+biblioteca \textit{htslib} \cite{bonfield2021htslib}, dos mesmos autores, que permite a
 leitura e manipulação de arquivos em formatos diversos representando sequências
-genéticas alinhadas, descritos na seção \ref{sec:formats}.
+genéticas alinhadas, já descritos na seção \ref{sec:formats}.
 
 A combinação dessas duas ferramentas é usada para montar o \textit{pipeline} de chamada
 de variantes, que consiste, além dos passos da chamada em si utilizando o
@@ -928,7 +930,7 @@ implementação.
 
 Em \cite{jin2019pvctools} os autores produzem uma ferramenta para execução
 paralela de chamada de variantes utilizando a linguagem de programação C++.
-Denominada PVCtools, a aplicação implementa um subconjunto de funcionalidades
+Denominada \textit{PVCtools}, a aplicação implementa um subconjunto de funcionalidades
 do \textit{SAMtools} relevante à chamada de variantes. Os autores testam o desempenho de
 sua aplicação em um ambiente multiprocessado, comparando-o com o do \textit{SAMtools}.
 Em particular, os autores utilizam como entrada amostras do genoma humano,
@@ -1060,8 +1062,8 @@ e trabalhos relacionados a ele.
 
 Conforme \cite{jain2art}, a análise de desempenho é uma etapa fundamental no
 desenvolvimento de software. Nesta seção são apresentadas algumas ferramentas
-de análise de desempenho utilizadas neste trabalho, com um foco em particular
-em ferramentas para traço de perfil de execução de aplicações sequenciais.
+de análise de desempenho utilizadas neste trabalho, com um foco em ferramentas
+para traço de perfil de execução de aplicações sequenciais.
 
 Para realizar a análise de uma aplicação, é necessário monitorar seu desempenho
 sob uma determinada carga. Ferramentas monitoras podem ser implementadas em
@@ -1071,32 +1073,32 @@ ocorrência de certos eventos através da instrumentação da aplicação que os
 gera, enquanto os de amostragem sondam a aplicação em intervalos fixos de
 tempo \cite{jain2art}.
 
-O valgrind \cite{nethercote2007valgrind} consiste de um \textit{framework} para
-instrumentação binária dinâmica de aplicações. Em suma, o valgrind funciona
+O \textit{valgrind} \cite{nethercote2007valgrind} consiste de um \textit{framework} para
+instrumentação binária dinâmica de aplicações. Em suma, o \textit{valgrind} funciona
 gerando uma representação intermediária do código original através de um
 processo de tradução dinâmica (JIT), permitindo que \textit{plugins}
-instrumentem esse código intermediário coletando dados de interesse. O valgrind
+instrumentem esse código intermediário coletando dados de interesse. O \textit{valgrind}
 então traduz novamente para código de máquina a representação intermediária
 agora instrumentada, que executa gerando um perfil da execução. Dessa forma, a
 aplicação de interesse não precisa ser recompilada para ser instrumentada.
 
-O callgrind \cite{weidendorfer2008sequential} é um \textit{plugin} para o
+O \textit{callgrind} \cite{weidendorfer2008sequential} é um \textit{plugin} para o
 vallgrind que, em suma, instrumenta instruções de chamada e retorno de funções
-para montar uma pilha de chamadas. Além disso, o callgrind conta instruções
+para montar uma pilha de chamadas. Além disso, o \textit{callgrind} conta instruções
 executadas por rotina e acessos a memória, além de simular acessos à \textit{cache}.
 Dessa forma ele mede, através de instrumentação do código efetivamente
 executado e simulação de uso da \textit{cache}, o uso de recursos (como instruções
 executadas e acesso à memória) de cada rotina, não o tempo efetivamente
-dispendido nelas. Uma interface gráfica (kcachegrind) apresenta os resultados.
+dispendido nelas. Uma interface gráfica (\textit{kcachegrind}) apresenta os resultados.
 
-O gprof \cite{graham1982gprof} é uma ferramenta para gerar perfis de execução.
-Assim como o callgrind, o gprof monta uma pilha de chamadas, mas, diferente do
-callgrind, o gprof reporta tempo efetivamente dispendido em cada rotina, e não
-uso de recursos como instruções executadas. Para isso, o gprof utiliza um
+O \textit{gprof} \cite{graham1982gprof} é uma ferramenta para gerar perfis de execução.
+Assim como o \textit{callgrind}, o \textit{gprof} monta uma pilha de chamadas, mas, diferente do
+\textit{callgrind}, o \textit{gprof} reporta tempo efetivamente dispendido em cada rotina, e não
+uso de recursos como instruções executadas. Para isso, o \textit{gprof} utiliza um
 modelo híbrido de amostragem e instrumentação em tempo de compilação (em
-contraste com a instrumentação dinâmica do valgrind, que não requer
-recompilação). Como o gprof utiliza amostragem, sua intrusão (efeito no tempo
-de execução da aplicação) é consideravelmente menor que a do valgrind. Por
+contraste com a instrumentação dinâmica do \textit{valgrind}, que não requer
+recompilação). Como o \textit{gprof} utiliza amostragem, sua intrusão (efeito no tempo
+de execução da aplicação) é consideravelmente menor que a do \textit{valgrind}. Por
 outro lado, não é capturada a execução completa da aplicação, por definição.
 
 \section{BFGS paralelo}
@@ -1109,22 +1111,21 @@ descrito na mesma seção. Como será descrito no restante desse trabalho, o BFG
 Em \cite{byrd1988parallel} os autores descrevem uma estratégia de paralelização
 para o BFGS em arquiteturas MIMD, seja de memória compartilhada ou distribuída.
 Os autores observam que o BFGS possui dois componentes de custo principais: a
-avaliação da função na etapa de atualização do passo $\alpha$ e no cálculo do
+avaliação da função para atualização do passo $\alpha$ e no cálculo do
 gradiente (da Equação \ref{eq:optnewton}), e as operações de álgebra linear
 utilizadas na aproximação da Hessiana e no cálculo de $\alpha$ (da mesma
-equação). Os autores observam que os custos de operações de álgebra linear são
-normalmente pequenos, o custo do BFGS sendo dominado pelo custo de avaliação da
-função. Os autores estimam que, para funções que executem pelo menos $20n$
-multiplicações ou adições e aproximação do gradiente por diferenças finitas, o
-custo de avaliação e diferenciação é de 90\% ou mais. Os autores observam que o
-paralelismo mais óbvio é aquele da aproximação do gradiente por diferenças
-finitas, em que cada derivada parcial pode ser calculada em paralelo, mas que o
-\textit{speedup} pode ser menor que linear caso o número de processadores $p$
-seja superior ao número de variáveis $n$. Dessa forma, o trabalho propõem uma
-abordagem mais eficiente que envolve a avaliação e diferenciação especulativa
-da função. É observado ainda que a paralelização da álgebra linear empregada no
-algoritmo é interessante no caso em que o custo de avaliação da função objetivo
-não é predominante.
+equação). Desses componentes, aquele que normalmente domina o custo do BFGS é a
+avaliação da função. Os autores estimam que, para funções que executem pelo
+menos $20n$ multiplicações ou adições e aproximação do gradiente por diferenças
+finitas, o custo de avaliação e diferenciação é de 90\% ou mais. Os autores
+observam que o paralelismo mais óbvio é aquele da aproximação do gradiente por
+diferenças finitas, em que cada derivada parcial pode ser calculada em
+paralelo, mas que o \textit{speedup} pode ser menor que linear caso o número de
+processadores $p$ seja superior ao número de variáveis $n$. Dessa forma, o
+trabalho propõem uma abordagem mais eficiente que envolve a avaliação e
+diferenciação especulativa da função. É observado ainda que a paralelização da
+álgebra linear empregada no algoritmo é interessante no caso em que o custo de
+avaliação da função objetivo não é predominante.
 
 %
 %
@@ -1277,7 +1278,7 @@ produzida por elas para esses modelos é comparada com aquela produzida pelo
 \textit{codeml}.
 
 Já para a chamada de variantes a referência é o pacote \textit{SAMtools}. O
-\textit{pipeline} de análise utilizando ele produz as variantes no formato VCF.
+\textit{pipeline} de análise utilizando-o produz as variantes no formato VCF.
 Para avaliar a corretude de implementações alternativas, o conteúdo dos
 arquivos VCF gerados no fim do \textit{pipeline} de análise é comparado com
 aquele produzido utilizando o \textit{SAMtools}. O cabeçalho dos arquivos é
@@ -1295,8 +1296,8 @@ os resultados das soluções entregues.
 \subsection{Desempenho}
 \label{sec:perfmethod}
 
-O objetivo deste trabalho é resolução de problemas de desempenho, dessa forma,
-uma análise comparativa da \textit{performance} das soluções obtidas é
+O objetivo deste trabalho é a resolução de problemas de desempenho, dessa
+forma, uma análise comparativa da \textit{performance} das soluções obtidas é
 fundamental. Cabe ressaltar que não é objetivo deste trabalho uma avaliação de
 desempenho dos softwares variando fatores como ambiente de execução ou
 parâmetros de execução, mas sim o emprego de soluções aos problemas estudados e
@@ -1306,15 +1307,15 @@ usuários.
 
 Para isso, foi construído um ambiente de trabalho controlado, compatível com os
 utilizados pelos pesquisadores do HCPA, e que permite resultados reprodutíveis,
-através de duas medidas: Primeiro, uma máquina de uso exclusivo dos autores e
-com hardware conhecido e compatível com aquele disponível aos
-pesquisadores foi reservada para uso. Segundo, para garantir a
-reprodutibilidade dos resultados, optou-se por utilizar o software
-Docker, de virtualização a nível de sistema operacional, que fornece uma série
-de vantagens para pesquisa reprodutível \cite{boettiger2015introduction}. A
-imagem utilizada para testes descritos neste trabalho está disponível em
-repositório público \cite{dockerme}, enquanto que a máquina utilizada --
-doravante ``Thor1'' -- encontra-se descrita na Tabela \ref{tbl:thor1}.
+através de duas medidas: primeiro, uma máquina de uso exclusivo dos autores e
+com hardware conhecido e compatível com aquele disponível aos pesquisadores foi
+reservada para uso. Segundo, para garantir a reprodutibilidade dos resultados,
+optou-se por utilizar o software Docker, de virtualização a nível de sistema
+operacional, que fornece uma série de vantagens para pesquisa reprodutível
+\cite{boettiger2015introduction}. A imagem utilizada para testes descritos
+neste trabalho está disponível em repositório público \cite{dockerme}, enquanto
+que a máquina utilizada -- doravante ``Thor1'' -- encontra-se descrita na
+Tabela \ref{tbl:thor1}.
 
 \begin{table}[h]
     \caption{Hardware da máquina ``Thor1''}
@@ -1360,16 +1361,16 @@ comandos, o perfil será traçado a nível de etapas do \textit{pipeline}
 de cada ferramenta.
 
 Para o traço do perfil de execução de baixo nível, no que tange processamento
-foram selecionadas as ferramentas callgrind e kcachegrind, respectivamente para
-gerar o perfil e analisar os resultados, além da ferramenta gprof, descritas em
-\ref{sec:antanal}. No que tange uso de memória, foi selecionado a ferramenta
-massif, outro \textit{plugin} padrão do valgrind. Essa escolha partiu da
+foram selecionadas as ferramentas \textit{callgrind} e \textit{kcachegrind}, respectivamente para
+gerar o perfil e analisar os resultados, além da ferramenta \textit{gprof}, descritas na seção
+\ref{sec:antanal}. No que tange uso de memória, foi selecionado o
+\textit{massif}, outro \textit{plugin} padrão do \textit{valgrind}. Essa escolha partiu da
 observação de que as aplicações analisadas são sequenciais -- para a análise de
 aplicações paralelas, métodos diferentes podem se fazer necessários
-\cite{weidendorfer2008sequential}. A escolha do callgrind se dá pela riqueza e
-robustez dos resultados produzidos, enquanto o uso do gprof, cuja execução é
+\cite{weidendorfer2008sequential}. A escolha do \textit{callgrind} se dá pela riqueza e
+robustez dos resultados produzidos, enquanto o uso do \textit{gprof}, cuja execução é
 consideravelmente mais rápida, vem para confirmação dos resultados obtidos pelo
-callgrind através de uma análise com um método de perfil diferente.
+\textit{callgrind} através de uma análise com um método de perfil diferente.
 
 Já para o perfil de ``alto nível'' foram desenvolvidos \textit{shell scripts}
 para mensuração do tempo total dispendido por cada etapa do \textit{pipeline},
@@ -1410,18 +1411,18 @@ como entrada a árvore filogenética das espécies sendo analisadas, no formato
 NWK, as sequências alinhadas dessas espécies, no formato FASTA, e um arquivo de
 configuração que determina os modelos de substituição (de sítio ou linhagem),
 além de parâmetros de execução. Os pesquisadores realizam essa análise em
-ambientes MIMD UMA, e ela possui tempo de execução de algumas horas para uma
-entrada única, considerado elevado.
+ambientes MIMD UMA, e ela leva horas para executar uma entrada única,
+tempo esse considerado elevado.
 
 Através do estudo do manual e do código fonte da ferramenta, cuja publicação
 vem de longa data, foi constatado que a sua implementação de alguns métodos
-numéricos é ingênua. A partir disso avaliou-se que pode haver trabalhos já
-publicados melhorando esse ponto, fazendo necessária uma revisão bibliográfica.
-Os resultados desse estudo da literatura, selecionando ferramentas que atendam
-aos requisitos supracitados, são expostos na seção \ref{sec:filoant}. Conforme
-já descrito lá, foram identificadas as aplicações \textit{slimcodeml} e LMAP
-para validação (de corretude e desempenho), cujos resultados são avaliados na
-seção \ref{sec:slimeval}.
+numéricos é ingênua. A partir disso avaliou-se trabalhos já publicados, em
+busca de algum que vise melhorar esse ponto, através de uma revisão
+bibliográfica.  Os resultados desse estudo da literatura, selecionando
+ferramentas que atendam aos requisitos supracitados, foram expostos na seção
+\ref{sec:filoant}. Conforme já descrito lá, foram identificadas as aplicações
+\textit{slimcodeml} e LMAP para validação (de corretude e desempenho), cujos
+resultados são avaliados na seção \ref{sec:slimeval}.
 
 Além do início de um ciclo de revisão bibliográfica, avaliou-se iniciar também
 um ciclo de otimização. Para isso, os gargalos de desempenho foram mapeados
@@ -1435,15 +1436,15 @@ conforme mencionado previamente, o LMAP e demais implementações paralelizam
 \label{sec:codemlpar}
 
 Durante o levantamento de requisitos foi realizado um perfil de execução do
-\textit{codeml} utilizando as ferramentas callgrind e gprof, para os dados de
+\textit{codeml} utilizando as ferramentas \textit{callgrind} e \textit{gprof}, para os dados de
 entrada do grupo de pesquisa do HCPA, objetivando-se mapear os problemas de
 desempenho observados, além de avaliar sua otimização através de soluções
 alternativas àquelas presentes na literatura.
 
-O perfil de execução obtido com o callgrind revela que a rotina \textit{ming2}
+O perfil de execução obtido com o \textit{callgrind} revela que a rotina \textit{ming2}
 é responsável por 97,28\% do custo de processamento do \textit{codeml}. Através de um
 estudo da aplicação observou-se que essa rotina implementa o algoritmo BFGS,
-já descrito na seção \ref{sec:bfgs}. O \textit{codeml} utiliza ele para maximização no
+já descrito na seção \ref{sec:bfgs}. O \textit{codeml} utiliza-o para maximização no
 processo de MLE, já descrita na seção \ref{sec:mle}. O \textit{ming2} possui duas
 sub-rotinas responsáveis por quase a totalidade de seu custo:
 \textit{gradientB} e \textit{LineSearch2}. A rotina \textit{gradientB},
@@ -1459,7 +1460,7 @@ verossimilhança sendo constantemente avaliada para atualização do $\alpha$ e
 diferenciada para o cálculo do gradiente, no processo de otimização, conforme a
 Equação \ref{eq:mle}. Essa rotina, por sua vez, é modularizada em
 \textit{fx\_r}. A Figura \ref{fig:kcachegrind}, uma captura de tela da
-ferramenta kcachegrind, apresenta uma visualização da pilha de chamadas
+ferramenta \textit{kcachegrind}, apresenta uma visualização da pilha de chamadas
 supracitada.
 
 Isto é, a avaliação e diferenciação da função objetivo constitui 94,98\% do
@@ -1467,8 +1468,8 @@ custo do BFGS no \textit{codeml}, que implementa o cálculo do gradiente por dif
 finitas. Esse é exatamente o resultado esperado para essa classe de problemas,
 conforme descrito no trabalho de \cite{byrd1988parallel}, já exposto na seção
 \ref{sec:parbfgs}. O BFGS, por sua vez, representa 97,28\% do custo do \textit{codeml}.
-O perfil foi traçado também com o gprof, sem alterações significativas nos
-resultados, confirmando a análise pelo callgrind. Importante ressaltar que
+O perfil foi traçado também com o \textit{gprof}, sem alterações significativas nos
+resultados, confirmando a análise pelo \textit{callgrind}. Importante ressaltar que
 esses testes consideram a entrada dos pesquisadores do HCPA e o ambiente
 descrito na Tabela \ref{tbl:thor1}.
 
@@ -1477,8 +1478,8 @@ descrito na Tabela \ref{tbl:thor1}.
 \legend{Fonte: Os Autores} \label{fig:kcachegrind} \end{figure}
 
 A partir dessa validação da aplicação original, avaliou-se interessante a
-otimização do software, explorando a solução dos gargalos de desempenho
-identificados, iniciando um ciclo de otimização, que será descrito na seção
+paralelização do BFGS, explorando-a como solução aos gargalos de desempenho
+identificados, através de um ciclo de otimização, que será descrito na seção
 \ref{sec:optcodeml}.
 
 \subsection{Validação de aplicações selecionadas: \textit{slimcodeml} e LMAP}
@@ -1487,7 +1488,7 @@ identificados, iniciando um ciclo de otimização, que será descrito na seção
 Nesta seção é exposta a validação das aplicações selecionadas no ciclo de
 revisão bibliográfica. A Tabela \ref{tbl:log} apresenta a comparação da
 log-verossimilhança de cada modelo de substituição, conforme produzida pelo
-\textit{slimcodeml} e pelo \textit{codeml}, de acordo a metodologia de
+\textit{slimcodeml} e pelo \textit{codeml}, de acordo com a metodologia de
 avaliação descrita na seção \ref{sec:test}. Os resultados utilizando o LMAP
 foram omitidos, uma vez que a ferramenta simplesmente paraleliza \textit{jobs}
 -- os valores de saída são idênticos aos da execução sequencial. Observa-se que
@@ -1527,7 +1528,7 @@ conforme a metodologia descrita na seção \ref{sec:test}. Além de validar o
 desempenho do LMAP utilizando o \textit{codeml}, como feito no artigo que
 apresenta o LMAP, ele também foi testado utilizando o \textit{slimcodeml}, para
 isso substituindo o executável do \textit{codeml} por aquele do
-\textit{slimcodeml}. Com isso esperava-se beneficiar-se da combinação de duas
+\textit{slimcodeml}. Com isso é esperado beneficiar-se da combinação de duas
 ferramentas que propõem-se a melhorar o desempenho do \textit{codeml}.
 Conforme pode ser observado na tabela, há uma melhora significativa com a
 execução paralela utilizando o LMAP, de até 68\%. Por outro lado, o uso do
@@ -1565,7 +1566,7 @@ problema. A motivação de paralelizar o cálculo do gradiente de forma
 validação, posteriormente avaliando a possibilidade de uma implementação mais
 complexa, seguindo a metodologia proposta. Para implementar essa paralelização
 foi arquitetada uma solução com OpenMP, já descrito na seção \ref{sec:par}. A
-escolha do OpenMP se pela possibilidade de paralelização incremental e
+escolha do OpenMP se dá pela possibilidade de paralelização incremental e
 disponibilidade nas linguagens e sistemas operacionais utilizados neste
 trabalho.
 
@@ -1613,7 +1614,7 @@ que inviabilizam a simples paralelização da rotina em questão.
 Foi avaliada a reimplementação da função de verossimilhança, todavia, o
 uso extensivo de variáveis globais e memória compartilhada na implementação
 original do \textit{codeml} demonstrou-se um grande obstáculo para essa abordagem, que
-por isso foi abandonada. Foi estudada então a implementação do slimcodeml, que
+por isso foi abandonada. Foi estudada então a implementação do \textit{slimcodeml}, que
 reorganiza amplas seções do código fonte, na esperança de que tais
 dependências pudessem ter sido removidas, possibilitando a implementação
 paralela do cálculo do gradiente. Todavia, apesar de melhor organizado, o
@@ -1645,7 +1646,7 @@ mencionado.
 \label{sec:SAMtools}
 
 Nesta seção é minuciado o \textit{pipeline} de chamada de variantes utilizando
-o \textit{SAMtools} como originalmente utilizado pelos pesquisadores, compreendido
+o \textit{SAMtools} como originalmente usado pelos pesquisadores, compreendido
 através do ciclo de levantamento de requisitos, isto é, reuniões com os
 pesquisadores, estudo teórico e empírico da ferramenta. Este detalhamento será
 relevante à compreensão do ciclo de otimização de desempenho, que será descrito
@@ -1702,7 +1703,7 @@ variantes. O comando \textit{bcftools view} é executado para converter a saída
 do formato BCF para VCF, seguido dos comandos \textit{vcftools remove-indels},
 que exclui sítios que contenham \textit{indels} (nesse contexto, variantes que
 alterem o comprimento do alelo de referência), seguido do comando
-\textit{vcftools fiter} para executar um filtro parametrizável por variantes de
+\textit{vcftools filter} para executar um filtro parametrizável por variantes de
 interesse. Independente do número de arquivos de entrada, a saída dessa etapa é
 sempre 22 arquivos. Ela encontra-se reproduzida na
 Figura \ref{fig:stage2_orig}.
@@ -1710,7 +1711,7 @@ Figura \ref{fig:stage2_orig}.
 \begin{figure}
   \caption{Fluxo de análise original via \textit{SAMtools}, etapa 2}
     \begin{center}
-      \includegraphics[width=0.65\linewidth]{img/stage2_orig.png}
+      \includegraphics[width=0.45\linewidth]{img/stage2_orig.png}
     \end{center}
     \legend{Fonte: Os Autores}
     \label{fig:stage2_orig}
@@ -1718,7 +1719,7 @@ Figura \ref{fig:stage2_orig}.
 
 A última etapa consiste de concatenar todos arquivos gerados na etapa anterior
 utilizando o comando \textit{vcf-concat}, do pacote
-VCFtools \cite{10.1093/bioinformatics/btr330}, indexar o arquivo concatenado
+\textit{VCFtools} \cite{10.1093/bioinformatics/btr330}, indexar o arquivo concatenado
 utilizando \textit{bcftools index}, e anotar as variantes com a informação
 presente no VCF de referência do genoma GRCh38, para isso realizando algumas
 conversões de formato via \textit{bcftools view}. Essa etapa recebe sempre 22
@@ -1764,26 +1765,27 @@ etapa de conversão pudesse ser adequada à otimização.
 Ainda em \cite{danecek2021twelve} os autores comentam que conversões de BCF
 para VCF são custosas e porventura desnecessárias. Na última etapa do fluxo de
 análise original é realizada tal conversão seguida de um filtro, para uso dos
-arquivos pela ferramenta VCFtools. Apesar do nome, essa ferramenta também
+arquivos pela ferramenta \textit{VCFtools}. Apesar do nome, essa ferramenta também
 trabalha com arquivos no formato BCF \cite{man2015vcftools}. Foi validada a
 remoção da etapa de conversão supracitada, substituindo o filtro com o
 utilitário \textit{vcfutils} do pacote \textit{SAMtools} pela filtragem com o próprio
 \textit{bcftools} utilizando o comando \textit{filter}. Com isso foi avaliado que a
 maior parte do tempo de execução está na filtragem e não na conversão, e não
-houve diferença significativa de desempenho do VCFtools usando BCF ou VCF. Por
+houve diferença significativa de desempenho do \textit{VCFtools} usando BCF ou VCF. Por
 fim, os pesquisadores precisam dos arquivos de saída finais no formato VCF para
 análise estatística dos dados em texto plano, portanto uma conversão é
 inevitável. Dessa forma, diferente da conversão de CRAM para BAM, a conversão
 de BCF para VCF não foi avaliada como interessante.
 
 Na última etapa do fluxo original estava presente uma etapa de indexação das
-variantes do genoma de referência, sendo uma etapa custosa, visto que o arquivo
-sendo indexado possui 15 GB comprimido, precisa ser descomprimido e depois
-indexado. Todavia, o mesmo projeto (NCBI) que fornece o arquivo das variantes
-do genoma de referência também fornece o respectivo arquivo de índice, que tem
-apenas 2,7 megabytes. Dessa forma, foi avaliado que essa etapa de indexação
-também poderia ser substituída pelo \textit{download} do índice de referência,
-novamente economizando tempo de execução.
+variantes do genoma de referência, que demonstrou-se custosa no perfil de
+execução, visto que o arquivo sendo indexado possui 15 GB comprimido, precisa
+ser descomprimido e depois indexado. Todavia, o mesmo projeto (NCBI) que
+fornece o arquivo das variantes do genoma de referência também fornece o
+respectivo arquivo de índice, que tem apenas 2,7 megabytes. Dessa forma, foi
+avaliado que essa etapa de indexação também poderia ser substituída pelo
+\textit{download} do índice de referência numa eventual otimização, novamente
+economizando tempo de execução.
 
 Foi observado ainda que as duas primeiras etapas do fluxo original eram
 embaraçosamente paralelas, consistindo de passos independentes para cada
@@ -1840,7 +1842,7 @@ Enquanto o \textit{samtools} levou em média 40 segundos para indexar um CRAM de
 dele, de 53 GB. Já para a rotina de visualização de uma região ou cromossomo o
 \textit{sambamba} foi consideravelmente mais rápido. Enquanto o \textit{samtools} leva em média
 mais de quatro minutos para visualizar uma região do arquivo supracitado, o
-\textit{sambamba} levou apenas 19 segundos. Já os comandos \textit{merge} e
+\textit{sambamba} levou apenas 16 segundos. Já os comandos \textit{merge} e
 \textit{mpileup} não puderam ser executados com o \textit{sambamba} -- para o mesmo
 arquivo em que os comandos mencionados anteriormente rodaram com sucesso, tais
 comandos apresentaram erros sobre o formato do arquivo, tanto na versão mais
@@ -1939,8 +1941,8 @@ processamento para oito entradas foi de 88,79\%.
     \label{tbl:SAMtools}
 \end{table}
 
-Além disso, foram realizados testes de desempenho para entradas com 2 arquivos
-(58 GB) e 6 arquivos (161 GB) utilizando um número diferente de núcleos de
+Além disso, foram realizados testes de desempenho para entradas com dois arquivos
+(58 GB) e seis arquivos (161 GB) utilizando um número diferente de núcleos de
 processamento, a fim de estimar o \textit{speedup} bem como a quantidade de
 tempo economizado pela paralelização, o resto sendo atribuído às otimizações no
 fluxo de análise. Os resultados encontram-se reproduzidos na Figura
@@ -1980,10 +1982,10 @@ linha sólida representa a execução com duas entradas, e a pontilhada com seis
 \end{table}
 
 O \textit{speedup} para duas entradas é menor do que o ideal, tão menor quanto
-maior o número de núcleos utilizados. Isso é esperado, uma vez que não estamos
-utilizando todos núcleos disponíveis na etapa 1 quando há somente duas
+maior o número de núcleos utilizados. Isso é esperado, uma vez que não estão
+sendo utilizando todos núcleos disponíveis na etapa 1 quando há somente duas
 entradas. Para seis entradas o mesmo é observado, mas o \textit{speedup} fica
-mais próximo do ideal. Isso é esperado, visto que utilizamos todos núcleos
+mais próximo do ideal. Isso é esperado, visto que são utilizados todos núcleos
 disponíveis em todas etapas, exceto a última.
 
 Isso pode ser melhor observado através da Tabela \ref{tbl:stages}, que
@@ -2005,7 +2007,7 @@ gerada. Esse IO poderia ser feito ainda em memória volátil, reduzindo as
 escritas e leituras em disco. Um mecanismo para IPC seriam \textit{pipes} POSIX, já
 descritos na seção \ref{sec:par}. Todavia, o fato do IO residir em memória
 volátil incorre em uso mais elevado desse recurso, justamente o que tentava-se
-evitar ao buscar uma alternativa a softwares como ANGSD e PVCtools.
+evitar ao buscar uma alternativa a softwares como ANGSD e \textit{PVCtools}.
 Dessa forma, uma vez testado e observado que o uso de memória tornava-se
 elevado demais utilizando um \textit{pipeline}, foi mantida somente a
 paralelização de \textit{jobs} sob os arquivos de entrada, com remoção
@@ -2042,8 +2044,8 @@ pela sua facilidade de uso e pela disponibilidade multiplataforma.
 
 A interface é executada na máquina local do usuário, que pode configurar uma
 máquina remota para execução do \textit{pipeline} de análise. Além da execução
-do \textit{pipeline}, a interface automatiza uma série de outros passos
-realizados pelos pesquisadores, como obtenção dos dados e manipulação dos
+do \textit{pipeline}, a interface automatiza uma série de passos
+antes realizados manualmente pelos pesquisadores, como obtenção dos dados e manipulação dos
 arquivos de resultado, requisitos funcionais esses previamente levantados. A
 interface permite ainda realizar todas etapas em segundo plano, verificar seu
 progresso, e interrompê-las. As Figuras \ref{fig:samgui_linux},
@@ -2101,7 +2103,7 @@ proibitivamente elevado, para os dados de entrada dos pesquisadores do HCPA.
 A entrada da primeira etapa consiste em arquivos nos formatos BAM ou CRAM,
 descritos na seção \ref{sec:formats}, um arquivo de entrada para cada indivíduo
 de cada população sob análise. O \textit{angsd} então utiliza a biblioteca
-htslib para manipulação desses arquivos.
+\textit{htslib} para manipulação desses arquivos.
 
 Uma primeira observação realizada através de reuniões com os pesquisadores é
 que esses dados de entrada são obtidos sempre no formato CRAM do projeto 1000
@@ -2115,7 +2117,7 @@ economizou algumas horas de execução.
 
 Eliminada essa etapa de pré-processamento dos dados, realizou-se um perfil de
 execução do software a fim de elucidar seu alto uso de memória, com o
-\textit{plugin} massif, do valgrind.
+\textit{plugin} \textit{massif}, do \textit{valgrind}.
 
 \subsection{Perfil de execução do ANGSD}
 
@@ -2134,7 +2136,7 @@ a confiabilidade dos resultados diminui \cite{popgen2016angsd}. A redução de
 ambos é indesejável, visto que o tempo de execução já é muito elevado e a
 confiabilidade dos resultados é fundamental.
 
-Foi traçado então um perfil de memória da aplicação utilizando massif, visando
+Foi traçado então um perfil de memória da aplicação utilizando \textit{massif}, visando
 elucidar as causas do uso elevado de memória e avaliar iniciar um ciclo de
 otimização, uma vez que, conforme já exposto na seção \ref{sec:callant}, não
 foram localizadas implementações alternativas do ANGSD na literatura. Esse
@@ -2146,7 +2148,7 @@ confiabilidade dos resultados.
 Foi realizada nova reunião com os pesquisadores, reiniciando o ciclo de
 levantamento de requisitos, em que foi observado que é possível realizar a mesma
 análise feita com o \textit{angsd} (PBS) utilizando o pacote \textit{SAMtools}, construído em
-cima da biblioteca htslib (tal qual o \textit{angsd}), e que já era utilizado na etapa
+cima da biblioteca \textit{htslib} (tal qual o \textit{angsd}), e que já era utilizado na etapa
 de pré-processamento dos dados, seguida de uma análise estatística dos
 resultados. Todavia, o \textit{pipeline} de análise utilizando tais ferramentas
 apresentava tempos proibitivamente lentos. Conforme já exposto, foi realizada
@@ -2195,8 +2197,7 @@ revisão bibliográfica e validações de corretude e desempenho das soluções
 encontradas. Nesse caso, nenhuma das implementações estudadas foi avaliada
 como adequada ao uso dos pesquisadores. Portanto, avaliou-se uma implementação
 própria objetivando-se a melhoria de desempenho do fluxo de análise empregado
-pelos pesquisadores, visando beneficiar-se de técnicas de processamento
-paralelo.
+pelos pesquisadores, beneficiando-se de técnicas de processamento paralelo.
 
 Seguindo um ciclo de otimização incremental, foi implementada uma ferramenta
 que paraleliza \textit{jobs} da aplicação de referência (\textit{SAMtools}),
@@ -2206,7 +2207,7 @@ gráfica para sua operação. A escolha da otimização através do desenvolvime
 de uma solução própria que paraleliza \textit{jobs} da aplicação de referência
 supera deficiências presentes em soluções encontradas na literatura,
 nomeadamente o uso elevado de memória presente em implementações como
-\textit{elPrep}, PVCtools, e ANGSD, a ausência de suporte ao formato de arquivo
+\textit{elPrep}, \textit{PVCtools}, e ANGSD, a ausência de suporte ao formato de arquivo
 CRAM utilizado pelo projeto 1000 Genomes como no \textit{elPrep} e
 \textit{sambamba}, e o uso de implementações próprias sem testes extensivos
 como no caso do \textit{sambamba}. A solução desenvolvida foi validada por
@@ -2231,7 +2232,7 @@ Outro trabalho futuro objetivando uma melhoria de desempenho para a chamada de
 variantes é a adição de suporte a arquivos CRAM às ferramentas
 \textit{sambamba} e \textit{elPrep}, a fim de adequá-las aos arquivos
 atualmente disponibilizados pelo projeto 1000 Genomes. Uma abordagem seria
-utilizar a htslib para isso, levando em consideração que essas ferramentas
+utilizar a \textit{htslib} para isso, levando em consideração que essas ferramentas
 dividem os arquivos de entrada para processamento -- não bastaria simplesmente
 utilizar a API para leitura do arquivo CRAM completo para memória.
 
@@ -2265,7 +2266,7 @@ paralelismo além daquela mencionada nesse trabalho para o BFGS. Por exemplo, em
 \cite{fei2014parallel} e \cite{sanseverino2014cuda} são descritas
 implementações paralelas em GPU, que podem ser de interesse uma vez sanados os
 problemas na implementação original. O \textit{fastcodeml}, já descrito na seção
-\ref{sec:filoant}, pode ser um bom ponto de partida para explorar essa linha de
+\ref{sec:filoant}, pode ser um bom ponto de partida para explorar esse tipo de
 solução.
 
 %
