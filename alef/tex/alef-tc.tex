@@ -276,20 +276,20 @@ capítulo \ref{chap:conc} é apresentada uma conclusão, seguida das referência
 
 Neste capítulo são introduzidos conceitos de bioinformática e demais áreas,
 necessários à compreensão dos softwares que foram objeto de estudo desse
-trabalho e das técnicas nele empregadas. Na seção \ref{sec:filo} é apresentado o
+trabalho e das técnicas nele empregadas. Na Seção \ref{sec:filo} é apresentado o
 conceito de análise filogenética, objeto de estudo dos usuários do pacote PAML;
-na seção \ref{sec:call} é exposto o conceito de chamada de variantes, para o qual
-os pacotes \textit{SAMtools} e ANGSD são empregados; na seção \ref{sec:formats} são
+na Seção \ref{sec:call} é exposto o conceito de chamada de variantes, para o qual
+os pacotes \textit{SAMtools} e ANGSD são empregados; na Seção \ref{sec:formats} são
 descritos os formatos de arquivos utilizados para cada um desses processos,
-relevantes ao entendimento das soluções desenvolvidas; na seção \ref{sec:par}
+relevantes ao entendimento das soluções desenvolvidas; na Seção \ref{sec:par}
 são apresentados conceitos de programação paralela relevantes
-a esse trabalho; na seção \ref{sec:bfgs} são apresentados conceitos de busca
-linear e do algoritmo BFGS, estudado nesse trabalho; na seção \ref{sec:mle} é
+a esse trabalho; na Seção \ref{sec:bfgs} são apresentados conceitos de busca
+linear e do algoritmo BFGS, estudado nesse trabalho; na Seção \ref{sec:mle} é
 apresentado um método de estimativa por máxima verossimilhança, utilizado em
-análise filogenética, e, por fim, na seção \ref{sec:pdca} é apresentado um
+análise filogenética, e, por fim, na Seção \ref{sec:pdca} é apresentado um
 \textit{backgroud} relevante à metodologia adotada.
 
-%, e na seção \ref{sec:design} são abordados conceitos de modelagem de
+%, e na Seção \ref{sec:design} são abordados conceitos de modelagem de
 %experimentos.
 
 \section{Análise filogenética}
@@ -345,7 +345,7 @@ conforme a Tabela \ref{tbl:ex1} \cite{yang2002codon}.
 O propósito de softwares de análise filogenética como o pacote PAML é, em
 síntese, detectar eventos de seleção positiva nas diferentes linhagens da
 árvore filogenética de uma espécie. Para isso, o PAML utiliza modelos
-estatísticos de máxima verossimilhança, descritos na seção \ref{sec:mle}, para
+estatísticos de máxima verossimilhança, descritos na Seção \ref{sec:mle}, para
 comparar a hipótese de ocorrência desses eventos contra a hipótese nula
 \cite{moretti2012gcodeml}.
 
@@ -381,7 +381,7 @@ dos pacotes utilizados para realizar a chamada de variantes é o
 arte junto ao software
 GATK \cite{crysnanto2019accurate} \cite{hwang2015systematic}
 \cite{yao2020evaluation} \cite{poplin2018universal}, que é descrito em mais
-detalhes na seção \ref{sec:alt}.
+detalhes na Seção \ref{sec:alt}.
 
 Uma vez identificadas as variantes, é necessário ainda uma análise da sua
 responsabilidade nas diferenças fenotípicas observadas entre os indivíduos sob
@@ -676,7 +676,7 @@ Wolfe. O BFGS armazena a aproximação do inverso da Hessiana, uma matriz $n
 Uma versão com uso limitado de memória que não requer o armazenamento da
 Hessiana inteira é o L-BFGS \cite{liu1989limited}. O \textit{codeml} utiliza o BFGS para
 maximização da função de verossimilhança, num método chamado MLE, descrito na
-seção \ref{sec:mle}.
+Seção \ref{sec:mle}.
 
 \section{Estimativa por máxima verossimilhança}
 \label{sec:mle}
@@ -726,7 +726,7 @@ anteriormente descrito:
 % $$ \frac{\partial^2 ln L(w|y)}{\partial w^2_i} < 0 $$
 
 Um método numérico que pode ser empregado para realizar essa maximização é o
-método de Newton, já descrito na seção \ref{sec:bfgs}. Sendo $lnL$ a
+método de Newton, já descrito na Seção \ref{sec:bfgs}. Sendo $lnL$ a
 log-verossimilhança, tem-se a seguinte equação de recorrência (Equação
 \ref{eq:mle}):
 
@@ -805,9 +805,9 @@ e chamada de variantes, bem como trabalhos relacionados que visam melhorar o
 desempenho dos softwares utilizados pelos pesquisadores do HCPA --
 \textit{codeml}, do pacote PAML, ANGSD, e \textit{SAMtools} -- respectivamente nas seções
 \ref{sec:filoant} e \ref{sec:callant}. Além disso, são expostos trabalhos
-relacionados à análise de desempenho como empregada nesse trabalho, na seção
-\ref{sec:antanal}, enquanto que na seção \ref{sec:parbfgs} são expostos
-trabalhos relacionados à paralelização do algoritmo BFGS, já descrito na seção
+relacionados à análise de desempenho como empregada nesse trabalho, na Seção
+\ref{sec:antanal}, enquanto que na Seção \ref{sec:parbfgs} são expostos
+trabalhos relacionados à paralelização do algoritmo BFGS, já descrito na Seção
 \ref{sec:bfgs}.
 
 \section{Análise filogenética}
@@ -909,7 +909,7 @@ pesquisadores para chamada de variantes, é amplamente utilizada na literatura
 O samtoools e a ferramenta \textit{bcftools} que o acompanha são construídos em cima da
 biblioteca \textit{htslib} \cite{bonfield2021htslib}, dos mesmos autores, que permite a
 leitura e manipulação de arquivos em formatos diversos representando sequências
-genéticas alinhadas, já descritos na seção \ref{sec:formats}.
+genéticas alinhadas, já descritos na Seção \ref{sec:formats}.
 
 A combinação dessas duas ferramentas é usada para montar o \textit{pipeline} de chamada
 de variantes, que consiste, além dos passos da chamada em si utilizando o
@@ -1104,7 +1104,7 @@ outro lado, não é capturada a execução completa da aplicação, por definiç
 \section{BFGS paralelo}
 \label{sec:parbfgs}
 
-Conforme descrito na seção \ref{sec:bfgs} o \textit{codeml} utiliza o algoritmo BFGS,
+Conforme descrito na Seção \ref{sec:bfgs} o \textit{codeml} utiliza o algoritmo BFGS,
 descrito na mesma seção. Como será descrito no restante desse trabalho, o BFGS
 é uma parte relevante do \textit{codeml}, e sua paralelização é de particular interesse.
 
@@ -1139,20 +1139,20 @@ avaliação da função objetivo não é predominante.
 Neste trabalho objetivou-se a melhoria de desempenho dos processos e
 ferramental empregados pelos pesquisadores do HCPA. Para alcançar esse
 objetivo, foi adotada uma metodologia de planejamento, execução, validação, e
-atuação, baseada no ciclo PDCA clássico, já descrito na seção \ref{sec:pdca}.
+atuação, baseada no ciclo PDCA clássico, já descrito na Seção \ref{sec:pdca}.
 Este capítulo descreve o método particular baseado no PDCA desenvolvido nesse
 trabalho. Na Figura \ref{fig:pdca_global} é exposta uma visão global da
 metodologia, composta de três ciclos PDCA interligados:
 
 \begin{enumerate}
-    \item Levantamento de requisitos, descrito na seção \ref{sec:plan}
-    \item Revisão bibliográfica, descrito na seção \ref{sec:lit}
-    \item Otimização, descrito na seção \ref{sec:dev}
+    \item Levantamento de requisitos, descrito na Seção \ref{sec:plan}
+    \item Revisão bibliográfica, descrito na Seção \ref{sec:lit}
+    \item Otimização, descrito na Seção \ref{sec:dev}
 \end{enumerate}
 
 O restante deste capítulo descreve cada um dos ciclos, conforme enumerados
-acima, além de minuciar, na seção \ref{sec:test}, as etapas de validação
-empregadas neles.
+acima, já as etapas de validação empregadas nele serão minuciadas na Seção
+\ref{sec:test}.
 
 \begin{figure}[H] \caption{Ciclo PDCA global empregado no trabalho} \begin{center}
 \includegraphics[width=0.85\linewidth]{img/pdca_global.png} \end{center}
@@ -1181,7 +1181,7 @@ empregados é executado através da busca em livros texto, manuais, e artigos
 relevantes à área. Finalizada essa leitura, é validado na prática, através de
 experimentação empírica com as ferramentas e entradas utilizadas pelos
 usuários, os problemas de desempenho relatados. Essa validação e a avaliação de
-seus resultados será descrito em maiores detalhes na seção \ref{sec:test}. Uma
+seus resultados será descrito em maiores detalhes na Seção \ref{sec:test}. Uma
 experiência \textit{hands on} com o ferramental que objetiva-se melhorar
 contribui ainda a um entendimento tácito do problema, validando o conhecimento
 obtido através de reuniões e leitura. 
@@ -1214,7 +1214,7 @@ realizam os processos esperados, e se produzem as saídas corretas. Além disso,
 é validado se o desempenho é satisfatório em hardware e sistema operacional
 compatível com o dos usuários, de acordo com as expectativas alinhadas junto a
 eles. Essa etapa de validação e a avaliação de seus resultados é exposta em
-maiores detalhes na seção \ref{sec:test}. 
+maiores detalhes na Seção \ref{sec:test}. 
 
 Caso seja avaliado que as soluções encontradas não atendem aos requisitos e
 caso mais artigos relevantes estejam disponíveis, um novo ciclo é iniciado
@@ -1239,7 +1239,7 @@ ambientes utilizados pelos usuários.
 Em um primeiro momento é planejado, dentro do universo das soluções possíveis
 ao problema, aquela que for de implementação mais simples, para que possa ser
 rapidamente validado sua corretude e desempenho, validações essas descritas em
-maiores detalhes na seção \ref{sec:test}. Caso a solução seja avaliada como correta,
+maiores detalhes na Seção \ref{sec:test}. Caso a solução seja avaliada como correta,
 mas insuficiente, uma nova iteração do ciclo é iniciada com o planejamento de
 soluções mais robustas. Se, por outro lado, ela for inadequada, uma nova
 iteração inicia com o replanejamento de sua implementação, ou então com um novo
@@ -1249,13 +1249,28 @@ solução empregada é adequada e suficiente, ela é entregue aos usuários. Ess
 ciclo PDCA de otimização encontra-se reproduzido na parte esquerda da Figura
 \ref{fig:pdca_global}. 
 
-\section{Validação}
+%
+%
+% Implementação (da metodologia)
+%
+%
+\chapter{Resultados}
+\label{chap:imp}
+
+Neste capítulo é exposta a implementação da metodologia descrita no capítulo
+anterior e a avaliação de seus resultados, através da metodologia que será
+descrita na Seção \ref{sec:test}. Na Seção \ref{sec:filomp} é descrito o
+planejamento, validação, execução, e avaliação dos resultados relativos aos
+softwares de análise filogenética, e o mesmo é feito na Seção
+\ref{sec:SAMtools} para os softwares de chamada de variantes.
+
+\section{Metodologia de avaliação}
 \label{sec:test}
 
-Acima, foi descrita em alto nível a metodologia adotada. Nesta seção é exposta
-em maiores detalhes a metodologia de validação de corretude e desempenho. Essas
-validações são fundamentais ao trabalho. A validação inicial dos problemas de
-desempenho influenciará na revisão bibliográfica e no ciclo de otimização. Uma vez
+Nesta seção é exposta em maiores detalhes a metodologia de validação de
+corretude e desempenho e avaliação dos resultados. Essas validações são
+fundamentais ao trabalho. A validação inicial dos problemas de desempenho
+influenciará na revisão bibliográfica e no ciclo de otimização. Uma vez
 adotadas soluções próprias ou da literatura, é preciso validar que elas
 produzem resultados corretos e um desempenho consistentemente satisfatório.
 Isto é, uma vez que os métodos empregados na aplicação original e na solução
@@ -1387,19 +1402,7 @@ processamento, inviabilizando, no escopo desse trabalho, um número de
 replicações maior. No caso de aplicações paralelas, é medido também seu
 \textit{speedup}. 
 
-%
-%
-% Implementação (da metodologia)
-%
-%
-\chapter{Avaliação}
-\label{chap:imp}
 
-Neste capítulo é exposta a implementação da metodologia descrita no capítulo
-anterior e a avaliação de seus resultados. Na seção \ref{sec:filomp} é descrito
-o planejamento, validação, execução, e avaliação dos resultados relativos aos
-softwares de análise filogenética, e o mesmo é feito na seção
-\ref{sec:SAMtools} para os softwares de chamada de variantes.
 
 \section{Análise filogenética: pacote PAML}
 \label{sec:filomp}
@@ -1422,7 +1425,7 @@ bibliográfica.  Os resultados desse estudo da literatura, selecionando
 ferramentas que atendam aos requisitos supracitados, foram expostos na seção
 \ref{sec:filoant}. Conforme já descrito lá, foram identificadas as aplicações
 \textit{slimcodeml} e LMAP para validação (de corretude e desempenho), cujos
-resultados são avaliados na seção \ref{sec:slimeval}.
+resultados são avaliados na Seção \ref{sec:slimeval}.
 
 Além do início de um ciclo de revisão bibliográfica, avaliou-se iniciar também
 um ciclo de otimização. Para isso, os gargalos de desempenho foram mapeados
@@ -1444,8 +1447,8 @@ alternativas àquelas presentes na literatura.
 O perfil de execução obtido com o \textit{callgrind} revela que a rotina \textit{ming2}
 é responsável por 97,28\% do custo de processamento do \textit{codeml}. Através de um
 estudo da aplicação observou-se que essa rotina implementa o algoritmo BFGS,
-já descrito na seção \ref{sec:bfgs}. O \textit{codeml} utiliza-o para maximização no
-processo de MLE, já descrita na seção \ref{sec:mle}. O \textit{ming2} possui duas
+já descrito na Seção \ref{sec:bfgs}. O \textit{codeml} utiliza-o para maximização no
+processo de MLE, já descrita na Seção \ref{sec:mle}. O \textit{ming2} possui duas
 sub-rotinas responsáveis por quase a totalidade de seu custo:
 \textit{gradientB} e \textit{LineSearch2}. A rotina \textit{gradientB},
 responsável por 42,99\% do custo, implementa o cálculo do gradiente via
@@ -1489,7 +1492,7 @@ Nesta seção é exposta a validação das aplicações selecionadas no ciclo de
 revisão bibliográfica. A Tabela \ref{tbl:log} apresenta a comparação da
 log-verossimilhança de cada modelo de substituição, conforme produzida pelo
 \textit{slimcodeml} e pelo \textit{codeml}, de acordo com a metodologia de
-avaliação descrita na seção \ref{sec:test}. Os resultados utilizando o LMAP
+avaliação descrita na Seção \ref{sec:test}. Os resultados utilizando o LMAP
 foram omitidos, uma vez que a ferramenta simplesmente paraleliza \textit{jobs}
 -- os valores de saída são idênticos aos da execução sequencial. Observa-se que
 a única diferença consta no modelo M8, na sexta casa decimal. Trata-se de um
@@ -1524,7 +1527,7 @@ mesma representação do \textit{codeml}, truncando o valor exibido pelo
 \end{table}
 
 A Tabela \ref{tbl:paml} expõe os resultados da validação de desempenho,
-conforme a metodologia descrita na seção \ref{sec:test}. Além de validar o
+conforme a metodologia descrita na Seção \ref{sec:test}. Além de validar o
 desempenho do LMAP utilizando o \textit{codeml}, como feito no artigo que
 apresenta o LMAP, ele também foi testado utilizando o \textit{slimcodeml}, para
 isso substituindo o executável do \textit{codeml} por aquele do
@@ -1565,7 +1568,7 @@ problema. A motivação de paralelizar o cálculo do gradiente de forma
 \cite{byrd1988parallel}, é a prototipação rápida de uma abordagem inicial para
 validação, posteriormente avaliando a possibilidade de uma implementação mais
 complexa, seguindo a metodologia proposta. Para implementar essa paralelização
-foi arquitetada uma solução com OpenMP, já descrito na seção \ref{sec:par}. A
+foi arquitetada uma solução com OpenMP, já descrito na Seção \ref{sec:par}. A
 escolha do OpenMP se dá pela possibilidade de paralelização incremental e
 disponibilidade nas linguagens e sistemas operacionais utilizados neste
 trabalho.
@@ -1650,7 +1653,7 @@ o \textit{SAMtools} como originalmente usado pelos pesquisadores, compreendido
 através do ciclo de levantamento de requisitos, isto é, reuniões com os
 pesquisadores, estudo teórico e empírico da ferramenta. Este detalhamento será
 relevante à compreensão do ciclo de otimização de desempenho, que será descrito
-na seção \ref{sec:parsamtools}.  Já na seção \ref{sec:sambamba} será descrito a
+na Seção \ref{sec:parsamtools}.  Já na Seção \ref{sec:sambamba} será descrito a
 validação do uso nesse \textit{pipeline} da aplicação \textit{sambamba},
 proveniente do ciclo de revisão bibliográfica já exposto na seção
 \ref{sec:call}.
@@ -1675,7 +1678,7 @@ completa desses comandos foge ao escopo desse trabalho e pode ser encontrada em
 A fim de realizar a chamada de variantes, os pesquisadores primeiro obtém as
 sequências genéticas alinhadas de múltiplos indivíduos de pelo menos três
 populações no formato CRAM, bem como o genoma de referência no formato FASTA,
-descritos na seção \ref{sec:formats}. Todos dados são obtidos do projeto 1000
+descritos na Seção \ref{sec:formats}. Todos dados são obtidos do projeto 1000
 Genomes. O fluxo de análise original fornecido pelos pesquisadores pode ser
 dividido em três etapas, após a obtenção dos dados. Na primeira etapa é
 executada uma conversão de formato de CRAM para BAM utilizando o comando
@@ -1799,7 +1802,7 @@ Assim, iniciou-se um ciclo de otimização, que será descrito na seção
 \label{sec:sambamba}
 
 Esta seção descreve a validação da aplicação \textit{sambamba}, identificada em revisão
-bibliográfica já exposta na seção \ref{sec:callant}. A conversão de CRAM para
+bibliográfica já exposta na Seção \ref{sec:callant}. A conversão de CRAM para
 BAM para uso do \textit{sambamba} foi realizada usando o \textit{samtools}, uma vez que o
 \textit{sambamba}, apesar de providenciar tal suporte em suas versões mais antigas,
 apresentou problemas na leitura dos arquivos -- no \textit{issue tracker} do
@@ -1847,7 +1850,7 @@ mais de quatro minutos para visualizar uma região do arquivo supracitado, o
 arquivo em que os comandos mencionados anteriormente rodaram com sucesso, tais
 comandos apresentaram erros sobre o formato do arquivo, tanto na versão mais
 atual do \textit{sambamba} como em versões anteriores. Esse problema não é completamente
-inesperado -- conforme já mencionado na seção \ref{sec:callant}, as notas de
+inesperado -- conforme já mencionado na Seção \ref{sec:callant}, as notas de
 lançamento do \textit{sambamba} indicam que alguns comandos da chamada de variantes não
 foram extensivamente testados. 
 
@@ -1909,7 +1912,7 @@ automático do número de \textit{jobs} paralelos ao número de núcleos de
 processamento disponíveis. 
 
 Validada a corretude da implementação otimizada, conforme a metodologia
-descrita na seção \ref{sec:test}, foram realizados medidas de seu tempo de
+descrita na Seção \ref{sec:test}, foram realizados medidas de seu tempo de
 execução. As otimizações e a paralelização reduziram drasticamente o tempo de
 análise. Uma vez observada a melhora substancial no tempo de execução, as
 medidas com a ferramenta otimizada foram replicadas, conforme a metodologia
@@ -2005,7 +2008,7 @@ comandos, a saída de um é a entrada do seguinte. Dessa forma, ambos poderiam
 ser executados em paralelo de forma que a saída fosse consumida assim que
 gerada. Esse IO poderia ser feito ainda em memória volátil, reduzindo as
 escritas e leituras em disco. Um mecanismo para IPC seriam \textit{pipes} POSIX, já
-descritos na seção \ref{sec:par}. Todavia, o fato do IO residir em memória
+descritos na Seção \ref{sec:par}. Todavia, o fato do IO residir em memória
 volátil incorre em uso mais elevado desse recurso, justamente o que tentava-se
 evitar ao buscar uma alternativa a softwares como ANGSD e \textit{PVCtools}.
 Dessa forma, uma vez testado e observado que o uso de memória tornava-se
@@ -2101,7 +2104,7 @@ etapa anterior, nunca termina a execução devido a uso de memória
 proibitivamente elevado, para os dados de entrada dos pesquisadores do HCPA.
 
 A entrada da primeira etapa consiste em arquivos nos formatos BAM ou CRAM,
-descritos na seção \ref{sec:formats}, um arquivo de entrada para cada indivíduo
+descritos na Seção \ref{sec:formats}, um arquivo de entrada para cada indivíduo
 de cada população sob análise. O \textit{angsd} então utiliza a biblioteca
 \textit{htslib} para manipulação desses arquivos.
 
@@ -2138,7 +2141,7 @@ confiabilidade dos resultados é fundamental.
 
 Foi traçado então um perfil de memória da aplicação utilizando \textit{massif}, visando
 elucidar as causas do uso elevado de memória e avaliar iniciar um ciclo de
-otimização, uma vez que, conforme já exposto na seção \ref{sec:callant}, não
+otimização, uma vez que, conforme já exposto na Seção \ref{sec:callant}, não
 foram localizadas implementações alternativas do ANGSD na literatura. Esse
 perfil revelou que a etapa de otimização supracitada é o principal responsável
 pelo uso proibitivamente alto de recursos, e não foram encontradas
@@ -2221,7 +2224,7 @@ motiva trabalhos futuros visando melhorias subsequentes. Além do pacote
 \textit{SAMtools} e softwares alternativos a ele, existem diversas ferramentas
 utilizados para chamadas de variante utilizando modelos diferentes daquele
 empregado pelo \textit{SAMtools}, produzindo resultados discrepantes conforme descrito
-na seção \ref{sec:alt}. Um trabalho futuro consiste em explorar o uso dessas
+na Seção \ref{sec:alt}. Um trabalho futuro consiste em explorar o uso dessas
 ferramentas junto aos pesquisadores do grupo de pesquisa em genética, com
 avaliação tanto de seu desempenho como da aplicabilidade desse ferramental
 considerando os resultados potencialmente diferentes entre si, para o caso de
@@ -2247,7 +2250,7 @@ paralelo e com tolerância a falhas de \textit{pipelines} \cite{carbone2015apach
 
 O desenvolvimento de um ferramental para execução de \textit{jobs} paralelos do
 \textit{codeml} que simplifique a divisão da entrada em relação ao LMAP é um trabalho
-futuro de interesse. Conforme descrito na seção \ref{sec:filoant}, a estrutura
+futuro de interesse. Conforme descrito na Seção \ref{sec:filoant}, a estrutura
 de diretórios gerada pelo LMAP para dividir a entrada precisa ser manualmente
 afinada à parametrização desejada, uma vez que ela é criada a partir de
 \textit{templates}. Apesar da proposta do LMAP ser justamente simplificar essa
