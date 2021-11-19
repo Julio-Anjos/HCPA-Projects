@@ -36,6 +36,7 @@ Clínicas de Porto Alegre}
 \keyword{SAMtools}
 
 \begin{document}
+\sloppy
 
 \maketitle
 
@@ -899,7 +900,25 @@ Dessa forma, o estado da arte da análise filogenética consiste do \textit{code
 implementação de referência, além de alternativas diversas que buscam melhorar
 seu desempenho mantendo sua confiabilidade. Dentre elas destacam-se as
 apresentadas nessa seção, no que tange aplicabilidade ao caso de uso dos
-pesquisadores do HCPA.
+pesquisadores do HCPA. A Tabela \ref{tbl:filolit} resumo o levantamento.
+
+\begin{table}[h]
+  \caption{Resumo de trabalhos relacionados -- análise filogenética}
+    \centering
+        \begin{tabular}{c|c|c}
+          \hline
+          \textit{Software}  & \textit{Proposta} & \textit{Restrições}  \\
+          \hline
+          \hline
+          gcodeml     & Paralelismo, memória distribuída     & Arquiteturas restritas  \\
+          slimcodeml  & Oitmização (sequencial)              & N/A \\
+          fastcodeml  & Paralelismo, memória compartilhada   & Funcionalidade limitada \\
+          LMAP        & Paralelismo, memória compartilhada   & N/A \\
+          \hline
+        \end{tabular}
+      \legend{Fonte: Os autores}
+    \label{tbl:filolit}
+\end{table}
 
 \section{Chamada de variantes}
 \label{sec:callant}
@@ -1007,7 +1026,28 @@ software para análise genética de diferentes populações de uma espécie
 HCPA, o uso de memória é proibitivamente elevado. Até onde vai o conhecimento
 dos autores desse trabalho, não existem artigos publicados que implementem
 alternativas ao ANGSD ou que realizem algum trabalho em cima do mesmo visando a
-melhoria de seu desempenho.
+melhoria de seu desempenho. Um resumo dos trabalhos discutidos nessa seção é
+apresentado na Tabela \ref{tbl:calllit}, com as limitações de cada um que
+levaram à selação do sambamba para posterior avaliação.
+
+\begin{table}[h]
+  \caption{Resumo de trabalhos relacionados -- chamada de variantes}
+    \centering
+        \begin{tabular}{c|c|c}
+          \hline
+          \textit{Software}  & \textit{Proposta} & \textit{Restrições}  \\
+          \hline
+          \hline
+          cljam     & Paralelismo & Baixo desempenho   \\
+          pvctools  & Paralelismo & Alto uso de RAM    \\
+          sambamba  & Paralelismo & Sem suporte a CRAM \\
+          elprep    & Paralelismo & Alto uso de RAM    \\
+          angsd     & Paralelismo & Alto uso de RAM    \\
+          \hline
+        \end{tabular}
+      \legend{Fonte: Os autores}
+    \label{tbl:calllit}
+\end{table}
 
 \subsection{Considerações}
 \label{sec:alt}
@@ -2225,9 +2265,10 @@ nomeadamente o uso elevado de memória presente em implementações como
 CRAM utilizado pelo projeto 1000 Genomes como no \textit{elPrep} e
 \textit{sambamba}, e o uso de implementações próprias sem testes extensivos
 como no caso do \textit{sambamba}. A solução desenvolvida foi validada por
-corretude e desempenho. Avaliada como satisfatória, foi entregue aos usuários.
-
-\section{Discussão e trabalhos futuros}
+corretude e desempenho. Avaliada como satisfatória, foi entregue aos usuários
+mediante uma apresentação do seu uso, que não exige a compra de hardware ou
+software específico nem conhecimento técnico aprofundado na área de tecnologia
+da informação.
 
 Mesmo a solução para execução paralela do \textit{pipeline} de análise
 filogenética ainda leva diversas horas para executar com poucas entradas, o que
