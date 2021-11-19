@@ -190,11 +190,12 @@ informação mapeada \cite{baxevanis2020bioinformatics}.
 %
 % Breve contexto do problema
 %
-O grupo de pesquisa em genética do Hospital de Clínicas de Porto Alegre (HCPA)
-utiliza uma série de softwares de bioinformática para análise de sequências
-genéticas da espécie humana e de outras espécies. Alguns desses softwares
-apresentam problemas de desempenho, como tempo de execução ou uso de memória
-proibitivamente elevados, o que dificulta ou impede suas análises.
+Grupos de pesquisa em genética, como os do Hospital de Clínicas de Porto Alegre
+(HCPA), utilizam uma série de softwares de bioinformática para análise de
+sequências genéticas da espécie humana e de outras espécies. Alguns dos
+softwares usados no HCPA apresentam problemas de desempenho, como tempo de
+execução ou uso de memória proibitivamente elevados, o que dificulta ou impede
+suas análises.
 
 Nomeadamente, para a análise filogenética, que visa elucidar eventos evolutivos
 na linhagem dos seres vivos, o grupo emprega o software \textit{codeml}, do pacote
@@ -432,25 +433,35 @@ Genomes, um esforço colaborativo internacional que visa disponibilizar
 publicamente sequências do genoma humano \cite{via20101000}. As amostras
 utilizadas neste trabalho são publicadas pelo 1000 Genomes, sendo produzidas
 pelo projeto HGDP, que visa sequenciar o genoma de populações humanas diversas
-\cite{cavalli2005human}.
+\cite{cavalli2005human}. Um excerto de arquivo no formato SAM encontra-se
+reproduzido na Figura \ref{fig:sam}.
+
+\begin{figure} \caption{Exemplo de arquivo no formato SAM} \begin{center}
+\includegraphics[width=0.8\linewidth]{img/sam.png} \end{center}
+\legend{Fonte: \cite{li2009sequence}} \label{fig:sam} \end{figure}
 
 A chamada de variantes realiza comparações entre múltiplos arquivos nos
 formatos supracitados, produzindo arquivos que representam as variantes
 encontradas. Quando as informações de variantes são armazenadas em texto plano
 diz-se do arquivo VCF, seu equivalente binário sendo o formato BCF, ambos
 gerados e manipulados pela ferramenta \textit{bcftools}, do pacote
-\textit{SAMtools} \cite{danecek2021twelve}.
+\textit{SAMtools} \cite{danecek2021twelve}. Um exemplo de arquivo no formato
+VCF encontra-se reproduzido na figura \ref{fig:vcf}.
 
-Já o formato FASTA é utilizado para representar sequências
-de nucleotídeos ou aminoácidos. Introduzido pela primeira vez em
-\cite{fasta}, é hoje ubíquo no campo da
-bioinformática \cite{shen2016seqkit}. Os genomas de referência aos quais as
+\begin{figure} \caption{Exemplo de arquivo no formato VCF} \begin{center}
+\includegraphics[width=0.8\linewidth]{img/vcf.png} \end{center}
+\legend{Fonte: \cite{danecek2011variant}} \label{fig:vcf} \end{figure}
+
+Já o formato FASTA é utilizado para representar sequências de nucleotídeos ou
+aminoácidos, de forma sequencial e em texto plano, cada um representado por uma
+letra. Introduzido pela primeira vez em \cite{fasta}, é hoje ubíquo no campo da
+bioinformática \cite{shen2016seqkit}.  Os genomas de referência aos quais as
 demais sequências genéticas são alinhadas são fornecidos nesse formato, e o
-pacote \textit{SAMtools} providencia ferramental para manipulação desses arquivos. O
-genoma de referência é publicado pelo órgão \textit{Genome Reference
-Consortium} (GRC), e a publicação mais atual é nomeada GRCh38, de
-2013 \cite{GUO201783}. Convém mencionar que o software PAML também recebe
-como entrada arquivos nesse formato.
+pacote \textit{SAMtools} providencia ferramental para manipulação desses
+arquivos. O genoma de referência é publicado pelo órgão \textit{Genome
+Reference Consortium} (GRC), e a publicação mais atual é nomeada GRCh38, de
+2013 \cite{GUO201783}. Convém mencionar que o software PAML também recebe como
+entrada arquivos nesse formato.
 
 O projeto 1000 Genomes fornece ainda sequências alinhadas ao genoma de
 referência anterior, GRCh37, no formato BAM, consideravelmente maior que o
