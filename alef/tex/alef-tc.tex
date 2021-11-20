@@ -191,7 +191,7 @@ informação mapeada \cite{baxevanis2020bioinformatics}.
 %
 % Breve contexto do problema
 %
-Grupos de pesquisa em genética, como os do Hospital de Clínicas de Porto Alegre
+Grupos de pesquisa em genética, como o do Hospital de Clínicas de Porto Alegre
 (HCPA), utilizam uma série de softwares de bioinformática para análise de
 sequências genéticas da espécie humana e de outras espécies. Alguns dos
 softwares usados no HCPA apresentam problemas de desempenho, como tempo de
@@ -911,7 +911,7 @@ pesquisadores do HCPA. A Tabela \ref{tbl:filolit} resumo o levantamento.
           \hline
           \hline
           gcodeml     & Paralelismo, memória distribuída     & Arquiteturas restritas  \\
-          slimcodeml  & Oitmização (sequencial)              & N/A \\
+          slimcodeml  & Otimização (sequencial)              & N/A \\
           fastcodeml  & Paralelismo, memória compartilhada   & Funcionalidade limitada \\
           LMAP        & Paralelismo, memória compartilhada   & N/A \\
           \hline
@@ -2232,26 +2232,28 @@ implementação, que reduziu em mais da metade o tempo de execução em relaçã
 aplicação original, para a entrada dos pesquisadores e no ambiente de execução
 proposto.
 
-Foi realizada ainda uma caracterização do software original e de seus
-problemas de desempenho, através do traço de um perfil de execução e descrição
-dos algoritmos empregados nas rotinas responsáveis pela maior parte do
+Foi realizada ainda uma caracterização do software original e de seus problemas
+de desempenho, através do traço de um perfil de execução e descrição dos
+algoritmos empregados nas rotinas responsáveis pela maior parte do
 processamento. Foi avaliado interessante uma implementação própria que buscasse
 aproveitar-se dos recursos dos ambientes multiprocessados disponíveis aos
 usuários através de uma paralelização dessas rotinas. Essa estratégia foi
-explorada, e concluiu-se que uma implementação paralela exigiria grande
-esforço, provavelmente necessitando uma reescrita do software para
-eliminar compartilhamento de memória e uso abundante de variáveis globais
-presentes na implementação original que dificultam sua paralelização.
-Dessa forma, seguindo a metodologia proposta, foi avaliada que a solução
-encontrada em uma revisão bibliográfica e validada através de testes desempenho
-seria mais adequada, e portanto ela foi entregue aos usuários.
+explorada, todavia, a implementação não \textit{thread-safe} no PAML de suas
+rotinas mais custosas inviabilizou essa abordagem, sendo necessário grande
+esforço para sua adequação, provavelmente necessitando uma reescrita do
+software para eliminar compartilhamento de memória e uso abundante de variáveis
+globais. Dessa forma, seguindo a metodologia proposta, foi avaliada que a
+solução encontrada em uma revisão bibliográfica e validada através de testes
+desempenho seria mais adequada, e portanto ela foi entregue aos usuários.
 
-Para os softwares de chamada de variantes também foi realizado uma
-revisão bibliográfica e validações de corretude e desempenho das soluções
-encontradas. Nesse caso, nenhuma das implementações estudadas foi avaliada
-como adequada ao uso dos pesquisadores. Portanto, avaliou-se uma implementação
-própria objetivando-se a melhoria de desempenho do fluxo de análise empregado
-pelos pesquisadores, beneficiando-se de técnicas de processamento paralelo.
+Para os softwares de chamada de variantes também foi realizado uma revisão
+bibliográfica e validações de corretude e desempenho das soluções encontradas.
+Nesse caso, nenhuma das implementações estudadas foi avaliada como adequada ao
+uso dos pesquisadores, nomeadamente devido a alto uso de memória ou falta de
+suporte aos formatos de entrada utilizados. Portanto, avaliou-se uma
+implementação própria objetivando-se a melhoria de desempenho do fluxo de
+análise empregado pelos pesquisadores, beneficiando-se de técnicas de
+processamento paralelo.
 
 Seguindo um ciclo de otimização incremental, foi implementada uma ferramenta
 que paraleliza \textit{jobs} da aplicação de referência (\textit{SAMtools}),
@@ -2270,17 +2272,18 @@ mediante uma apresentação do seu uso, que não exige a compra de hardware ou
 software específico nem conhecimento técnico aprofundado na área de tecnologia
 da informação.
 
-Mesmo a solução para execução paralela do \textit{pipeline} de análise
-filogenética ainda leva diversas horas para executar com poucas entradas, o que
-motiva trabalhos futuros visando melhorias subsequentes. Além do pacote
-\textit{SAMtools} e softwares alternativos a ele, existem diversas ferramentas
-utilizados para chamadas de variante utilizando modelos diferentes daquele
-empregado pelo \textit{SAMtools}, produzindo resultados discrepantes conforme descrito
-na Seção \ref{sec:alt}. Um trabalho futuro consiste em explorar o uso dessas
-ferramentas junto aos pesquisadores do grupo de pesquisa em genética, com
-avaliação tanto de seu desempenho como da aplicabilidade desse ferramental
-considerando os resultados potencialmente diferentes entre si, para o caso de
-uso do HCPA, levando em consideração a literatura a respeito dessas
+Todavia, mesmo a solução para execução paralela do \textit{pipeline} de análise
+filogenética ainda leva diversas horas para executar com poucas entradas. Além
+disso, seu uso é limitado a arquiteturas de memória compartilhada. Essas
+limitações motivam trabalhos futuros visando melhorias subsequentes. Além do
+pacote \textit{SAMtools} e softwares alternativos a ele, existem diversas
+ferramentas utilizados para chamadas de variante utilizando modelos diferentes
+daquele empregado pelo \textit{SAMtools}, produzindo resultados discrepantes
+conforme descrito na Seção \ref{sec:alt}. Um trabalho futuro consiste em
+explorar o uso dessas ferramentas junto aos pesquisadores do grupo de pesquisa
+em genética, com avaliação tanto de seu desempenho como da aplicabilidade desse
+ferramental considerando os resultados potencialmente diferentes entre si, para
+o caso de uso do HCPA, levando em consideração a literatura a respeito dessas
 ferramentas.
 
 Outro trabalho futuro objetivando uma melhoria de desempenho para a chamada de
