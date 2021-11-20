@@ -1967,7 +1967,7 @@ descrita na Seção \ref{sec:test}, foram realizados medidas de seu tempo de
 execução. As otimizações e a paralelização reduziram drasticamente o tempo de
 análise. Uma vez observada a melhora substancial no tempo de execução, as
 medidas com a ferramenta otimizada foram replicadas, conforme a metodologia
-adotada. 
+adotada. A ferramenta desenvolvida encontra-se disponível publicamente \cite{parsnv}.
 
 Na Tabela \ref{tbl:SAMtools} encontram-se reproduzidos os tempos de execução em
 minutos utilizando o \textit{pipeline} original (uma execução) e o otimizado
@@ -2271,6 +2271,16 @@ corretude e desempenho. Avaliada como satisfatória, foi entregue aos usuários
 mediante uma apresentação do seu uso, que não exige a compra de hardware ou
 software específico nem conhecimento técnico aprofundado na área de tecnologia
 da informação.
+
+Todas as amostras utilizadas para a avaliação de desempenho foram obtidas do
+repositório público mantido pelo projeto 1000 Genomes, com seus identificadores
+únicos expostos ao longo do trabalho. Além disso, a imagem Docker utilizada
+para construção dos ambientes de teste encontra-se disponível publicamente,
+conforme já exposto na Seção \ref{sec:perfmethod}, onde é especificado também o
+hardware utilizado. Por fim, a ferramenta desenvolvida nesse trabalho também
+encontra-se disponível em repositório público, conforme já exposto na Seção
+\ref{sec:parsamtools}. A exposição pública dos dados, ferramentas, e ambientes
+utilizados visa permitir a reprodutibilidade dos resultados deste trabalho.
 
 Todavia, mesmo a solução para execução paralela do \textit{pipeline} de análise
 filogenética ainda leva diversas horas para executar com poucas entradas. Além
