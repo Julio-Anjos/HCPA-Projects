@@ -437,7 +437,7 @@ pelo projeto HGDP, que visa sequenciar o genoma de populações humanas diversas
 \cite{cavalli2005human}. Um excerto de arquivo no formato SAM encontra-se
 reproduzido na Figura \ref{fig:sam}.
 
-\begin{figure} \caption{Exemplo de arquivo no formato SAM} \begin{center}
+\begin{figure}[h] \caption{Exemplo de arquivo no formato SAM} \begin{center}
 \includegraphics[width=0.8\linewidth]{img/sam.png} \end{center}
 \legend{Fonte: \cite{li2009sequence}} \label{fig:sam} \end{figure}
 
@@ -1201,9 +1201,10 @@ metodologia, composta de três ciclos PDCA interligados:
     \item Otimização, descrito na Seção \ref{sec:dev}
 \end{enumerate}
 
-O restante deste capítulo descreve cada um dos ciclos, conforme enumerados
-acima, já as etapas de validação empregadas nele serão minuciadas na Seção
-\ref{sec:test}.
+Cada ciclo compreende uma ou mais iterações de suas etapas, até avaliar-se pela
+sua conclusão, iniciando o próximo ciclo ligado a ele. O restante deste
+capítulo descreve cada um dos ciclos, conforme enumerados acima, já as etapas
+de validação empregadas nele serão minuciadas na Seção \ref{sec:test}.
 
 \begin{figure}[H] \caption{Ciclo PDCA global empregado no trabalho} \begin{center}
 \includegraphics[width=0.85\linewidth]{img/pdca_global.png} \end{center}
