@@ -186,7 +186,8 @@ colaborativo já empregado no ramo da biologia \cite{tripp2011economic}, abriu
 caminho para a análise a nível de sequências genéticas de problemas de biologia
 humana e biomedicina, alterando fundamentalmente como a ciência é conduzida
 nessa área, e apresentando desafios ao processamento da imensa quantidade de
-informação mapeada \cite{baxevanis2020bioinformatics}.
+informação mapeada \cite{baxevanis2020bioinformatics}, a genômica sendo
+compreendida como uma ciência de \textit{Big Data} \cite{nsr2014bigdata} \cite{stephens2015big}.
 
 %
 % Breve contexto do problema
@@ -427,15 +428,16 @@ FASTA, e NWK, descritos brevemente nesta seção.
 Os formatos SAM, BAM, e CRAM representam sequências genéticas alinhadas a um
 genoma de referência. O formato SAM traz uma representação em texto plano, o
 BAM é seu equivalente binário, e o CRAM é uma versão binária com compressão.
-Tais arquivos podem ser manipulados com a ferramenta \textit{samtools}, do pacote
-\textit{SAMtools} \cite{danecek2021twelve}. Amostras de sequências genéticas de
-indivíduos da espécie humana são fornecidos no formato CRAM pelo projeto 1000
-Genomes, um esforço colaborativo internacional que visa disponibilizar
-publicamente sequências do genoma humano \cite{via20101000}. As amostras
-utilizadas neste trabalho são publicadas pelo 1000 Genomes, sendo produzidas
-pelo projeto HGDP, que visa sequenciar o genoma de populações humanas diversas
-\cite{cavalli2005human}. Um excerto de arquivo no formato SAM encontra-se
-reproduzido na Figura \ref{fig:sam}.
+Mesmo no formato CRAM, as sequências genéticas comumente possuem dezenas de
+gigabytes. Tais arquivos podem ser manipulados com a ferramenta
+\textit{samtools}, do pacote \textit{SAMtools} \cite{danecek2021twelve}.
+Amostras de sequências genéticas de indivíduos da espécie humana são fornecidos
+no formato CRAM pelo projeto 1000 Genomes, um esforço colaborativo
+internacional que visa disponibilizar publicamente sequências do genoma humano
+\cite{via20101000}. As amostras utilizadas neste trabalho são publicadas pelo
+1000 Genomes, sendo produzidas pelo projeto HGDP, que visa sequenciar o genoma
+de populações humanas diversas \cite{cavalli2005human}. Um excerto de arquivo
+no formato SAM encontra-se reproduzido na Figura \ref{fig:sam}.
 
 \begin{figure}[h] \caption{Exemplo de arquivo no formato SAM} \begin{center}
 \includegraphics[width=0.8\linewidth]{img/sam.png} \end{center}
@@ -589,6 +591,17 @@ aplicações possuam um \textit{speedup} maior que o linear (chamado
 global é interrompido se um dos nodos de processamento paralelo encontra a
 solução, ou se o maior uso de memória \textit{cache} (distribuída entre os
 núcleos de processamento) beneficie suficientemente a aplicação.
+
+Uma das aplicações da programação paralela é acelerar o processamento de largas
+quantidades de dados, distribuindo o trabalho sobre fatias das entradas,
+utilizando arquiteturas MIMD ou SIMD. Em particular, a área de \textit{Big
+Data} explora formas de trabalhar com quantidades massivas e crescentes de
+dados, muitas vezes em formatos variados e complexos \cite{6567202}
+\cite{nsr2014bigdata}. A genômica, área da biologia que compreende o estudo de
+genomas, é uma das ciências fortemente atreladas a \textit{Big Data}
+\cite{nsr2014bigdata} \cite{stephens2015big}. O sequenciamento do genoma
+humano, em particular, trouxe novos desafios ao processamento da imensa
+quantidade de informação mapeada \cite{baxevanis2020bioinformatics}.
 
 \section{Otimização por busca linear}
 \label{sec:bfgs}
@@ -989,14 +1002,16 @@ conversão para outros formatos, suporta entradas CRAM, efetivamente fazendo com
 que a ferramenta trabalhe apenas com arquivos BAM. Isso pode ser um fator
 limitante para o uso prático dessa ferramenta, visto que o custo da conversão
 de CRAM para BAM vai além do tempo de execução da conversão em si, incluindo o
-custo de armazenamento dos arquivos BAM, consideravelmente maiores. Além disso,
-no manual da versão mais atual da ferramenta consta que a etapa de chamada de
-variantes ``não é mais recomendada'', enquanto é mencionado nas notas de
-lançamento de uma das versões da aplicação que um comando fundamental à chamada
-de variantes ``não foi fortemente testado'' \cite{manual2015sambamba}. De
-qualquer forma, neste trabalho foram realizados testes de desempenho dessa
-aplicação, realizando uma conversão prévia da entrada de CRAM para BAM e
-considerando o tempo dessa conversão nos resultados.
+custo de armazenamento dos arquivos BAM, consideravelmente maiores -- a maior
+capacidade e o menor custo de armazenamento dos dados sendo um importante fator
+tratando-se de \textit{Big Data}. Além disso, no manual da versão mais atual da
+ferramenta consta que a etapa de chamada de variantes ``não é mais
+recomendada'', enquanto é mencionado nas notas de lançamento de uma das versões
+da aplicação que um comando fundamental à chamada de variantes ``não foi
+fortemente testado'' \cite{manual2015sambamba}. De qualquer forma, neste
+trabalho foram realizados testes de desempenho dessa aplicação, realizando uma
+conversão prévia da entrada de CRAM para BAM e considerando o tempo dessa
+conversão nos resultados.
 
 Em \cite{herzeel2015elprep} os autores produzem uma aplicação
 multiprocessada para preparo dos arquivos de sequência genética alinhadas para
@@ -1454,8 +1469,6 @@ processamento, inviabilizando, no escopo desse trabalho, um número de
 replicações maior. No caso de aplicações paralelas, é medido também seu
 \textit{speedup}. 
 
-
-
 \section{Análise filogenética: pacote PAML}
 \label{sec:filomp}
 
@@ -1731,15 +1744,20 @@ A fim de realizar a chamada de variantes, os pesquisadores primeiro obtém as
 sequências genéticas alinhadas de múltiplos indivíduos de pelo menos três
 populações no formato CRAM, bem como o genoma de referência no formato FASTA,
 descritos na Seção \ref{sec:formats}. Todos dados são obtidos do projeto 1000
-Genomes. O fluxo de análise original fornecido pelos pesquisadores pode ser
-dividido em três etapas, após a obtenção dos dados. Na primeira etapa é
-executada uma conversão de formato de CRAM para BAM utilizando o comando
-\textit{samtools view -b}, seguida de uma rotina de indexação dos arquivos
-utilizando \textit{samtools index}. Uma vez convertidos e indexados, cada
-arquivo de entrada é separado em 22 arquivos de saída, um para cada par de
-cromossomos autossômicos humanos, utilizando o comando \textit{samtools view
-chr}. Essa etapa na sua forma originalmente usada pelo grupo de pesquisa
-encontra-se reproduzida na Figura \ref{fig:stage1_orig}.
+Genomes, e cada arquivo de entrada possui dezenas de gigabytes, cada análise
+totalizando centenas de gigabyes de entrada e arquivos intermediários gerados
+ao longo do \textit{pipeline} que será descrito abaixo. Tais volumes de dados
+não são incomuns em \textit{Big Data}.
+
+O fluxo de análise original fornecido pelos pesquisadores pode ser dividido em
+três etapas, após a obtenção dos dados. Na primeira etapa é executada uma
+conversão de formato de CRAM para BAM utilizando o comando \textit{samtools
+view -b}, seguida de uma rotina de indexação dos arquivos utilizando
+\textit{samtools index}. Uma vez convertidos e indexados, cada arquivo de
+entrada é separado em 22 arquivos de saída, um para cada par de cromossomos
+autossômicos humanos, utilizando o comando \textit{samtools view chr}. Essa
+etapa na sua forma originalmente usada pelo grupo de pesquisa encontra-se
+reproduzida na Figura \ref{fig:stage1_orig}.
 
 \begin{figure}
   \caption{Fluxo de análise original via \textit{SAMtools}, etapa 1}
@@ -2312,7 +2330,9 @@ caso do \textit{SAMtools}, um desafio em tal abordagem é a transferência dos d
 os nodos de execução, uma vez que cada etapa intermediária produz saídas de
 vários gigabytes para cada entrada. Uma possibilidade é o uso de
 \textit{frameworks} Apache Flink, especificamente projetado para processamento
-paralelo e com tolerância a falhas de \textit{pipelines} \cite{carbone2015apache}.
+paralelo e com tolerância a falhas de \textit{pipelines}
+\cite{carbone2015apache}, bem como explorar outros \textit{frameworks} voltados
+para \textit{Big Data}.
 
 O desenvolvimento de um ferramental para execução de \textit{jobs} paralelos do
 \textit{codeml} que simplifique a divisão da entrada em relação ao LMAP é um trabalho
