@@ -508,7 +508,7 @@ enquanto em um \textit{grid} as máquinas podem ser heterogêneas e
 geograficamente apartadas, conectadas através de uma rede de longa distância.
 
 À medida em que deseja-se programar tarefas paralelas em tais arquiteturas,
-duas opções podem ser destacadas: procesos ou \textit{threads}. Em suma, essas
+duas opções podem ser destacadas: processos ou \textit{threads}. Em suma, essas
 compartilham o espaço de memória e recursos do processo que as origina, podendo
 ser vistas como um fluxo de execução paralelo dentro de um processo, enquanto
 aqueles possuem espaço de memória próprio e a informação de estado completa
@@ -1044,7 +1044,7 @@ dos autores desse trabalho, não existem artigos publicados que implementem
 alternativas ao ANGSD ou que realizem algum trabalho em cima do mesmo visando a
 melhoria de seu desempenho. Um resumo dos trabalhos discutidos nessa seção é
 apresentado na Tabela \ref{tbl:calllit}, com as limitações de cada um que
-levaram à selação do sambamba para posterior avaliação.
+levaram à seleção do sambamba para posterior avaliação.
 
 \begin{table}[h]
   \caption{Resumo de trabalhos relacionados -- chamada de variantes}
@@ -1631,7 +1631,7 @@ gradiente por diferenças finitas. Conforme já descrito na Seção
 \ref{sec:parbfgs}, essa é a abordagem de paralelismo mais simples para esse
 problema. A motivação de paralelizar o cálculo do gradiente de forma
 ``ingênua'', ao invés de utilizando a abordagem especulativa descrita por
-\cite{byrd1988parallel}, é a prototipação rápida de uma abordagem inicial para
+\cite{byrd1988parallel}, é a prototipagem rápida de uma abordagem inicial para
 validação, posteriormente avaliando a possibilidade de uma implementação mais
 complexa, seguindo a metodologia proposta. Para implementar essa paralelização
 foi arquitetada uma solução com OpenMP, já descrito na Seção \ref{sec:par}. A
